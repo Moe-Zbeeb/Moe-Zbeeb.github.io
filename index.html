@@ -141,10 +141,14 @@
     /* Card images */
     .card-img {
       float: right;
-      max-width: 80px;
-      max-height: 40px;
+      max-width: 100px;
+      max-height: 50px;
       margin-left: 10px;
+      margin-bottom: 10px;
       object-fit: contain;
+      display: block;
+      z-index: 10;
+      position: relative;
     }
     /* Contact */
     .contact-list {
@@ -216,9 +220,11 @@
       <h2>Research & Experience</h2>
       <div class="card-list">
         <div class="card">
-          <img src="https://upload.wikimedia.org/wikipedia/en/thumb/7/70/KAUST_Logo.svg/800px-KAUST_Logo.svg.png" alt="KAUST logo" class="card-img">
-          <span class="where">IVUL, KAUST</span>
-          <span class="title">Research Assistant – Vision-Language, RLHF &amp; Reasoning Models <span class="date">Jan 2025–Present</span></span>
+          <div style="overflow:hidden; position:relative;">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAABkCAMAAAD0WI85AAAC9FBMVEUAl8QAlsMAl8UAmMYAl8QAlsIAmMYAl8QAl8QAlsMAl8QAl8QAl8QAl8QAmMUAlsMAl8QAmMYAl8QAl8QAmMYAl8QAl8QAl8QAmMYAmcYAl8QAl8QAlsMAl8QAl8QAmMYAl8QAlsMAl8QAl8UAl8QAl8QAl8QAl8QAl8QAl8QAlsMAl8QAl8QAl8UAl8QAl8YAmMYAl8QAl8QAl8QAlsMAl8QAmMYAl8QAl8QAl8QAl8QAl8QAmMUAl8QAl8QAl8MAl8QAl8QAlsMAl8QAl8QAlcIAl8QAksAAmMYAl8QAl8QAl8QAl8QAl8QAlsQAl8QAmMYAl8UAl8UAlcIAl8UAlsIAmMYAl8QAl8QAl8QAl8QAl8UAl8QAl8QAl8QAlsMAl8QAl8QAl8QAl8QAlsQAl8QAl8QAl8UAl8QAlsMAl8QAl8UAl8QAl8QAl8QAl8QAlsQAlsMAl8QAmMYAmMYAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8UAlsMAmMUAl8QAl8QAmMYAl8QAl8QAmMYAl8QAl8QAl8QAl8QAlsMAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAmMUAmcgAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAmscAl8UAl8QAl8QAl8UAlsMAl8QAl8QAl8QAl8QAlsMAl8QAlsMAl8QAlsMAl8QAl8QAl8QAl8QAl8QAl8QAlsMAl8QAl8QAl8QAl8QAmMYAlsIAl8MAl8QAmMUAl8QAl8QAl8QAl8QAl8QAl8QAlsMAl8QAl8QAlsMAl8QAo8wAl8QAl8QAl8QAlsIAl8QAl8QAl8QAmMUAl8QAl8QAmMUAl8QAmMYAl8QAmMUAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAmMYAl8QAl8QAlsMAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAmMUAl8QAlsMAl8QAlsMAl8QAmMY1URJYAAAA/HRSTlMABQkOFRsnMTc9QkZOUltdZGprbnF0dXd8foGChIeJiouMjY+QkZKUlZaXmJmZmpucnZ6foKGio6Slpqeoqqusra6vsLGys7S1tre4ubq7vL2+v8DBwsPE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" alt="KAUST logo" class="card-img" style="width:100px;height:auto;">
+            <span class="where">IVUL, KAUST</span>
+            <span class="title">Research Assistant – Vision-Language, RLHF &amp; Reasoning Models <span class="date">Jan 2025–Present</span></span>
+          </div>
           <ul>
             <li>Work with Prof. Bernard Ghanem at <a href="https://ivul.kaust.edu.sa/" target="_blank">IVUL</a> on state-of-the-art vision-language, RLHF/GRPO, CLIP, and multimodal autoencoder research.</li>
             <li>Optimized batch pipelines and large-scale experiments on Shaheen III supercomputer.</li>
@@ -226,18 +232,20 @@
           </ul>
         </div>
         <div class="card">
-          <img src="https://media.licdn.com/dms/image/v2/D4E22AQGdMcfCSNt5Iw/feedshare-shrink_2048_1536/feedshare-shrink_2048_1536/0/1726579082745?e=2147483647&v=beta&t=4KJcwo0AzHCi6X2L4RdNcO6Ij5LGBl47uq3QnGq-Id8" alt="Chimera logo" class="card-img">
-          <span class="where">Chimera Cybersecurity</span>
-          <span class="title">R&amp;D Engineer – Agentic Neural Networks <span class="date">Jan 2025–Present</span></span>
+          <div style="overflow:hidden; position:relative;">
+            <span class="where">Chimera Cybersecurity</span>
+            <span class="title">R&amp;D Engineer – Agentic Neural Networks <span class="date">Jan 2025–Present</span></span>
+          </div>
           <ul>
             <li>Co-designed environment-aware neural architectures for on-device traffic analysis and autonomous threat response in Chimera Box.</li>
             <li>Deployed deep-learning pipelines for real-time network intelligence and URL pattern recognition (sub-ms inference).</li>
           </ul>
         </div>
         <div class="card">
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_9t7pEb1DcYLw6ClN2-vtr-m9-PUY4RnhoQ&s" alt="AUBMC logo" class="card-img">
-          <span class="where">AUBMC</span>
-          <span class="title">Research Assistant – Data Science <span class="date">Jul–Nov 2024</span></span>
+          <div style="overflow:hidden; position:relative;">
+            <span class="where">AUBMC</span>
+            <span class="title">Research Assistant – Data Science <span class="date">Jul–Nov 2024</span></span>
+          </div>
           <ul>
             <li>Investigated diagnostic eye-map features to improve ophthalmology tools.</li>
           </ul>
@@ -250,9 +258,10 @@
           </ul>
         </div>
         <div class="card">
-          <img src="https://cdn.everythingrf.com/news/ubilite_637988998083252469.png" alt="Ubilite logo" class="card-img">
-          <span class="where">Ubilite – Low Power Wi-Fi</span>
-          <span class="title">Optimization Engineer <span class="date">Jan–May 2024</span></span>
+          <div style="overflow:hidden; position:relative;">
+            <span class="where">Ubilite – Low Power Wi-Fi</span>
+            <span class="title">Optimization Engineer <span class="date">Jan–May 2024</span></span>
+          </div>
           <ul>
             <li>Automated optimization for SoC wireless transceivers (2.5–7 GHz).</li>
           </ul>
