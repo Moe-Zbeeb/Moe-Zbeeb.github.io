@@ -97,7 +97,30 @@
       box-shadow: var(--card-shadow);
       padding: 1.1rem 1.2rem 1.2rem 1.2rem;
       border-left: 4px solid var(--kaust-teal);
-      transition: border-color 0.2s;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 120px;
+      height: 120px;
+      background: linear-gradient(135deg, transparent, rgba(0,159,157,0.05), rgba(227,164,0,0.1));
+      border-radius: 0 0 0 100%;
+      z-index: 1;
+      opacity: 0.8;
+      transition: all 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    }
+    .card:hover::before {
+      transform: scale(1.1);
+      opacity: 1;
     }
     .card .where {
       font-size: 1rem;
@@ -105,16 +128,35 @@
       font-weight: 600;
       margin-bottom: 2px;
       display: block;
+      position: relative;
+      z-index: 2;
     }
-    .card .title { font-weight: 600; }
+    .card .title { 
+      font-weight: 600; 
+      position: relative;
+      z-index: 2;
+    }
     .card .date {
       font-size: 0.97em;
       color: var(--kaust-gold);
       float: right;
       font-weight: 500;
+      position: relative;
+      z-index: 2;
     }
-    .card ul { padding-left: 1.2em; margin: 0.3em 0 0.2em 0; }
-    .card ul li { margin-bottom: 0.4em; }
+    .card ul { 
+      padding-left: 1.2em; 
+      margin: 0.3em 0 0.2em 0; 
+      position: relative;
+      z-index: 2;
+    }
+    .card ul li { 
+      margin-bottom: 0.4em; 
+      transition: all 0.3s ease;
+    }
+    .card:hover ul li {
+      transform: translateX(2px);
+    }
     /* Publications */
     .pub-list { list-style: square inside; padding-left: 1em; }
     .pub-list li { margin-bottom: 0.8em; }
@@ -178,6 +220,62 @@
       .hero img { margin: 0 auto 1rem auto; }
       main { padding: 0 0.3rem; }
     }
+
+    /* Company logos */
+    .company-logo {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 3;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+      opacity: 0.9;
+      transition: all 0.3s ease;
+    }
+    .logo-kaust {
+      background: linear-gradient(135deg, var(--kaust-teal), var(--kaust-orange));
+      clip-path: polygon(100% 0, 0 0, 100% 100%);
+    }
+    .logo-chimera {
+      background: linear-gradient(135deg, #242424, #484848);
+      clip-path: polygon(100% 0, 0 0, 100% 100%);
+    }
+    .logo-aubmc {
+      background: linear-gradient(135deg, #0055a5, #0077cc);
+      clip-path: polygon(100% 0, 0 0, 100% 100%);
+    }
+    .logo-ubilite {
+      background: linear-gradient(135deg, #00a2b8, #00c2cc);
+      clip-path: polygon(100% 0, 0 0, 100% 100%);
+    }
+    .logo-cloudgate {
+      background: linear-gradient(135deg, #5d6577, #738094);
+      clip-path: polygon(100% 0, 0 0, 100% 100%);
+    }
+    .logo-geoai {
+      background: linear-gradient(135deg, #3a7734, #4caf50);
+      clip-path: polygon(100% 0, 0 0, 100% 100%);
+    }
+    .logo-aub {
+      background: linear-gradient(135deg, #760000, #9a0000);
+      clip-path: polygon(100% 0, 0 0, 100% 100%);
+    }
+    .company-logo span {
+      color: white;
+      font-weight: bold;
+      font-size: 12px;
+      transform: rotate(45deg) translate(10px, -20px);
+      display: block;
+      text-align: center;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+      letter-spacing: 0.5px;
+    }
   </style>
 </head>
 <body>
@@ -221,7 +319,7 @@
       <div class="card-list">
         <div class="card">
           <div style="overflow:hidden; position:relative;">
-            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAABkCAMAAAD0WI85AAAC9FBMVEUAl8QAlsMAl8UAmMYAl8QAlsIAmMYAl8QAl8QAlsMAl8QAl8QAl8QAl8QAmMUAlsMAl8QAmMYAl8QAl8QAmMYAl8QAl8QAl8QAmMYAmcYAl8QAl8QAlsMAl8QAl8QAmMYAl8QAlsMAl8QAl8UAl8QAl8QAl8QAl8QAl8QAl8QAlsMAl8QAl8QAl8UAl8QAl8YAmMYAl8QAl8QAl8QAlsMAl8QAmMYAl8QAl8QAl8QAl8QAl8QAmMUAl8QAl8QAl8MAl8QAl8QAlsMAl8QAl8QAlcIAl8QAksAAmMYAl8QAl8QAl8QAl8QAl8QAlsQAl8QAmMYAl8UAl8UAlcIAl8UAlsIAmMYAl8QAl8QAl8QAl8QAl8UAl8QAl8QAl8QAlsMAl8QAl8QAl8QAl8QAlsQAl8QAl8QAl8UAl8QAlsMAl8QAl8UAl8QAl8QAl8QAl8QAlsQAlsMAl8QAmMYAmMYAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8UAlsMAmMUAl8QAl8QAmMYAl8QAl8QAmMYAl8QAl8QAl8QAl8QAlsMAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAmMUAmcgAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAmscAl8UAl8QAl8QAl8UAlsMAl8QAl8QAl8QAl8QAlsMAl8QAlsMAl8QAlsMAl8QAl8QAl8QAl8QAl8QAl8QAlsMAl8QAl8QAl8QAl8QAmMYAlsIAl8MAl8QAmMUAl8QAl8QAl8QAl8QAl8QAl8QAlsMAl8QAl8QAlsMAl8QAo8wAl8QAl8QAl8QAlsIAl8QAl8QAl8QAmMUAl8QAl8QAmMUAl8QAmMYAl8QAmMUAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAmMYAl8QAl8QAlsMAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAmMUAl8QAlsMAl8QAlsMAl8QAmMY1URJYAAAA/HRSTlMABQkOFRsnMTc9QkZOUltdZGprbnF0dXd8foGChIeJiouMjY+QkZKUlZaXmJmZmpucnZ6foKGio6Slpqeoqqusra6vsLGys7S1tre4ubq7vL2+v8DBwsPE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" alt="KAUST logo" class="card-img" style="width:100px;height:auto;">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAABkCAMAAAD0WI85AAAC9FBMVEUAl8QAlsMAl8UAmMYAl8QAlsIAmMYAl8QAl8QAlsMAl8QAl8QAl8QAl8QAmMUAlsMAl8QAmMYAl8QAl8QAmMYAl8QAl8QAl8QAmMYAmcYAl8QAl8QAlsMAl8QAl8QAmMYAl8QAlsMAl8QAl8UAl8QAl8QAl8QAl8QAl8QAlsMAl8QAl8QAl8UAl8QAl8YAmMYAl8QAl8QAl8QAlsMAl8QAmMYAl8QAl8QAl8QAl8QAl8QAmMUAl8QAl8QAl8MAl8QAl8QAlsMAl8QAl8QAlcIAl8QAksAAmMYAl8QAl8QAl8QAl8QAl8QAlsQAl8QAmMYAl8UAl8UAlcIAl8UAlsIAmMYAl8QAl8QAl8QAl8QAl8UAl8QAl8QAl8QAlsMAl8QAl8QAl8QAl8QAlsQAl8QAl8QAl8UAl8QAlsMAl8QAl8UAl8QAl8QAl8QAl8QAlsQAlsMAl8QAmMYAmMYAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8UAlsMAmMUAl8QAl8QAmMYAl8QAl8QAmMYAl8QAl8QAl8QAl8QAlsMAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAmMUAmcgAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAmscAl8UAl8QAl8QAl8UAlsMAl8QAl8QAl8QAl8QAlsMAl8QAlsMAl8QAlsMAl8QAl8QAl8QAl8QAl8QAl8QAlsMAl8QAl8QAl8QAl8QAmMYAlsIAl8MAl8QAmMUAl8QAl8QAl8QAl8QAl8QAl8QAlsMAl8QAl8QAlsMAl8QAo8wAl8QAl8QAl8QAlsIAl8QAl8QAl8QAmMUAl8QAl8QAmMUAl8QAmMYAl8QAmMUAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAmMYAl8QAl8QAlsMAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAl8QAmMUAl8QAlsMAl8QAlsMAl8QAmMY1URJYAAAA/HRSTlMABQkOFRsnMTc9QkZOUltdZGprbnF0dXd8foGChIeJiouMjY+QkZKUlZaXmJmZmpucnZ6foKGio6Slpqeoqqusra6vsLGys7S1tre4ubq7vL2+v8DBwsPExcbHyMnK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" alt="KAUST logo" class="card-img" style="width:100px;height:auto;">
             <span class="where">IVUL, KAUST</span>
             <span class="title">Research Assistant – Vision-Language, RLHF &amp; Reasoning Models <span class="date">Jan 2025–Present</span></span>
           </div>
@@ -230,6 +328,9 @@
             <li>Optimized batch pipelines and large-scale experiments on Shaheen III supercomputer.</li>
             <li>Designed and evaluated algorithms advancing cross-modal AI.</li>
           </ul>
+          <div class="company-logo logo-kaust">
+            <span>KAUST</span>
+          </div>
         </div>
         <div class="card">
           <div style="overflow:hidden; position:relative;">
@@ -240,6 +341,9 @@
             <li>Co-designed environment-aware neural architectures for on-device traffic analysis and autonomous threat response in Chimera Box.</li>
             <li>Deployed deep-learning pipelines for real-time network intelligence and URL pattern recognition (sub-ms inference).</li>
           </ul>
+          <div class="company-logo logo-chimera">
+            <span>Chimera</span>
+          </div>
         </div>
         <div class="card">
           <div style="overflow:hidden; position:relative;">
@@ -249,6 +353,9 @@
           <ul>
             <li>Investigated diagnostic eye-map features to improve ophthalmology tools.</li>
           </ul>
+          <div class="company-logo logo-aubmc">
+            <span>AUBMC</span>
+          </div>
         </div>
         <div class="card">
           <span class="where">GeoAI Group</span>
@@ -256,6 +363,9 @@
           <ul>
             <li>Improved CNN/GNN/GAN-based building-detection from aerial imagery.</li>
           </ul>
+          <div class="company-logo logo-geoai">
+            <span>GeoAI</span>
+          </div>
         </div>
         <div class="card">
           <div style="overflow:hidden; position:relative;">
@@ -265,6 +375,9 @@
           <ul>
             <li>Automated optimization for SoC wireless transceivers (2.5–7 GHz).</li>
           </ul>
+          <div class="company-logo logo-ubilite">
+            <span>Ubilite</span>
+          </div>
         </div>
         <div class="card">
           <span class="where">Cloud Gate Consulting</span>
@@ -272,6 +385,9 @@
           <ul>
             <li>Developed Flask-based websites, coordinated with a 50-person team and clients.</li>
           </ul>
+          <div class="company-logo logo-cloudgate">
+            <span>CloudGate</span>
+          </div>
         </div>
         <div class="card">
           <span class="where">AUB</span>
@@ -279,6 +395,9 @@
           <ul>
             <li>Generated datasets for cyber DDoS and contributed to IDS model implementation.</li>
           </ul>
+          <div class="company-logo logo-aub">
+            <span>AUB</span>
+          </div>
         </div>
       </div>
     </section>
