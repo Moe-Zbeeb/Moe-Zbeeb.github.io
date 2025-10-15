@@ -1,8 +1,8 @@
 ---
-title: Read
+title: Good Reads
 ---
 
-# Read
+# Good Reads
 
 Paper-reading notes, summaries, and critical takeaways.
 
