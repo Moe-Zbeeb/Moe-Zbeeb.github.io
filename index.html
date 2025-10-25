@@ -1,393 +1,176 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Research Collaboration Lab</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
-    <!-- Navigation Header -->
-    <header class="navbar">
-        <div class="container">
-            <div class="nav-brand">
-                <h1 class="logo">🔬 Research Lab</h1>
-                <p class="tagline">Collaborative Research Laboratory</p>
-            </div>
-            <nav class="nav-menu">
-                <a href="#projects" class="nav-link">Projects</a>
-                <a href="#team" class="nav-link">Team</a>
-                <a href="#open-calls" class="nav-link">Open Calls</a>
-                <a href="#contact" class="nav-link">Contact</a>
-            </nav>
+<html lang="en">
+  <head>
+    <!-- Meta information -->
+    <meta charset="utf-8">
+    <meta name="description"
+          content="Research Collaboration Lab - A platform for students and researchers to collaborate on meaningful research problems.">
+    <meta name="author" content="Research Lab Team">
+
+    <!-- Enable responsiveness on mobile devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+    <!-- Title -->
+    <title>Research Lab · Collaborative Research Platform</title>
+
+    <!-- Icons -->
+    <link rel="shortcut icon" href="/assets/images/favicon.ico">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/assets/css/main.css">
+
+    <!-- Google fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic&subset=latin-ext">
+  </head>
+
+  <body>
+    <main class="container">
+
+      <header>
+        <div class="logo-section">
+          <h1 id="logo">🔬 Research Lab</h1>
+          <p class="tagline">Collaborative Research Platform</p>
         </div>
-    </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <h2>Research Collaboration Lab</h2>
-            <h3>Building the Future of Academic Research</h3>
-            <p class="hero-description">
-                A platform for students and researchers to collaborate on real research problems that matter
-            </p>
-            <p class="hero-description-en">
-                Join our academic community and contribute to groundbreaking research initiatives
-            </p>
-            <div class="hero-buttons">
-                <button class="btn btn-primary" onclick="scrollToSection('open-calls')">Join Us</button>
-                <button class="btn btn-secondary" onclick="scrollToSection('projects')">Explore Projects</button>
-            </div>
+        <nav id="main-navigation">
+          <a href="#projects" title="Projects">Projects</a>
+          <a href="#open-calls" title="Open Calls">Open Calls</a>
+          <a href="#team" title="Team">Team</a>
+          <a href="#contact" title="Contact">Contact</a>
+        </nav>
+      </header>
+
+      <div class="intro">
+        <p>A platform for students and researchers to collaborate on real research problems that matter. We bring together talented minds from diverse backgrounds to tackle meaningful challenges in machine learning, natural language processing, sustainable development, and more.</p>
+      </div>
+
+      <!-- Open Calls Section -->
+      <h2 id="open-calls">Open Collaboration Calls</h2>
+
+      <ul class="post-list">
+        <li>
+          <strong><a href="#apply-ml-medicine">Machine Learning in Modern Medicine</a></strong>
+          <span class="urgency-tag urgent">Urgent</span>
+          - We need specialized researchers to apply machine learning algorithms to real medical data for diagnostic improvement.
+          <strong>Duration:</strong> 3-4 months | <strong>Commitment:</strong> 10 hours/week | <strong>Available Spots:</strong> 3
+          <br><span class="skills">Skills: Python, TensorFlow, Data Analysis</span>
+        </li>
+
+        <li>
+          <strong><a href="#apply-sustainability">Sustainable Development Data Analysis</a></strong>
+          <span class="urgency-tag regular">Regular</span>
+          - Study the impact of environmental policies on local economic development and community outcomes.
+          <strong>Duration:</strong> 4-5 months | <strong>Commitment:</strong> 8 hours/week | <strong>Available Spots:</strong> 5
+          <br><span class="skills">Skills: Data Science, Economics, Policy Analysis</span>
+        </li>
+
+        <li>
+          <strong><a href="#apply-nlp">Natural Language Processing</a></strong>
+          <span class="urgency-tag regular">Regular</span>
+          - Develop advanced NLP models with focus on multilingual support and dialect processing.
+          <strong>Duration:</strong> 4-6 months | <strong>Commitment:</strong> 12 hours/week | <strong>Available Spots:</strong> 2
+          <br><span class="skills">Skills: NLP, Deep Learning, Linguistics</span>
+        </li>
+      </ul>
+
+      <!-- Active Projects Section -->
+      <h2 id="projects">Active Research Projects</h2>
+
+      <ul class="post-list">
+        <li>
+          <strong><a href="https://github.com" target="_blank">Machine Learning for Medical Diagnosis</a></strong>
+          <span class="status-tag active">Active</span>
+          - Develop advanced machine learning models to improve diagnostic accuracy using real medical datasets.
+          <strong>Team:</strong> Ahmed Hassan, Mohammad Zebeeb, Sarah Brown | <strong>Field:</strong> Machine Learning
+        </li>
+
+        <li>
+          <strong><a href="https://github.com" target="_blank">Natural Language Processing Research</a></strong>
+          <span class="status-tag active">Active</span>
+          - Build advanced NLP tools with focus on multilingual and dialect processing capabilities.
+          <strong>Team:</strong> Fatima Bahaa, Rami Mansour | <strong>Field:</strong> NLP
+        </li>
+
+        <li>
+          <strong><a href="https://github.com" target="_blank">Sustainable Development Analytics</a></strong>
+          <span class="status-tag planning">Planning</span>
+          - Analyze economic and environmental indicators to understand sustainable development pathways.
+          <strong>Team:</strong> Khalid Nasser | <strong>Field:</strong> Data Science
+        </li>
+      </ul>
+
+      <!-- Team Section -->
+      <h2 id="team">Team & Researchers</h2>
+
+      <ul class="post-list">
+        <li>
+          <strong>Mohammad Zebeeb</strong> - Lab Director | Computer Science & AI
+          <br><span class="bio">Specialist in artificial intelligence and its applications in medical and economic domains.</span>
+          <br><a href="mailto:contact@example.com">Contact</a>
+        </li>
+
+        <li>
+          <strong>Ahmed Hassan</strong> - Senior Researcher | Machine Learning
+          <br><span class="bio">Expert in machine learning applications to large-scale medical datasets and predictive analytics.</span>
+          <br><a href="mailto:contact@example.com">Contact</a>
+        </li>
+
+        <li>
+          <strong>Fatima Bahaa</strong> - Researcher | NLP & Linguistics
+          <br><span class="bio">Focused on natural language processing and applied linguistic studies for multilingual systems.</span>
+          <br><a href="mailto:contact@example.com">Contact</a>
+        </li>
+      </ul>
+
+      <!-- Contact Section -->
+      <h2 id="contact">Get Involved</h2>
+
+      <p>Interested in joining one of our research initiatives? Subscribe to our newsletter for updates on new projects and collaboration opportunities.</p>
+
+      <form class="newsletter-form" onsubmit="handleNewsletterSubmit(event)">
+        <div class="form-row">
+          <input
+            type="email"
+            placeholder="Your email"
+            required
+            class="form-input"
+          >
+          <input
+            type="text"
+            placeholder="Your name"
+            required
+            class="form-input"
+          >
+          <button type="submit" class="form-button">Subscribe</button>
         </div>
-        <div class="hero-visual">
-            <div class="decorative-element"></div>
-        </div>
-    </section>
+      </form>
 
-    <!-- Open Calls / Invitations Section -->
-    <section id="open-calls" class="open-calls">
-        <div class="container">
-            <div class="section-header">
-                <h2>🎯 Open Collaboration Calls</h2>
-                <h3>Join Our Research Teams</h3>
-                <p>Collaborate with talented researchers and contribute to meaningful research problems</p>
-            </div>
+      <p style="margin-top: 2em;">
+        <strong>📧 Email:</strong> contact@research-lab.com
+        <br><strong>📍 Location:</strong> Middle East
+      </p>
 
-            <div class="calls-grid">
-                <!-- Invitation Card 1 -->
-                <div class="invitation-card">
-                    <div class="card-header">
-                        <span class="badge badge-urgent">Urgent</span>
-                        <h4>Machine Learning in Modern Medicine</h4>
-                    </div>
-                    <div class="card-body">
-                        <p class="description">
-                            We need specialized researchers to apply machine learning algorithms to real medical data for diagnostic improvement.
-                        </p>
-                        <div class="skills-required">
-                            <span class="skill-tag">Python</span>
-                            <span class="skill-tag">TensorFlow</span>
-                            <span class="skill-tag">Data Analysis</span>
-                        </div>
-                        <p class="commitment">Duration: 3-4 months | Commitment: 10 hours/week</p>
-                    </div>
-                    <div class="card-footer">
-                        <button class="btn btn-small btn-primary" onclick="openApplication('ML-Medicine')">
-                            Apply Now
-                        </button>
-                        <span class="spots-left">Available Spots: 3</span>
-                    </div>
-                </div>
+    </main>
 
-                <!-- Invitation Card 2 -->
-                <div class="invitation-card">
-                    <div class="card-header">
-                        <span class="badge badge-normal">Regular</span>
-                        <h4>Sustainable Development Data Analysis</h4>
-                    </div>
-                    <div class="card-body">
-                        <p class="description">
-                            Study the impact of environmental policies on local economic development and community outcomes.
-                        </p>
-                        <div class="skills-required">
-                            <span class="skill-tag">Data Science</span>
-                            <span class="skill-tag">Economics</span>
-                            <span class="skill-tag">Policy Analysis</span>
-                        </div>
-                        <p class="commitment">Duration: 4-5 months | Commitment: 8 hours/week</p>
-                    </div>
-                    <div class="card-footer">
-                        <button class="btn btn-small btn-primary" onclick="openApplication('Sustainability-LB')">
-                            Apply Now
-                        </button>
-                        <span class="spots-left">Available Spots: 5</span>
-                    </div>
-                </div>
-
-                <!-- Invitation Card 3 -->
-                <div class="invitation-card">
-                    <div class="card-header">
-                        <span class="badge badge-normal">Regular</span>
-                        <h4>Natural Language Processing</h4>
-                    </div>
-                    <div class="card-body">
-                        <p class="description">
-                            Develop advanced NLP models with focus on multilingual support and dialect processing.
-                        </p>
-                        <div class="skills-required">
-                            <span class="skill-tag">NLP</span>
-                            <span class="skill-tag">Deep Learning</span>
-                            <span class="skill-tag">Linguistics</span>
-                        </div>
-                        <p class="commitment">Duration: 4-6 months | Commitment: 12 hours/week</p>
-                    </div>
-                    <div class="card-footer">
-                        <button class="btn btn-small btn-primary" onclick="openApplication('NLP-Arabic')">
-                            Apply Now
-                        </button>
-                        <span class="spots-left">Available Spots: 2</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Active Projects Section -->
-    <section id="projects" class="projects">
-        <div class="container">
-            <div class="section-header">
-                <h2>📊 Active Research Projects</h2>
-                <h3>Current Initiatives</h3>
-                <p>Explore ongoing projects and collaborate with our research teams</p>
-            </div>
-
-            <div class="projects-grid">
-                <!-- Project Card 1 -->
-                <div class="project-card">
-                    <div class="project-header">
-                        <span class="project-status active">🟢 Active</span>
-                        <div class="project-icons">
-                            <a href="https://github.com" target="_blank" class="icon-link" title="GitHub Repository">
-                                <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v 3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                    <h4 class="project-title">Machine Learning for Medical Diagnosis</h4>
-                    <p class="project-description">
-                        Develop advanced machine learning models to improve diagnostic accuracy using real medical datasets.
-                    </p>
-                    <div class="project-meta">
-                        <div class="meta-item">
-                            <span class="label">Team:</span>
-                            <div class="team-avatars">
-                                <div class="avatar">AH</div>
-                                <div class="avatar">MZ</div>
-                                <div class="avatar">SB</div>
-                            </div>
-                        </div>
-                        <div class="meta-item">
-                            <span class="label">Field:</span>
-                            <span class="field-badge">Machine Learning</span>
-                        </div>
-                    </div>
-                    <div class="project-links">
-                        <a href="https://github.com" target="_blank">View on GitHub →</a>
-                    </div>
-                </div>
-
-                <!-- Project Card 2 -->
-                <div class="project-card">
-                    <div class="project-header">
-                        <span class="project-status active">🟢 Active</span>
-                        <div class="project-icons">
-                            <a href="https://github.com" target="_blank" class="icon-link" title="GitHub Repository">
-                                <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v 3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                    <h4 class="project-title">Natural Language Processing Research</h4>
-                    <p class="project-description">
-                        Build advanced NLP tools with focus on multilingual and dialect processing capabilities.
-                    </p>
-                    <div class="project-meta">
-                        <div class="meta-item">
-                            <span class="label">Team:</span>
-                            <div class="team-avatars">
-                                <div class="avatar">FB</div>
-                                <div class="avatar">RM</div>
-                            </div>
-                        </div>
-                        <div class="meta-item">
-                            <span class="label">Field:</span>
-                            <span class="field-badge">NLP</span>
-                        </div>
-                    </div>
-                    <div class="project-links">
-                        <a href="https://github.com" target="_blank">View on GitHub →</a>
-                    </div>
-                </div>
-
-                <!-- Project Card 3 -->
-                <div class="project-card">
-                    <div class="project-header">
-                        <span class="project-status planning">🟡 Planning Phase</span>
-                        <div class="project-icons">
-                            <a href="https://github.com" target="_blank" class="icon-link" title="GitHub Repository">
-                                <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v 3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                    <h4 class="project-title">Sustainable Development Analytics</h4>
-                    <p class="project-description">
-                        Analyze economic and environmental indicators to understand sustainable development pathways.
-                    </p>
-                    <div class="project-meta">
-                        <div class="meta-item">
-                            <span class="label">Team:</span>
-                            <div class="team-avatars">
-                                <div class="avatar">KN</div>
-                            </div>
-                        </div>
-                        <div class="meta-item">
-                            <span class="label">Field:</span>
-                            <span class="field-badge">Data Science</span>
-                        </div>
-                    </div>
-                    <div class="project-links">
-                        <a href="https://github.com" target="_blank">View on GitHub →</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Team Section -->
-    <section id="team" class="team">
-        <div class="container">
-            <div class="section-header">
-                <h2>👥 Team & Researchers</h2>
-                <h3>Meet Our Academic Team</h3>
-                <p>Get to know the talented researchers driving our initiatives</p>
-            </div>
-
-            <div class="team-grid">
-                <div class="team-card">
-                    <div class="team-avatar large">MZ</div>
-                    <h4>Mohammad Zebeeb</h4>
-                    <p class="role">Lab Director</p>
-                    <p class="specialization">Computer Science & AI</p>
-                    <p class="bio">Specialist in artificial intelligence and its applications in medical and economic domains.</p>
-                    <a href="mailto:contact@example.com" class="btn btn-small btn-outline">Contact</a>
-                </div>
-
-                <div class="team-card">
-                    <div class="team-avatar large">AH</div>
-                    <h4>Ahmed Hassan</h4>
-                    <p class="role">Senior Researcher</p>
-                    <p class="specialization">Machine Learning</p>
-                    <p class="bio">Expert in machine learning applications to large-scale medical datasets and predictive analytics.</p>
-                    <a href="mailto:contact@example.com" class="btn btn-small btn-outline">Contact</a>
-                </div>
-
-                <div class="team-card">
-                    <div class="team-avatar large">FB</div>
-                    <h4>Fatima Bahaa</h4>
-                    <p class="role">Researcher</p>
-                    <p class="specialization">NLP & Linguistics</p>
-                    <p class="bio">Focused on natural language processing and applied linguistic studies for multilingual systems.</p>
-                    <a href="mailto:contact@example.com" class="btn btn-small btn-outline">Contact</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact / Newsletter Section -->
-    <section id="contact" class="contact-section">
-        <div class="container">
-            <div class="contact-content">
-                <h2>Join Our Research Community</h2>
-                <h3>Stay Updated on New Opportunities</h3>
-                <p>Subscribe to our newsletter to receive updates on new projects and collaboration opportunities</p>
-
-                <form class="newsletter-form" onsubmit="handleNewsletterSubmit(event)">
-                    <div class="form-group">
-                        <input
-                            type="email"
-                            placeholder="Enter your email"
-                            required
-                            class="form-input"
-                        >
-                    </div>
-                    <div class="form-group">
-                        <input
-                            type="text"
-                            placeholder="Full Name"
-                            required
-                            class="form-input"
-                        >
-                    </div>
-                    <button type="submit" class="btn btn-primary">Subscribe Now</button>
-                </form>
-
-                <div class="contact-info">
-                    <p>📧 Email: contact@research-lab.com</p>
-                    <p>📍 Location: Middle East</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h5>Research Collaboration Lab</h5>
-                    <p>A platform for academic and research collaboration between students and researchers</p>
-                </div>
-                <div class="footer-section">
-                    <h5>Quick Links</h5>
-                    <ul>
-                        <li><a href="#projects">Projects</a></li>
-                        <li><a href="#team">Team</a></li>
-                        <li><a href="#open-calls">Open Calls</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h5>Connect With Us</h5>
-                    <ul>
-                        <li><a href="https://github.com" target="_blank">GitHub</a></li>
-                        <li><a href="mailto:contact@research-lab.com">Email</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 Research Collaboration Lab. All rights reserved.</p>
-            </div>
-        </div>
+    <footer>
+      <div class="footer-links">
+        <a href="https://github.com" title="GitHub" style="text-decoration: none;">👨‍💻</a>
+        <a href="mailto:contact@research-lab.com" title="Email" style="text-decoration: none;">📧</a>
+        <a href="https://twitter.com" title="Twitter" style="text-decoration: none;">🐦</a>
+      </div>
+      <p>&copy; 2024 Research Collaboration Lab. All rights reserved.</p>
     </footer>
 
-    <!-- Modal for Application -->
-    <div id="applicationModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h3>Submit Your Application</h3>
-            <p id="projectName"></p>
-            <form onsubmit="handleApplicationSubmit(event)">
-                <div class="form-group">
-                    <label>Full Name</label>
-                    <input type="text" required class="form-input">
-                </div>
-                <div class="form-group">
-                    <label>Email Address</label>
-                    <input type="email" required class="form-input">
-                </div>
-                <div class="form-group">
-                    <label>University/Institution</label>
-                    <input type="text" required class="form-input">
-                </div>
-                <div class="form-group">
-                    <label>Summary of Your Experience</label>
-                    <textarea required class="form-input" rows="4"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Your Profile Link (GitHub/LinkedIn)</label>
-                    <input type="url" class="form-input">
-                </div>
-                <button type="submit" class="btn btn-primary">Submit Application</button>
-            </form>
-        </div>
-    </div>
+    <!-- Scripts -->
+    <script src="/assets/js/main.js"></script>
 
-    <script src="script.js"></script>
-</body>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXXXX-X"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-XXXXXXXXX-X');
+    </script>
+  </body>
 </html>
