@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="Paper details">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paper 3 - Research Lab</title>
+    <style>
+        /* Minimal styling */
+        body {
+            font-family: Georgia, serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+        .nav-header {
+            margin-bottom: 2em;
+            padding-bottom: 1em;
+            border-bottom: 1px solid #ddd;
+        }
+        .nav-header a {
+            color: #0066cc;
+            text-decoration: none;
+            margin-right: 1.5em;
+        }
+        .nav-header a:hover {
+            text-decoration: underline;
+        }
+        h1 {
+            font-size: 1.8em;
+            margin-bottom: 0.5em;
+        }
+        .metadata {
+            background: #f5f5f5;
+            padding: 1.5em;
+            border-radius: 4px;
+            margin: 1.5em 0;
+        }
+        .metadata strong {
+            display: block;
+            margin-top: 1em;
+        }
+        .metadata strong:first-child {
+            margin-top: 0;
+        }
+        .abstract {
+            margin: 2em 0;
+            padding: 1.5em;
+            border-left: 4px solid #0066cc;
+            background: #f9f9f9;
+        }
+        .abstract h3 {
+            margin-top: 0;
+            color: #0066cc;
+        }
+        .paper-link {
+            display: inline-block;
+            margin-top: 1em;
+            padding: 0.8em 1.5em;
+            background: #0066cc;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .paper-link:hover {
+            background: #0052a3;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-header">
+        <a href="/">← Home</a> | <a href="/lab/">Research Lab</a>
+    </div>
+
+    <h1>Federated Learning for Privacy-Preserving Machine Learning</h1>
+
+    <div class="metadata">
+        <strong>Authors:</strong>
+        Mohammad Zbeeb, Sarah Cohen, Marcus Thompson
+
+        <strong>Venue:</strong>
+        International Conference on Learning Representations (ICLR) 2024
+
+        <strong>Year:</strong>
+        2024
+
+        <strong>Keywords:</strong>
+        federated learning, privacy, distributed machine learning, differential privacy
+    </div>
+
+    <div class="abstract">
+        <h3>Abstract</h3>
+        <p>This paper addresses privacy concerns in machine learning by proposing a novel federated learning framework. Our method enables training on distributed data without centralizing sensitive information. We achieve a 15% improvement in privacy-utility tradeoff compared to existing approaches while maintaining communication efficiency.</p>
+    </div>
+
+    <section>
+        <h3>Introduction</h3>
+        <p>Privacy-preserving machine learning is increasingly important as organizations handle sensitive data. Federated learning enables model training without data centralization. We propose novel techniques to improve both privacy guarantees and model performance...</p>
+    </section>
+
+    <section>
+        <h3>Technical Approach</h3>
+        <p>Our framework combines differential privacy with federated averaging. We introduce adaptive noise injection strategies that reduce the privacy budget while maintaining convergence guarantees. The method is applicable to both supervised and unsupervised learning tasks...</p>
+    </section>
+
+    <section>
+        <h3>Experimental Results</h3>
+        <p>We conduct extensive experiments on multiple datasets including CIFAR-10, ImageNet, and text data. Results demonstrate superior privacy-utility tradeoffs compared to baseline approaches, with significant reductions in communication costs...</p>
+    </section>
+
+    <a href="#" class="paper-link">📄 View Full Paper (PDF)</a>
+    <a href="https://github.com/[username]/paper-3" class="paper-link" style="margin-left: 1em;">💻 View Code on GitHub</a>
+</body>
+</html>

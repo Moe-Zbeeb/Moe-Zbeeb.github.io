@@ -139,6 +139,118 @@
       </ul>
       </section>
 
+      <!-- Featured Papers Section -->
+      <section id="featured-papers">
+      <h2>Featured Papers</h2>
+
+      <div class="papers-grid">
+        <div class="paper-card">
+          <a href="/papers/paper-1.html" class="paper-link-wrapper">
+            <div class="paper-image">
+              <div class="paper-placeholder">📄</div>
+            </div>
+            <h3>Deep Learning Architectures for Signal Processing</h3>
+            <p class="paper-authors">Mohammad Zbeeb, Alice Johnson, Bob Chen</p>
+            <p class="paper-venue">ICML 2024</p>
+          </a>
+        </div>
+
+        <div class="paper-card">
+          <a href="/papers/paper-2.html" class="paper-link-wrapper">
+            <div class="paper-image">
+              <div class="paper-placeholder">📄</div>
+            </div>
+            <h3>Natural Language Processing with Transformer Models</h3>
+            <p class="paper-authors">Mohammad Zbeeb, Diana Martinez, Eric Lee</p>
+            <p class="paper-venue">ACL 2024</p>
+          </a>
+        </div>
+
+        <div class="paper-card">
+          <a href="/papers/paper-3.html" class="paper-link-wrapper">
+            <div class="paper-image">
+              <div class="paper-placeholder">📄</div>
+            </div>
+            <h3>Federated Learning for Privacy-Preserving Machine Learning</h3>
+            <p class="paper-authors">Mohammad Zbeeb, Sarah Cohen, Marcus Thompson</p>
+            <p class="paper-venue">ICLR 2024</p>
+          </a>
+        </div>
+      </div>
+
+      <style>
+        /* Featured Papers Styling */
+        .papers-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          gap: 2em;
+          margin: 2em 0;
+        }
+
+        .paper-card {
+          border: 1px solid #ddd;
+          border-radius: 8px;
+          overflow: hidden;
+          transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .paper-card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .paper-link-wrapper {
+          text-decoration: none;
+          color: inherit;
+          display: block;
+        }
+
+        .paper-image {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          height: 200px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 4em;
+        }
+
+        .paper-placeholder {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .paper-card h3 {
+          padding: 1em 1em 0 1em;
+          margin: 0;
+          font-size: 1.1em;
+          color: #333;
+        }
+
+        .paper-authors {
+          padding: 0.5em 1em;
+          margin: 0;
+          color: #666;
+          font-size: 0.9em;
+          font-style: italic;
+        }
+
+        .paper-venue {
+          padding: 0.5em 1em 1em 1em;
+          margin: 0;
+          color: #999;
+          font-size: 0.85em;
+        }
+
+        .paper-card:hover h3 {
+          color: #0066cc;
+        }
+      </style>
+      </section>
+
       <!-- Publications Section -->
       <section id="publications">
       <h2>Publications & Preprints</h2>
