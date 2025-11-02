@@ -10,7 +10,7 @@
         /* Minimal styling */
         body {
             font-family: Georgia, serif;
-            max-width: 600px;
+            max-width: 900px;
             margin: 40px auto;
             padding: 20px;
             line-height: 1.6;
@@ -19,6 +19,13 @@
         h1 {
             font-size: 2.5em;
             margin-bottom: 0.3em;
+        }
+        h2 {
+            font-size: 1.8em;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 0.3em;
         }
         a {
             color: #0066cc;
@@ -31,6 +38,7 @@
             margin-top: 2em;
             padding-top: 1em;
             border-top: 1px solid #ddd;
+            margin-bottom: 2em;
         }
         nav div {
             margin-bottom: 1em;
@@ -38,12 +46,119 @@
         nav a {
             display: inline-block;
         }
+
+        /* Featured Papers Styling */
+        .papers-list {
+            margin: 2em 0;
+        }
+
+        .paper-item {
+            display: flex;
+            gap: 2em;
+            margin: 2.5em 0;
+            padding: 1.5em;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            transition: box-shadow 0.3s, background-color 0.3s;
+        }
+
+        .paper-item:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            background-color: #fafafa;
+        }
+
+        .paper-image-container {
+            flex: 0 0 180px;
+            min-height: 180px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 4px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .paper-thumbnail {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .paper-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .paper-title {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #0066cc;
+            text-decoration: none;
+            margin: 0 0 0.5em 0;
+            line-height: 1.4;
+        }
+
+        .paper-title:hover {
+            text-decoration: underline;
+        }
+
+        .paper-authors {
+            color: #666;
+            font-size: 0.9em;
+            margin: 0.3em 0;
+            font-style: italic;
+        }
+
+        .paper-venue {
+            color: #999;
+            font-size: 0.85em;
+            margin: 0.5em 0 1em 0;
+        }
+
+        .paper-links {
+            display: flex;
+            gap: 1em;
+            margin-top: auto;
+        }
+
+        .paper-link-btn {
+            display: inline-block;
+            padding: 0.5em 1em;
+            background-color: #0066cc;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.85em;
+            transition: background-color 0.2s;
+        }
+
+        .paper-link-btn:hover {
+            background-color: #0052a3;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            body {
+                max-width: 100%;
+            }
+
+            .paper-item {
+                flex-direction: column;
+                gap: 1em;
+            }
+
+            .paper-image-container {
+                flex: 0 0 150px;
+                min-height: 150px;
+            }
+        }
     </style>
 </head>
 <body>
     <h1>Mohammad Zbeeb</h1>
 
-    <p>Welcome to my personal homepage.</p>
+    <p>Welcome to my personal homepage. I'm a researcher working on machine learning, natural language processing, and computational methods.</p>
 
     <nav>
         <div>
@@ -56,5 +171,81 @@
             <a href="mailto:mhmdzbyb829@gmail.com">📧 Email</a>
         </div>
     </nav>
+
+    <section id="featured-papers">
+        <h2>Selected Publications</h2>
+
+        <div class="papers-list">
+            <!-- Paper 1 -->
+            <div class="paper-item">
+                <div class="paper-image-container">
+                    <img src="/assets/papers/paper-1.png" alt="Paper 1" class="paper-thumbnail">
+                </div>
+                <div class="paper-content">
+                    <a href="/papers/paper-1.html" class="paper-title">
+                        Deep Learning Architectures for Signal Processing
+                    </a>
+                    <p class="paper-authors">
+                        Mohammad Zbeeb, Alice Johnson, Bob Chen
+                    </p>
+                    <p class="paper-venue">
+                        <strong>ICML 2024</strong>
+                    </p>
+                    <div class="paper-links">
+                        <a href="/papers/paper-1.html" class="paper-link-btn">View Details</a>
+                        <a href="#" class="paper-link-btn">ArXiv</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Paper 2 -->
+            <div class="paper-item">
+                <div class="paper-image-container">
+                    <img src="/assets/papers/paper-2.png" alt="Paper 2" class="paper-thumbnail">
+                </div>
+                <div class="paper-content">
+                    <a href="/papers/paper-2.html" class="paper-title">
+                        Natural Language Processing with Transformer Models
+                    </a>
+                    <p class="paper-authors">
+                        Mohammad Zbeeb, Diana Martinez, Eric Lee
+                    </p>
+                    <p class="paper-venue">
+                        <strong>ACL 2024</strong>
+                    </p>
+                    <div class="paper-links">
+                        <a href="/papers/paper-2.html" class="paper-link-btn">View Details</a>
+                        <a href="#" class="paper-link-btn">ArXiv</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Paper 3 -->
+            <div class="paper-item">
+                <div class="paper-image-container">
+                    <img src="/assets/papers/paper-3.png" alt="Paper 3" class="paper-thumbnail">
+                </div>
+                <div class="paper-content">
+                    <a href="/papers/paper-3.html" class="paper-title">
+                        Federated Learning for Privacy-Preserving Machine Learning
+                    </a>
+                    <p class="paper-authors">
+                        Mohammad Zbeeb, Sarah Cohen, Marcus Thompson
+                    </p>
+                    <p class="paper-venue">
+                        <strong>ICLR 2024</strong>
+                    </p>
+                    <div class="paper-links">
+                        <a href="/papers/paper-3.html" class="paper-link-btn">View Details</a>
+                        <a href="#" class="paper-link-btn">ArXiv</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p style="text-align: center; margin-top: 2em;">
+            <a href="/lab/#featured-papers">View all publications →</a>
+        </p>
+    </section>
 </body>
 </html>

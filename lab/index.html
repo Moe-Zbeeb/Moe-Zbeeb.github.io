@@ -143,110 +143,176 @@
       <section id="featured-papers">
       <h2>Featured Papers</h2>
 
-      <div class="papers-grid">
-        <div class="paper-card">
-          <a href="/papers/paper-1.html" class="paper-link-wrapper">
-            <div class="paper-image">
-              <div class="paper-placeholder">📄</div>
+      <div class="papers-list">
+        <!-- Paper 1 -->
+        <div class="paper-item">
+          <div class="paper-image-container">
+            <img src="/assets/papers/paper-1.png" alt="Paper 1" class="paper-thumbnail">
+          </div>
+          <div class="paper-content">
+            <a href="/papers/paper-1.html" class="paper-title">
+              Deep Learning Architectures for Signal Processing
+            </a>
+            <p class="paper-authors">
+              Mohammad Zbeeb, Alice Johnson, Bob Chen
+            </p>
+            <p class="paper-venue">
+              <strong>ICML 2024</strong>
+            </p>
+            <div class="paper-links">
+              <a href="/papers/paper-1.html" class="paper-link-btn">View Details</a>
+              <a href="#" class="paper-link-btn">ArXiv</a>
             </div>
-            <h3>Deep Learning Architectures for Signal Processing</h3>
-            <p class="paper-authors">Mohammad Zbeeb, Alice Johnson, Bob Chen</p>
-            <p class="paper-venue">ICML 2024</p>
-          </a>
+          </div>
         </div>
 
-        <div class="paper-card">
-          <a href="/papers/paper-2.html" class="paper-link-wrapper">
-            <div class="paper-image">
-              <div class="paper-placeholder">📄</div>
+        <!-- Paper 2 -->
+        <div class="paper-item">
+          <div class="paper-image-container">
+            <img src="/assets/papers/paper-2.png" alt="Paper 2" class="paper-thumbnail">
+          </div>
+          <div class="paper-content">
+            <a href="/papers/paper-2.html" class="paper-title">
+              Natural Language Processing with Transformer Models
+            </a>
+            <p class="paper-authors">
+              Mohammad Zbeeb, Diana Martinez, Eric Lee
+            </p>
+            <p class="paper-venue">
+              <strong>ACL 2024</strong>
+            </p>
+            <div class="paper-links">
+              <a href="/papers/paper-2.html" class="paper-link-btn">View Details</a>
+              <a href="#" class="paper-link-btn">ArXiv</a>
             </div>
-            <h3>Natural Language Processing with Transformer Models</h3>
-            <p class="paper-authors">Mohammad Zbeeb, Diana Martinez, Eric Lee</p>
-            <p class="paper-venue">ACL 2024</p>
-          </a>
+          </div>
         </div>
 
-        <div class="paper-card">
-          <a href="/papers/paper-3.html" class="paper-link-wrapper">
-            <div class="paper-image">
-              <div class="paper-placeholder">📄</div>
+        <!-- Paper 3 -->
+        <div class="paper-item">
+          <div class="paper-image-container">
+            <img src="/assets/papers/paper-3.png" alt="Paper 3" class="paper-thumbnail">
+          </div>
+          <div class="paper-content">
+            <a href="/papers/paper-3.html" class="paper-title">
+              Federated Learning for Privacy-Preserving Machine Learning
+            </a>
+            <p class="paper-authors">
+              Mohammad Zbeeb, Sarah Cohen, Marcus Thompson
+            </p>
+            <p class="paper-venue">
+              <strong>ICLR 2024</strong>
+            </p>
+            <div class="paper-links">
+              <a href="/papers/paper-3.html" class="paper-link-btn">View Details</a>
+              <a href="#" class="paper-link-btn">ArXiv</a>
             </div>
-            <h3>Federated Learning for Privacy-Preserving Machine Learning</h3>
-            <p class="paper-authors">Mohammad Zbeeb, Sarah Cohen, Marcus Thompson</p>
-            <p class="paper-venue">ICLR 2024</p>
-          </a>
+          </div>
         </div>
       </div>
 
       <style>
         /* Featured Papers Styling */
-        .papers-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-          gap: 2em;
+        .papers-list {
           margin: 2em 0;
         }
 
-        .paper-card {
-          border: 1px solid #ddd;
+        .paper-item {
+          display: flex;
+          gap: 2em;
+          margin: 2.5em 0;
+          padding: 1.5em;
+          border: 1px solid #e0e0e0;
           border-radius: 8px;
-          overflow: hidden;
-          transition: transform 0.2s, box-shadow 0.2s;
+          transition: box-shadow 0.3s, background-color 0.3s;
         }
 
-        .paper-card:hover {
-          transform: translateY(-5px);
-          box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        .paper-item:hover {
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+          background-color: #fafafa;
         }
 
-        .paper-link-wrapper {
-          text-decoration: none;
-          color: inherit;
-          display: block;
-        }
-
-        .paper-image {
+        .paper-image-container {
+          flex: 0 0 200px;
+          min-height: 200px;
           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          height: 200px;
+          border-radius: 4px;
+          overflow: hidden;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 4em;
         }
 
-        .paper-placeholder {
+        .paper-thumbnail {
           width: 100%;
           height: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          object-fit: cover;
         }
 
-        .paper-card h3 {
-          padding: 1em 1em 0 1em;
-          margin: 0;
-          font-size: 1.1em;
-          color: #333;
+        .paper-content {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+        }
+
+        .paper-title {
+          font-size: 1.2em;
+          font-weight: bold;
+          color: #0066cc;
+          text-decoration: none;
+          margin: 0 0 0.5em 0;
+          line-height: 1.4;
+        }
+
+        .paper-title:hover {
+          text-decoration: underline;
         }
 
         .paper-authors {
-          padding: 0.5em 1em;
-          margin: 0;
           color: #666;
-          font-size: 0.9em;
+          font-size: 0.95em;
+          margin: 0.3em 0;
           font-style: italic;
         }
 
         .paper-venue {
-          padding: 0.5em 1em 1em 1em;
-          margin: 0;
           color: #999;
-          font-size: 0.85em;
+          font-size: 0.9em;
+          margin: 0.5em 0 1em 0;
         }
 
-        .paper-card:hover h3 {
-          color: #0066cc;
+        .paper-links {
+          display: flex;
+          gap: 1em;
+          margin-top: auto;
+        }
+
+        .paper-link-btn {
+          display: inline-block;
+          padding: 0.5em 1em;
+          background-color: #0066cc;
+          color: white;
+          text-decoration: none;
+          border-radius: 4px;
+          font-size: 0.9em;
+          transition: background-color 0.2s;
+        }
+
+        .paper-link-btn:hover {
+          background-color: #0052a3;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+          .paper-item {
+            flex-direction: column;
+            gap: 1em;
+          }
+
+          .paper-image-container {
+            flex: 0 0 150px;
+            min-height: 150px;
+          }
         }
       </style>
       </section>
