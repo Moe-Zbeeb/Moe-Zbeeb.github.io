@@ -54,28 +54,32 @@
 
         .paper-item {
             display: flex;
-            gap: 2em;
-            margin: 2.5em 0;
-            padding: 1.5em;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            transition: box-shadow 0.3s, background-color 0.3s;
+            gap: 2.5em;
+            margin: 3em 0;
+            padding: 2em;
+            background-color: #ffffff;
+            border: 1px solid #e8e8e8;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
         .paper-item:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            background-color: #fafafa;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+            border-color: #d0d0d0;
+            transform: translateY(-2px);
         }
 
         .paper-image-container {
-            flex: 0 0 180px;
-            min-height: 180px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 4px;
+            flex: 0 0 220px;
+            min-height: 220px;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8c 100%);
+            border-radius: 8px;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 4px 12px rgba(30, 58, 95, 0.15);
         }
 
         .paper-thumbnail {
@@ -88,53 +92,70 @@
             flex: 1;
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
+            min-height: 220px;
         }
 
         .paper-title {
-            font-size: 1.1em;
-            font-weight: bold;
-            color: #0066cc;
+            font-size: 1.25em;
+            font-weight: 600;
+            color: #1e3a5f;
             text-decoration: none;
-            margin: 0 0 0.5em 0;
-            line-height: 1.4;
+            margin: 0 0 0.7em 0;
+            line-height: 1.5;
+            letter-spacing: -0.3px;
         }
 
         .paper-title:hover {
-            text-decoration: underline;
+            color: #0066cc;
         }
 
         .paper-authors {
-            color: #666;
-            font-size: 0.9em;
-            margin: 0.3em 0;
-            font-style: italic;
+            color: #555;
+            font-size: 0.95em;
+            margin: 0.2em 0 0.8em 0;
+            line-height: 1.5;
         }
 
         .paper-venue {
-            color: #999;
-            font-size: 0.85em;
-            margin: 0.5em 0 1em 0;
+            color: #666;
+            font-size: 0.9em;
+            margin: 0.5em 0 1.5em 0;
+            font-weight: 500;
+            letter-spacing: 0.3px;
         }
 
         .paper-links {
             display: flex;
-            gap: 1em;
+            gap: 0.8em;
             margin-top: auto;
         }
 
         .paper-link-btn {
             display: inline-block;
-            padding: 0.5em 1em;
-            background-color: #0066cc;
+            padding: 0.65em 1.5em;
+            background-color: #1e3a5f;
             color: white;
             text-decoration: none;
-            border-radius: 4px;
-            font-size: 0.85em;
-            transition: background-color 0.2s;
+            border-radius: 6px;
+            font-size: 0.9em;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            border: 1px solid #1e3a5f;
         }
 
         .paper-link-btn:hover {
-            background-color: #0052a3;
+            background-color: #0d2644;
+            box-shadow: 0 4px 12px rgba(30, 58, 95, 0.25);
+        }
+
+        .paper-link-btn:last-child {
+            background-color: transparent;
+            color: #1e3a5f;
+        }
+
+        .paper-link-btn:last-child:hover {
+            background-color: #f5f5f5;
         }
 
         /* Responsive design */
@@ -162,13 +183,13 @@
 
     <nav>
         <div>
-            <a href="/lab/">🔬 Research Lab (LAIN)</a>
+            <a href="/lab/">Research Lab</a>
         </div>
         <div>
-            <a href="/blog/">📝 Blog</a>
+            <a href="/blog/">Blog</a>
         </div>
         <div>
-            <a href="mailto:mhmdzbyb829@gmail.com">📧 Email</a>
+            <a href="mailto:mhmdzbyb829@gmail.com">Email</a>
         </div>
     </nav>
 
@@ -220,10 +241,31 @@
                 </div>
             </div>
 
-        
+            <!-- Paper 3 -->
+            <div class="paper-item">
+                <div class="paper-image-container">
+                    <img src="/assets/papers/paper-3.png" alt="Paper 3" class="paper-thumbnail">
+                </div>
+                <div class="paper-content">
+                    <a href="/papers/paper-3.html" class="paper-title">
+                        Federated Learning for Privacy-Preserving Machine Learning
+                    </a>
+                    <p class="paper-authors">
+                        Mohammad Zbeeb, Sarah Cohen, Marcus Thompson
+                    </p>
+                    <p class="paper-venue">
+                        <strong>ICLR 2024</strong>
+                    </p>
+                    <div class="paper-links">
+                        <a href="/papers/paper-3.html" class="paper-link-btn">View Details</a>
+                        <a href="#" class="paper-link-btn">ArXiv</a>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <p style="text-align: center; margin-top: 2em;">
-            <a href="/lab/#featured-papers">View all publications →</a>
+            <a href="/lab/">Visit Research Lab</a>
         </p>
     </section>
 </body>
