@@ -43,7 +43,6 @@
           <a href="#open-calls" title="Open Calls">Open Calls</a>
           <a href="#team" title="Team">Research Team</a>
           <a href="#publications" title="Publications">Publications</a>
-          <a href="#calendar" title="Calendar">Calendar & Meetings</a>
           <a href="#contact" title="Contact">Contact</a>
         </nav>
       </header>
@@ -166,23 +165,6 @@
       <p><em>For a complete list of publications, visit our <a href="https://scholar.google.com/citations?user=[ID]" target="_blank">Google Scholar profile</a> or <a href="https://github.com/[username]" target="_blank">GitHub repositories</a>.</em></p>
       </section>
 
-      <!-- Calendar & Meetings Section -->
-      <section id="calendar">
-      <h2>Calendar & Meetings</h2>
-
-      <div class="calendar-section">
-        <p>Schedule a meeting with our research team. Use our calendar booking system to find available times for discussions, project consultations, or collaboration meetings.</p>
-
-        <div class="calendar-booking">
-          <h3>Lab Calendar & Booking</h3>
-          <p>View our lab availability and schedule a meeting:</p>
-          <button class="action-button" onclick="openCalendarBooking()">Schedule a Meeting</button>
-          <p style="margin-top: 1em; font-size: 0.9em;"><em>Powered by Google Calendar - Select your preferred time slot</em></p>
-        </div>
-
-      </div>
-      </section>
-
       <!-- Contact Section -->
       <section id="contact">
       <h2>Contact</h2>
@@ -226,43 +208,6 @@
 
     <!-- Scripts -->
     <script src="/assets/js/main.js"></script>
-
-    <!-- Calendar & Meeting Functions -->
-    <script>
-      // Open Google Calendar booking page
-      // Replace [CALENDAR_ID] with your actual Google Calendar ID
-      function openCalendarBooking() {
-        // Option 1: Redirect to Calendly or similar booking service
-        // window.open('https://calendly.com/[username]/meeting', '_blank');
-
-        // Option 2: Redirect to Google Calendar
-        window.open('https://calendar.google.com/calendar/u/0/r?cid=[CALENDAR_EMAIL]', '_blank');
-
-        // Option 3: Open embedded calendar (requires setup)
-        // alert('Calendar scheduling will open in a new window');
-      }
-
-      // Open Microsoft Teams invite
-      // Replace [TEAM_JOIN_CODE] or [INVITE_LINK] with actual Teams invite link
-      function openTeamsInvite() {
-        // Option 1: Direct Teams meeting link
-        // window.open('https://teams.microsoft.com/l/team/[TEAM_ID]/conversations', '_blank');
-
-        // Option 2: Teams join link
-        window.open('https://teams.microsoft.com/l/team/[TEAM_CODE]/conversations?groupId=[TEAM_ID]&tenantId=[TENANT_ID]', '_blank');
-
-        // Option 3: Send to email form for invitation
-        // window.location.href = 'mailto:contact@research-lab.edu?subject=Teams%20Invite%20Request';
-      }
-
-      // Alternative: Open email form for calendar and Teams requests
-      function requestMeeting() {
-        const email = 'mhmdzbyb829@gmail.com';
-        const subject = 'Meeting Request with Research Lab';
-        const body = 'I am interested in scheduling a meeting with your research lab.';
-        window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      }
-    </script>
 
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXXXX-X"></script>
