@@ -343,6 +343,33 @@ hr {
   border: 1px inset #999999;
 }
 
+.submission-panel {
+  background-color: #f5f5f5;
+  border: 1px solid #cccccc;
+  padding: 15px;
+  margin: 20px 0;
+}
+
+.submission-steps {
+  list-style: decimal;
+  margin: 15px 0 15px 25px;
+  padding: 0;
+  font-size: 12px;
+  color: #333333;
+  line-height: 1.6;
+}
+
+.submission-steps li {
+  margin-bottom: 8px;
+}
+
+.submission-note {
+  font-size: 11px;
+  color: #555555;
+  margin-top: 15px;
+  line-height: 1.6;
+}
+
 /* ============= CALENDAR SECTION ============= */
 
 .calendar-section {
