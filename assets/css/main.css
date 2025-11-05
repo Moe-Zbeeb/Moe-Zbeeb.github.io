@@ -350,6 +350,137 @@ hr {
   margin: 20px 0;
 }
 
+.submission-form {
+  margin: 15px 0 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dropzone {
+  border: 2px dashed #999999;
+  background-color: #ffffff;
+  padding: 20px;
+  text-align: center;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+  cursor: pointer;
+}
+
+.dropzone:hover {
+  background-color: #f0f0f0;
+}
+
+.dropzone.drag-over {
+  background-color: #e6f2ff;
+  border-color: #0066cc;
+}
+
+.dropzone-title {
+  font-weight: bold;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: #000000;
+}
+
+.dropzone-instructions {
+  font-size: 12px;
+  color: #333333;
+  line-height: 1.6;
+}
+
+.dropzone-browse {
+  background: none;
+  border: none;
+  color: #0000ff;
+  text-decoration: underline;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 4px;
+}
+
+.dropzone-browse:hover {
+  color: #0000ff;
+  text-decoration: underline;
+}
+
+.file-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+  color: #333333;
+}
+
+.file-list li {
+  margin-bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid #dddddd;
+  padding: 6px 8px;
+  background-color: #ffffff;
+}
+
+.file-name {
+  flex: 1;
+  text-align: left;
+}
+
+.file-list-empty {
+  list-style: none;
+  color: #777777;
+  font-style: italic;
+  margin-left: 0;
+}
+
+.file-remove {
+  background: none;
+  border: 1px solid #aaaaaa;
+  padding: 2px 6px;
+  font-size: 11px;
+  cursor: pointer;
+  color: #000000;
+}
+
+.file-remove:hover {
+  background-color: #dddddd;
+}
+
+.submission-label {
+  font-size: 12px;
+  font-weight: bold;
+  color: #000000;
+}
+
+.submission-message {
+  width: 100%;
+  border: 1px solid #cccccc;
+  padding: 8px;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 12px;
+  line-height: 1.5;
+  resize: vertical;
+  min-height: 100px;
+}
+
+.submission-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.action-button.primary {
+  background-color: #0000ff;
+  color: #ffffff;
+  border: 1px outset #0000ff;
+}
+
+.action-button.primary:active {
+  border: 1px inset #0000ff;
+}
+
 .submission-steps {
   list-style: decimal;
   margin: 15px 0 15px 25px;

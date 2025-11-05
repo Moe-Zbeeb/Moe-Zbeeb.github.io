@@ -173,21 +173,50 @@
       <div class="submission-panel">
         <p>We welcome undergraduate and graduate students to share Statements of Purpose (SOPs) or draft papers for constructive feedback. Submissions are reviewed on a rolling basis by our research mentors with attention to clarity, research alignment, and long-term development.</p>
 
+        <form id="submission-form" class="submission-form" novalidate>
+          <div class="dropzone" id="submission-dropzone">
+            <p class="dropzone-title">Drop files here</p>
+            <p class="dropzone-instructions">
+              Drag &amp; drop SOPs or papers (PDF, DOC, DOCX, TEX) or
+              <button type="button" class="dropzone-browse">browse files</button>
+            </p>
+            <input
+              type="file"
+              id="submission-file"
+              name="documents"
+              accept=".pdf,.doc,.docx,.tex"
+              multiple
+              hidden
+            >
+          </div>
+
+          <ul class="file-list" id="submission-file-list">
+            <li class="file-list-empty">No files added yet.</li>
+          </ul>
+
+          <label class="submission-label" for="submission-message">Cover note (optional)</label>
+          <textarea
+            id="submission-message"
+            class="submission-message"
+            name="message"
+            rows="4"
+            placeholder="Share your goals, target program or venue, and specific questions you would like us to focus on."
+          ></textarea>
+
+          <div class="submission-actions">
+            <button type="button" class="action-button" id="submission-clear">Clear Files</button>
+            <button type="submit" class="action-button primary" id="submission-send">Compose Email</button>
+          </div>
+        </form>
+
         <ol class="submission-steps">
           <li>Compile your SOP or manuscript into a single PDF file (maximum 10 pages).</li>
           <li>Include a short cover note outlining your goals, target program or venue, and specific questions.</li>
           <li>Name the file using the format <em>LastName_DocumentType_YYYY.pdf</em>.</li>
-          <li>Email the PDF directly to our review desk using the button below.</li>
+          <li>Email the files directly to our review desk using the Compose Email button.</li>
         </ol>
 
-        <a
-          class="action-button"
-          href="mailto:mbz02@mail.aub.edu?subject=SOP%20or%20Paper%20Review%20Submission&body=Hello%20LAIN%20team,%0A%0AMy%20name%20is%20[Your%20Name]%20and%20I%20am%20submitting%20the%20attached%20[SOP/Paper]%20for%20feedback.%20Here%20is%20some%20context:%0A-%20Primary%20goal:%20%0A-%20Target%20program/venue:%20%0A-%20Specific%20questions:%20%0A%0AThank%20you%20for%20your%20time.%0A"
-        >
-          Email Submission
-        </a>
-
-        <p class="submission-note">Please attach your PDF before sending. We typically respond within seven business days with detailed notes and, when appropriate, follow-up meeting options.</p>
+        <p class="submission-note">After clicking Compose Email your default mail application will open. Attach the files shown above if they are not added automatically, then send to <strong>mbz02@mail.aub.edu</strong>. We typically respond within seven business days with detailed notes and, when appropriate, follow-up meeting options.</p>
       </div>
       </section>
 
