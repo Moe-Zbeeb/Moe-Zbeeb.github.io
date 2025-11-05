@@ -175,16 +175,20 @@
 
         <form id="submission-form" class="submission-form" novalidate>
           <div class="dropzone" id="submission-dropzone">
-            <p class="dropzone-title">Drop files here</p>
+            <div class="dropzone-visual" aria-hidden="true">
+              <span class="dropzone-icon">PDF</span>
+              <span class="dropzone-subtext">Upload</span>
+            </div>
+            <p class="dropzone-title">Drop your files here</p>
             <p class="dropzone-instructions">
-              Drag &amp; drop SOPs or papers (PDF, DOC, DOCX, TEX) or
+              Drag &amp; drop SOPs or papers (PDF only) or
               <button type="button" class="dropzone-browse">browse files</button>
             </p>
             <input
               type="file"
               id="submission-file"
               name="documents"
-              accept=".pdf,.doc,.docx,.tex"
+              accept=".pdf"
               multiple
               hidden
             >
@@ -210,13 +214,13 @@
         </form>
 
         <ol class="submission-steps">
-          <li>Compile your SOP or manuscript into a single PDF file (maximum 10 pages).</li>
+          <li>Compile your SOP or manuscript into a polished PDF (maximum 10 pages recommended).</li>
           <li>Include a short cover note outlining your goals, target program or venue, and specific questions.</li>
-          <li>Name the file using the format <em>LastName_DocumentType_YYYY.pdf</em>.</li>
-          <li>Email the files directly to our review desk using the Compose Email button.</li>
+          <li>Name each file using the format <em>LastName_DocumentType_YYYY.pdf</em>.</li>
+          <li>Use the Compose Email button to send a message with the PDFs listed below.</li>
         </ol>
 
-        <p class="submission-note">After clicking Compose Email your default mail application will open. Attach the files shown above if they are not added automatically, then send to <strong>mbz02@mail.aub.edu</strong>. We typically respond within seven business days with detailed notes and, when appropriate, follow-up meeting options.</p>
+        <p class="submission-note">After clicking Compose Email your default mail application will open. Attach the PDFs shown above if they are not added automatically, then send to <strong>mbz02@mail.aub.edu</strong>. We typically respond within seven business days with detailed notes and, when appropriate, follow-up meeting options.</p>
       </div>
       </section>
 

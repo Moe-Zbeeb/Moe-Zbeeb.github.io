@@ -127,7 +127,7 @@ function initSubmissionDesk() {
 
   const browseButton = dropzone.querySelector('.dropzone-browse');
   let selectedFiles = [];
-  const allowedExtensions = /\.(pdf|doc|docx|tex)$/i;
+  const allowedExtensions = /\.pdf$/i;
 
   function formatFileSize(bytes) {
     if (bytes >= 1024 * 1024) {
@@ -200,7 +200,7 @@ function initSubmissionDesk() {
     renderFileList();
 
     if (rejectedCount > 0) {
-      showNotification(`${rejectedCount} file(s) were skipped — only PDF, DOC, DOCX, and TEX formats are allowed.`, 'error');
+      showNotification(`${rejectedCount} file(s) were skipped — only PDF format is supported.`, 'error');
     }
   }
 
