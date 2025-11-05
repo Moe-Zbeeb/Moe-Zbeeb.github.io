@@ -118,44 +118,22 @@
             box-shadow: var(--shadow-hover);
         }
 
-        .hero-highlights {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .highlight-card {
-            background: #ffffff;
-            padding: 1.5rem;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border);
+        .hero-media {
+            border-radius: var(--radius-lg);
+            overflow: hidden;
             box-shadow: var(--shadow-sm);
-        }
-
-        .highlight-card h3 {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 0.8rem;
-        }
-
-        .highlight-card ul {
-            list-style: none;
-            color: var(--text-muted);
-            display: grid;
-            gap: 0.55rem;
-            font-size: 0.95rem;
-        }
-
-        .highlight-card span {
-            background: rgba(30, 58, 95, 0.06);
-            padding: 0.35rem 0.75rem;
-            border-radius: 999px;
-            display: inline-flex;
+            min-height: 320px;
+            background: linear-gradient(140deg, rgba(30, 58, 95, 0.25), rgba(224, 102, 59, 0.2));
+            display: flex;
             align-items: center;
-            gap: 0.4rem;
-            font-size: 0.85rem;
-            color: var(--primary);
+            justify-content: center;
+            position: relative;
+        }
+
+        .hero-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         nav.hero-nav {
@@ -180,6 +158,21 @@
 
         .quick-links {
             margin-bottom: 3rem;
+        }
+
+        .about-section {
+            margin-bottom: 3.5rem;
+        }
+
+        .about-section h2 {
+            font-size: 1.85rem;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+        }
+
+        .about-section p {
+            color: var(--text-muted);
+            max-width: 62ch;
         }
 
         .quick-links h2 {
@@ -388,6 +381,10 @@
                 align-items: flex-start;
             }
 
+            .hero-media {
+                min-height: 260px;
+            }
+
             .paper-card {
                 grid-template-rows: 160px 1fr;
             }
@@ -415,28 +412,20 @@
                     <a href="mailto:mhmdzbyb829@gmail.com">Contact</a>
                 </nav>
             </div>
-            <div class="hero-highlights">
-                <article class="highlight-card">
-                    <h3>Research Areas</h3>
-                    <ul>
-                        <li><span>Deep learning systems</span></li>
-                        <li><span>Responsible AI</span></li>
-                        <li><span>Scientific ML</span></li>
-                    </ul>
-                </article>
-                <article class="highlight-card">
-                    <h3>Current Focus</h3>
-                    <ul>
-                        <li>Trustworthy deployment of large language models</li>
-                        <li>Human-aligned evaluation for generative systems</li>
-                        <li>Collaborative research in signal processing</li>
-                    </ul>
-                </article>
+            <div class="hero-media">
+                <img src="/assets/profile-placeholder.svg" alt="Mohammad Zbeeb speaking at a research seminar">
             </div>
         </div>
     </header>
 
     <main>
+        <section class="container about-section" aria-labelledby="about-heading">
+            <h2 id="about-heading">About</h2>
+            <p>
+                I build machine learning systems that balance scientific rigor with real-world impact, partnering with research labs and industry teams to translate theoretical advances into tools that serve people. My work spans responsible language technologies, signal processing for complex environments, and the infrastructure required to safely scale AI-driven collaboration.
+            </p>
+        </section>
+
         <section class="container quick-links" aria-labelledby="quick-links-heading">
             <h2 id="quick-links-heading">Quick Access</h2>
             <p>Explore active collaborations, read recent insights, or get in touch for potential partnerships.</p>
