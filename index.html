@@ -81,43 +81,6 @@
             max-width: 36ch;
         }
 
-        .hero-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.85rem;
-        }
-
-        .action-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1.4rem;
-            border-radius: 999px;
-            background: rgba(30, 58, 95, 0.08);
-            color: var(--primary);
-            font-weight: 600;
-            transition: var(--transition);
-            border: 1px solid transparent;
-        }
-
-        .action-pill.primary {
-            background: var(--primary);
-            color: #ffffff;
-            border-color: transparent;
-        }
-
-        .action-pill:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-sm);
-            background: rgba(30, 58, 95, 0.12);
-            border-color: rgba(30, 58, 95, 0.18);
-        }
-
-        .action-pill.primary:hover {
-            background: #142847;
-            box-shadow: var(--shadow-hover);
-        }
-
         .hero-media {
             border-radius: var(--radius-lg);
             overflow: hidden;
@@ -134,26 +97,6 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-        }
-
-        nav.hero-nav {
-            margin-top: 1.5rem;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-        }
-
-        nav.hero-nav a {
-            font-weight: 600;
-            color: var(--text-muted);
-            padding: 0.35rem 0.75rem;
-            border-radius: 999px;
-            transition: var(--transition);
-        }
-
-        nav.hero-nav a:hover {
-            color: var(--primary);
-            background: rgba(30, 58, 95, 0.08);
         }
 
         .quick-links {
@@ -376,11 +319,6 @@
                 padding: 3.5rem 0 3rem;
             }
 
-            .hero-actions {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
             .hero-media {
                 min-height: 260px;
             }
@@ -400,17 +338,6 @@
                     Researcher focused on machine learning, natural language processing, and the
                     computational methods that connect human communication to intelligent systems.
                 </p>
-                <div class="hero-actions">
-                    <a class="action-pill primary" href="mailto:mhmdzbyb829@gmail.com">Email Mohammad</a>
-                    <a class="action-pill" href="/lab/">Research Lab</a>
-                    <a class="action-pill" href="/blog/">Blog</a>
-                </div>
-                <nav class="hero-nav" aria-label="Primary">
-                    <a href="/lab/">Projects</a>
-                    <a href="/papers/">Publications</a>
-                    <a href="/blog/">Writing</a>
-                    <a href="mailto:mhmdzbyb829@gmail.com">Contact</a>
-                </nav>
             </div>
             <div class="hero-media">
                 <img src="/assets/profile-placeholder.svg" alt="Mohammad Zbeeb speaking at a research seminar">
