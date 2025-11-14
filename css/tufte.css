@@ -1,9 +1,10 @@
 /* Minimal Tufte-inspired styles for academic blog */
 :root {
-  --body: #fff;
+  /* Warm, paper-like background and tones */
+  --body: #fcf7e8;   /* light cream paper */
   --ink: #111;
   --muted: #555;
-  --rule: #ddd;
+  --rule: #e6deca;  /* warmer rule to match paper */
   --accent: #333;
 }
 
@@ -62,4 +63,3 @@ article.post time { color: var(--muted); font-size: 0.95rem; }
 
 a { color: #0b3d91; }
 a:hover { text-decoration: underline; }
-
