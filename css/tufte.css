@@ -27,17 +27,19 @@ nav.group a { color: var(--accent); text-decoration: none; }
 nav.group a.active { font-weight: 600; }
 
 /* Subtle CTA button for Lab link */
+.spacer { flex: 1 1 auto; }
 .btn-lab {
-  margin-left: auto;
   display: inline-block;
-  padding: 0.35rem 0.75rem;
-  border: 1px solid #0b3d91;
-  border-radius: 999px;
-  color: #0b3d91;
+  padding: 0.1rem 0.2rem;
+  color: var(--accent);
   text-decoration: none;
-  font-size: 0.95rem;
+  font-weight: 500;
 }
-.btn-lab:hover { background: #0b3d91; color: #fff; }
+.btn-lab:hover { text-decoration: underline; }
+
+/* Icon links */
+.icon-link { display: inline-flex; align-items: center; gap: 0.35rem; }
+.icon { width: 18px; height: 18px; fill: currentColor; display: block; }
 
 article.group {
   max-width: 900px; margin: 2rem auto; padding: 0 1rem;
