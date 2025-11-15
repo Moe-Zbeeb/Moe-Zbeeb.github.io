@@ -62,6 +62,18 @@
         <img src="/blog/posts/diagrams/2.png" alt="Timeline of draft and target model verification" loading="lazy" />
       </div>
       <p class="image-note"><em>Serving system note:</em> Both the target and draft models live on a single, relaxed serving system, sharing one pool of GPU compute and memory.</p>
+      <p>
+  <em>Fast Inference from Transformers via Speculative Decoding</em> introduced the idea of speculative decoding, and if someone would love to end the post, they can read the following:<br>
+</p>
+
+<div style="border: 1px solid #ccc; padding: 15px; border-radius: 6px; background-color: #f9f9f9;">
+  <p>
+    <em>
+      Large language model sampling is a sequential process by structure, and it is very slow. Many of the steps in this solution trace are easy, i.e., they can be approximated by a smaller, potentially dumber yet faster model. So, let’s load both models: let the small LLM propose some of the future tokens, and then we can use the bigger one to verify these tokens.
+    </em>
+  </p>
+</div>
+
 
       <p><a href="/">← Back to all posts</a></p>
     </article>
