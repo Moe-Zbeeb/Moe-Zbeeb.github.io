@@ -107,6 +107,17 @@ hr.slender { border-top: 1px solid var(--rule); margin: 1.5rem 0; }
 article.post { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
 article.post header { border-bottom: 1px solid var(--rule); padding-bottom: 0.6rem; margin-bottom: 1rem; }
 article.post time { color: var(--muted); font-size: 0.95rem; }
+.post-diagram {
+  margin: 1.4rem auto 1.8rem;
+  max-width: 780px;
+}
+.post-diagram img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
 
 a { color: var(--link); }
 a:hover { text-decoration: underline; text-decoration-color: var(--link); }
