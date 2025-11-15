@@ -63,7 +63,7 @@
       </div>
       <p class="image-note"><em>Serving system note:</em> Both the target and draft models live on a single, relaxed serving system, sharing one pool of GPU compute and memory.</p>
       <p>
-  <em>Fast Inference from Transformers via Speculative Decoding</em> introduced the idea of speculative decoding, and if someone would love to end the post, they can read the following:<br>
+  <em>Fast Inference from Transformers via Speculative Decoding</em> introduced the idea of speculative decoding, and if someone would love to end the post here, they can read the following:<br>
 </p>
 
 <div style="border: 1px solid #ccc; padding: 15px; border-radius: 6px; background-color: #f9f9f9;">
@@ -74,8 +74,17 @@
   </p>
 </div>
 
+<h3>Mindset, Keep the Hardware Warm</h3>
+<p>
+  There is a notion among people interacting with compute units, for example a GPU, that one of the key responsibilities is to make sure that the full hardware is utilized. In large language model inference systems, the slow part mainly comes from communication with memory: fetching the KV cache, weights, and so on. So there are a lot of FLOPs that can still be utilized by the programmer to make the system more concurrent [1] in nature, such as decoding two LLMs at the same time and verifying their output in parallel.
+</p>
+<label for="sn-concurrency" class="margin-toggle sidenote-number"></label>
+<input type="checkbox" id="sn-concurrency" class="margin-toggle" />
+<span class="sidenote">
+ 1. Concurrency: doing multiple tasks during overlapping time periods by interleaving work, not necessarily completing them simultaneously.
+</span>
 
-      <p><a href="/">← Back to all posts</a></p>
+<p><a href="/">← Back to all posts</a></p>
     </article>
   </body>
   </html>
