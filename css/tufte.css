@@ -108,7 +108,7 @@ article.post { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
 article.post header { border-bottom: 1px solid var(--rule); padding-bottom: 0.6rem; margin-bottom: 1rem; }
 article.post time { color: var(--muted); font-size: 0.95rem; }
 .post-diagram {
-  margin: 1.4rem auto 1.8rem;
+  margin: 1.6rem auto 1.6rem;
   max-width: 780px;
 }
 .post-diagram img {
@@ -117,6 +117,47 @@ article.post time { color: var(--muted); font-size: 0.95rem; }
   display: block;
   border-radius: 12px;
   box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
+.post-diagram.diagram-pair {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  margin: 2rem auto;
+}
+.post-diagram.diagram-pair img {
+  flex: 1 1 260px;
+  width: auto;
+  max-width: 360px;
+  min-width: 200px;
+}
+.post-diagram.diagram-pair img.relaxed-left {
+  max-width: 420px;
+  border-radius: 14px;
+  padding: 10px;
+  background: #fafafa;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.image-note {
+  max-width: 780px;
+  margin: -0.3rem auto 1.6rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .post-diagram.diagram-pair {
+    flex-direction: column;
+    align-items: center;
+  }
+  .post-diagram.diagram-pair img,
+  .post-diagram.diagram-pair img.relaxed-left {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
 }
 
 a { color: var(--link); }

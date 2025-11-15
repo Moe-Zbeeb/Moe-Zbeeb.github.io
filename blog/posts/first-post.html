@@ -15,7 +15,7 @@
   <body>
     <header>
       <nav class="group">
-        <a class="active" href="/">[Your Name]</a>
+        <a class="active" href="/">Mohammad ZBeeb</a>
         <span class="spacer"></span>
         <a href="/about/">About</a>
         <a class="btn-lab" href="/lab/">LAIN</a>
@@ -30,26 +30,38 @@
 
     <article class="post">
       <header>
-        <h1>On Expressivity and Simplicity in Model Design</h1>
-        <time datetime="2025-01-01">2025-01-01</time>
+        <h1>On Speculative Decoding, a Worklog</h1>
+        <time datetime="2025-01-01">2025-Nov</time>
       </header>
 
       <p>
-        Simple baselines often provide a surprisingly strong reference point for more involved architectures. The key is that
-        <em>inductive bias</em> aligns with the data distribution and objective.
-        <label for="sn-1" class="margin-toggle sidenote-number"></label>
-        <input type="checkbox" id="sn-1" class="margin-toggle" />
-        <span class="sidenote">As a rule of thumb, favor hypotheses that preserve interpretability.</span>
+        A simple test-time framework to make inference of large language models faster, taking advantage of the main bottleneck, which is communication hardware, 
+        and making use of the unused FLOPs left in the GPU.”
+  
       </p>
 
       <p>
-        Two practical reminders: (1) compare at equal training budgets; (2) ablate one variable at a time. These controls prevent
-        confounding explanations and keep iteration loops tight.
+        Two practical reminders: (1) Pay attention to the loss functions presented; (2) Take your time looking the code.
       </p>
 
+      <h3>Motivation</h3> 
       <p>
-        When a more complex model wins, scrutinize the <em>where</em> and <em>why</em>: optimization stability, data regime, or regularization strength.
+        Large language models decode tokens token by token in a sequential manner, meaning that this process itself cannot be parallelized. 
+        It is also a fact that large language models in deployment are bottlenecked by the communication overhead of moving the weights and the KV cache 
+        to and from the disk. <br>
+        Given the available FLOPs on certain GPUs at test time, people thought of loading mainly two systems 
+        <em>originally another LLM, but this will change as the literature progresses</em> on the GPU. 
+        Both are decoding sequentially, but a verification process that should happen at the token level takes place. 
+        The main goal is to speed up the output process, so this implies a natural choice of having one of the systems smaller than the other. 
+        We generally call the small system the <em>draft</em> and the bigger one the <em>target</em>. 
+        <strong>We aim to let the draft model distribution match that of the target one.</strong>
       </p>
+
+      <h3>Core Idea</h3> 
+      <div class="post-diagram diagram-pair">
+        <img src="/blog/posts/diagrams/2.png" alt="Timeline of draft and target model verification" loading="lazy" />
+      </div>
+      <p class="image-note"><em>Serving system note:</em> Both the target and draft models live on a single, relaxed serving system, sharing one pool of GPU compute and memory.</p>
 
       <p><a href="/">← Back to all posts</a></p>
     </article>
