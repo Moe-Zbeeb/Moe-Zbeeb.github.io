@@ -1,11 +1,12 @@
 /* Minimal Tufte-inspired styles for academic blog */
 :root {
   /* Warm, paper-like background and tones */
-  --body: #fcf7e8;   /* light cream paper */
-  --ink: #111;
-  --muted: #555;
-  --rule: #e6deca;  /* warmer rule to match paper */
-  --accent: #333;
+  --body: #fcf9ef;   /* light cream paper */
+  --ink: #241811;
+  --muted: #6e5c4e;
+  --rule: #e8ddc5;  /* warmer rule to match paper */
+  --accent: #7c0801;
+  --link: #8f1400;
 }
 
 html { font-size: 16px; }
@@ -17,14 +18,26 @@ body {
   line-height: 1.6;
 }
 
-header { padding: 1rem 0; }
+header { padding: 0.6rem 0 0; }
 nav.group {
   max-width: 900px; margin: 0 auto; padding: 0 1rem;
   display: flex; gap: 1rem; align-items: baseline;
+  border-top: 1px solid var(--rule);
   border-bottom: 1px solid var(--rule);
+  padding: 0.55rem 1rem 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.75rem;
 }
-nav.group a { color: var(--accent); text-decoration: none; }
+nav.group a { color: var(--accent); text-decoration: none; font-weight: 500; }
 nav.group a.active { font-weight: 600; }
+nav.group a:hover,
+nav.group a:focus { color: var(--ink); }
+nav.group .icon-link {
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0;
+}
 
 /* Subtle CTA button for Lab link */
 .spacer { flex: 1 1 auto; }
@@ -38,20 +51,39 @@ nav.group a.active { font-weight: 600; }
 .btn-lab:hover { text-decoration: underline; }
 
 /* Icon links */
-.icon-link { display: inline-flex; align-items: center; gap: 0.35rem; }
+.icon-link { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0; }
 .icon { width: 18px; height: 18px; fill: currentColor; display: block; }
 
 article.group {
   max-width: 900px; margin: 2rem auto; padding: 0 1rem;
+  font-size: 1.05rem;
 }
 
-h1 { font-weight: 400; font-size: 2.1rem; margin: 0 0 1rem; }
+h1 { font-weight: 400; font-size: 2rem; margin: 0 0 1rem; letter-spacing: 0.02em; }
 h1 .subtitle { font-size: 1.1rem; color: var(--muted); }
-h2 { font-weight: 500; font-size: 1.35rem; margin: 0.2rem 0 0.2rem; }
+h2 {
+  font-weight: 400;
+  font-size: 1.5rem;
+  margin: 0.2rem 0 0.2rem;
+  color: var(--link);
+}
 p { margin: 0.6rem 0; }
 
 ul.content-listing { list-style: none; padding: 0; margin: 1.5rem 0; }
-ul.content-listing li { margin: 0 0 1.3rem 0; }
+ul.content-listing li {
+  margin: 0 0 1.9rem 0;
+  padding-left: 1.8rem;
+  position: relative;
+}
+ul.content-listing li::before {
+  content: "•";
+  color: var(--link);
+  position: absolute;
+  left: 0.2rem;
+  top: 0.35rem;
+  font-size: 1.5rem;
+  font-weight: 400;
+}
 
 hr { border: none; border-top: 1px solid var(--rule); margin: 2rem 0; }
 hr.invisible { border: none; margin: 0.8rem 0; }
@@ -76,5 +108,52 @@ article.post { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
 article.post header { border-bottom: 1px solid var(--rule); padding-bottom: 0.6rem; margin-bottom: 1rem; }
 article.post time { color: var(--muted); font-size: 0.95rem; }
 
-a { color: #0b3d91; }
-a:hover { text-decoration: underline; }
+a { color: var(--link); }
+a:hover { text-decoration: underline; text-decoration-color: var(--link); }
+
+/* About page tweaks */
+article.group.about {
+  position: relative;
+}
+article.group.about::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+.about-photo {
+  float: right;
+  width: 210px;
+  margin: 0 0 1.5rem 2.5rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.about-photo img {
+  width: 100%;
+  border-radius: 18px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+.about-photo figcaption {
+  margin-top: 0.3rem;
+  color: var(--link);
+}
+.about-list {
+  list-style: none;
+  margin: 0 0 1.6rem;
+  padding-left: 1.6rem;
+}
+.about-list li {
+  margin-bottom: 0.9rem;
+  position: relative;
+}
+.about-list li::before {
+  content: "•";
+  color: var(--link);
+  position: absolute;
+  left: -1.2rem;
+  top: 0.2rem;
+}
+
+@media (max-width: 720px) {
+  .about-photo { float: none; margin: 0 auto 1.5rem; }
+}
