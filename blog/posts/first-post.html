@@ -87,9 +87,7 @@
  1. Concurrency: doing multiple tasks during overlapping time periods by interleaving work, not necessarily completing them simultaneously.
 </span>
 <h3>Algorithmic and Mathematical View</h3>
-<span class="sidenote">
- 2. Fast Inference from Transformers via Speculative Decoding
-</span>
+
 <p>
   We denote the <em>target</em> model by
   \(M_p\) and the <em>draft</em> model by
@@ -98,7 +96,10 @@
   \(x_1, \ldots, x_\gamma\) autoregressively:
 </p>
 
-$$q_i(x) = M_q\big(y, x_1, \ldots, x_{i-1}\big), \qquad x_i \sim q_i(x).$$
+$$q_i(x) = M_q\big(y, x_1, \ldots, x_{i-1}\big), \qquad x_i \sim q_i(x).$$ 1. 
+<span class="sidenote">
+ 2. Fast Inference from Transformers via Speculative Decoding
+</span>
 
 <p>
   In parallel, the target model evaluates the same sequence of prefixes and
