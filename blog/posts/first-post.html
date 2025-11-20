@@ -11,6 +11,9 @@
     <meta property="og:image" content="/assets/profile-placeholder.svg" />
     <link rel="stylesheet" href="/css/tufte.css" />
     <link rel="canonical" href="/blog/posts/first-post.html" />
+    <!-- MathJax for mathematical notation rendering -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   </head>
   <body>
     <header>
@@ -83,6 +86,102 @@
 <span class="sidenote">
  1. Concurrency: doing multiple tasks during overlapping time periods by interleaving work, not necessarily completing them simultaneously.
 </span>
+<h3>Algorithmic and Mathematical View</h3>
+<span class="sidenote">
+ 2. Fast Inference from Transformers via Speculative Decoding
+</span>
+<p>
+  We denote the <em>target</em> model by
+  \(M_p\) and the <em>draft</em> model by
+  \(M_q\). Given a prefix \(y\),
+  the draft model proposes \(\gamma\) future tokens
+  \(x_1, \ldots, x_\gamma\) autoregressively:
+</p>
+
+$$q_i(x) = M_q\big(y, x_1, \ldots, x_{i-1}\big), \qquad x_i \sim q_i(x).$$
+
+<p>
+  In parallel, the target model evaluates the same sequence of prefixes and
+  produces the corresponding conditional probabilities:
+</p>
+
+$$p_i(x) = M_p\big(y, x_1, \ldots, x_{i-1}\big),
+\qquad i = 1, \ldots, \gamma + 1.$$
+
+<p>
+  For each proposed token \(x_i\), we draw
+  \(r_i \sim \mathcal{U}(0,1)\) and compare the models'
+  likelihoods. The number of accepted tokens \(n\) is:
+</p>
+
+$$n = \min\Big(\{\, i - 1 \mid 1 \le i \le \gamma,\
+   r_i > \tfrac{p_i(x_i)}{q_i(x_i)} \,\} \cup \{\gamma\}\Big).$$
+
+<p>
+  Intuitively, if
+  \(\frac{p_i(x_i)}{q_i(x_i)} > 1\),
+  the draft model agrees with the target and we accept the token.
+  When the ratio is small, we stop trusting the draft model and correct
+  the distribution.
+</p>
+
+<p>
+  After accepting \(n\) draft tokens, the next token is
+  drawn from an adjusted distribution:
+</p>
+
+$$p'(x) =
+\begin{cases}
+  p_{n+1}(x), & \text{if } n = \gamma, \\
+  \mathrm{norm}\big(\max\{0,\ p_{n+1}(x) - q_{n+1}(x)\}\big),
+  & \text{if } n < \gamma.
+\end{cases}$$
+
+<p>
+  Overall, the sampling law can be written as:
+</p>
+
+$$P(x) = \min(P(x), Q(x)) + \big(P(x) - \min(P(x), Q(x))\big),$$
+
+<p>
+  ensuring that even after early acceptance or distribution correction,
+  the final token is still sampled from the true target distribution
+  \(P(x)\).
+</p>
+
+<h3>Why This is Faster</h3>
+<p>
+  1. Batching prefixes plus generated tokens is useful to get answers to many queries at once.
+  <br />
+  2. Many of the times we accept many tokens.
+</p>
+<p>
+  Note that the target model is able to verify k tokens in parallel.
+</p>
+
+<h3>Acceptance and Rejection</h3>
+<p>
+  We accept a token based on a simple rule: if p(x)/q(x), where p is the probability of the target model and q is the probability
+  of the draft model, is bigger than one, we accept the token.
+</p>
+<p>
+  If not, what we are essentially saying is that the probability distribution of the draft model is totally wrong, so using this
+  probability just does not make sense now. Doing a sort of distribution correction approach, we sample our next token from a
+  corrected distribution, P(x) - Q(x).
+</p>
+
+<h3>Checking Our Final Distribution</h3>
+<p>
+  By construction of our work, we are sampling from:
+</p>
+
+$$P(x) = \min(P(x), Q(x)) + \big(P(x) - \min(P(x), Q(x))\big).$$
+
+<p>
+  This is saying that we sample from the min of P(x) or Q(x). Preferably, Q(x) is less than P(x) and we end the algorithm here.
+  But if it was a bad sequence in time and we happened to find that the models disagree, we correct our distribution P(x) - Q(x).
+  Adding the terms up will get us back to P(x), so we are still sampling from the same distribution P(x).
+</p>
 
 <p><a href="/">← Back to all posts</a></p>
     </article>
