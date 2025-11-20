@@ -38,35 +38,34 @@
       </header>
 
       <p>
-        A simple test-time framework to make inference of large language models faster, taking advantage of the main bottleneck, which is communication hardware, 
-        and making use of the unused FLOPs left in the GPU.”
-  
+        A simple test-time framework to speed up inference for large language models by taking advantage of the main bottleneck—communication hardware—and
+        using the unused FLOPs left in the GPU.
       </p>
 
       <p>
-        Two practical reminders: (1) Pay attention to the loss functions presented; (2) Take your time looking the code.
+        Two practical reminders: (1) Pay attention to the loss functions presented; (2) Take your time reading the code.
       </p>
 
       <h3>Motivation</h3> 
       <p>
-        Large language models decode tokens token by token in a sequential manner, meaning that this process itself cannot be parallelized. 
-        It is also a fact that large language models in deployment are bottlenecked by the communication overhead of moving the weights and the KV cache 
-        to and from the disk. <br>
-        Given the available FLOPs on certain GPUs at test time, people thought of loading mainly two systems 
-        <em>originally another LLM, but this will change as the literature progresses</em> on the GPU. 
-        Both are decoding sequentially, but a verification process that should happen at the token level takes place. 
-        The main goal is to speed up the output process, so this implies a natural choice of having one of the systems smaller than the other. 
-        We generally call the small system the <em>draft</em> and the bigger one the <em>target</em>. 
-        <strong>We aim to let the draft model distribution match that of the target one.</strong>
+        Large language models decode tokens one by one in a sequential manner, so this process cannot be parallelized. 
+        In deployment, these models are often bottlenecked by the communication overhead of moving the weights and the KV cache 
+        to and from disk. <br>
+        Given the available FLOPs on certain GPUs at test time, people considered loading two systems 
+        <em>originally another LLM, but this will change as the literature progresses</em> onto the GPU. 
+        Both decode sequentially, but a token-level verification process runs alongside them. 
+        The main goal is to speed up output generation, which naturally suggests making one of the systems smaller than the other. 
+        We generally call the small system the <em>draft</em> and the larger one the <em>target</em>. 
+        <strong>We aim for the draft model's distribution to match that of the target.</strong>
       </p>
 
-      <h3>Core Idea</h3> 
+<h3>Core Idea</h3> 
       <div class="post-diagram diagram-pair">
         <img src="/blog/posts/diagrams/2.png" alt="Timeline of draft and target model verification" loading="lazy" />
       </div>
       <p class="image-note"><em>Serving system note:</em> Both the target and draft models live on a single, relaxed serving system, sharing one pool of GPU compute and memory.</p>
       <p>
-  <em>Fast Inference from Transformers via Speculative Decoding</em> introduced the idea of speculative decoding, and if someone would love to end the post here, they can read the following:<br>
+  <em>Fast Inference from Transformers via Speculative Decoding</em> introduced the idea of speculative decoding, and if someone would like to stop here, they can read the following:<br>
 </p>
 
 <div style="border: 1px solid #ccc; padding: 15px; border-radius: 6px; background-color: #f9f9f9;">
@@ -79,7 +78,7 @@
 
 <h3>Mindset, Keep the Hardware Warm</h3>
 <p>
-  There is a notion among people interacting with compute units, for example a GPU, that one of the key responsibilities is to make sure that the full hardware is utilized. In large language model inference systems, the slow part mainly comes from communication with memory: fetching the KV cache, weights, and so on. So there are a lot of FLOPs that can still be utilized by the programmer to make the system more concurrent [1] in nature, such as decoding two LLMs at the same time and verifying their output in parallel.
+  Practitioners working with compute units—like GPUs—often emphasize fully utilizing the hardware. In large language model inference systems, the slow part mainly comes from communication with memory: fetching the KV cache, weights, and so on. That leaves many FLOPs the programmer can still put to work to make the system more concurrent [1], such as decoding two LLMs at once and verifying their output in parallel.
 </p>
 <label for="sn-concurrency" class="margin-toggle sidenote-number"></label>
 <input type="checkbox" id="sn-concurrency" class="margin-toggle" />
@@ -154,7 +153,7 @@ $$P(x) = \min(P(x), Q(x)) + \big(P(x) - \min(P(x), Q(x))\big),$$
 <p>
   1. Batching prefixes plus generated tokens is useful to get answers to many queries at once.
   <br />
-  2. Many of the times we accept many tokens.
+  2. Often, multiple tokens are accepted at once.
 </p>
 <p>
   Note that the target model is able to verify k tokens in parallel.
@@ -162,13 +161,11 @@ $$P(x) = \min(P(x), Q(x)) + \big(P(x) - \min(P(x), Q(x))\big),$$
 
 <h3>Acceptance and Rejection</h3>
 <p>
-  We accept a token based on a simple rule: if p(x)/q(x), where p is the probability of the target model and q is the probability
-  of the draft model, is bigger than one, we accept the token.
+  We accept a token based on a simple rule: if p(x)/q(x) is greater than one—where p is the probability of the target model and q is the probability
+  of the draft model—we accept the token.
 </p>
 <p>
-  If not, what we are essentially saying is that the probability distribution of the draft model is totally wrong, so using this
-  probability just does not make sense now. Doing a sort of distribution correction approach, we sample our next token from a
-  corrected distribution, P(x) - Q(x).
+  If not, we are essentially saying the draft model's distribution is off, so using that probability no longer makes sense. Using a distribution-correction approach, we sample the next token from a corrected distribution, P(x) - Q(x).
 </p>
 
 <h3>Checking Our Final Distribution</h3>
@@ -179,9 +176,9 @@ $$P(x) = \min(P(x), Q(x)) + \big(P(x) - \min(P(x), Q(x))\big),$$
 $$P(x) = \min(P(x), Q(x)) + \big(P(x) - \min(P(x), Q(x))\big).$$
 
 <p>
-  This is saying that we sample from the min of P(x) or Q(x). Preferably, Q(x) is less than P(x) and we end the algorithm here.
-  But if it was a bad sequence in time and we happened to find that the models disagree, we correct our distribution P(x) - Q(x).
-  Adding the terms up will get us back to P(x), so we are still sampling from the same distribution P(x).
+  This means we sample from the minimum of P(x) and Q(x). Ideally, Q(x) is less than P(x) and we end the algorithm here.
+  If the models disagree on a sequence, we correct the distribution with P(x) - Q(x).
+  Adding the terms brings us back to P(x), so we are still sampling from the same target distribution.
 </p>
 
 <p><a href="/">← Back to all posts</a></p>
