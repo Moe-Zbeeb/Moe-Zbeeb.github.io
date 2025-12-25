@@ -59,7 +59,7 @@ function Hero({ backgrounds = [], interval = 7000 }) {
               Machine Learning
             </h1>
             <p className="max-w-2xl text-lg font-semibold text-[var(--text-secondary)] md:text-xl">
-              AUB&apos;s introductory program on machine learning methods with applications in{' '}
+              AUB&apos;s introductory course on machine learning methods with applications in{' '}
               <span
                 key={applications[appIndex]}
                 className="rotate-word inline-flex min-w-[17ch] items-center justify-center whitespace-nowrap rounded-full bg-[rgba(140,29,24,0.22)] px-4 py-1 text-[var(--text-primary)] shadow-[0_10px_28px_rgba(140,29,24,0.28)] ring-1 ring-[rgba(255,255,255,0.18)] backdrop-blur-sm"
