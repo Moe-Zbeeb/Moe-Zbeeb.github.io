@@ -22,7 +22,7 @@ function Materials() {
         <div className="space-y-2 text-center">
           <p className="text-sm uppercase tracking-[0.2em] text-[var(--accent-secondary)]">Materials</p>
           <h2 className="text-3xl font-semibold md:text-4xl text-[var(--text-primary)]">Course content</h2>
-          <p className="text-base text-[var(--text-secondary)]">MIT-style list with Notes and Deck links.</p>
+          <p className="text-base text-[var(--text-secondary)]">MIT-style list with Notes and Deck links. Keep your pencil-based notes alongside these for retention.</p>
         </div>
 
         <div className="grid grid-cols-1 gap-y-10 gap-x-12 sm:grid-cols-2 lg:grid-cols-3">
