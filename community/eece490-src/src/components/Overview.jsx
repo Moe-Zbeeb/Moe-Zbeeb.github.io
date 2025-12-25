@@ -11,18 +11,20 @@ function Overview() {
               <h2 className="text-3xl font-semibold text-[var(--text-primary)] md:text-4xl">Description</h2>
             </div>
             <p className="text-base font-semibold text-[var(--text-primary)] md:text-lg">
-              An <span className="text-[var(--accent-secondary)]">efficient and rigorous course</span> designed to teach you the fundamentals of machine learning as clearly as possible.
+              EECE490-690 Machine Learning, a graduate-level course covering theoretical foundations and practical applications of machine learning algorithms.
             </p>
             <div className="space-y-4 text-base leading-relaxed text-[var(--text-secondary)] md:text-lg">
               <p>
-                EECE 490 is AUB’s introductory course on machine learning methods with applications across data analysis, computer vision, language modeling, and real-world decision systems. Students will develop a solid theoretical foundation, practical implementation skills, and the ability to critically evaluate machine learning models in applied settings.
+                The course emphasizes hands-on experience with real-world datasets and modern ML frameworks, progressing from basic statistical methods to advanced deep learning and transformer architectures.
               </p>
               <p>
-                The course emphasizes mathematical intuition, algorithmic understanding, and hands-on experience using modern tools. Topics progress from foundational concepts to more advanced models, concluding with applied projects that connect theory to practice.
+                Students build intuition, implement models, and evaluate systems across applied domains.
               </p>
-              <p>
-                Prerequisites include basic calculus and linear algebra. Prior experience with Python is helpful but not required.
-              </p>
+            </div>
+            <div className="space-y-1 text-sm text-[var(--text-muted)] md:text-base">
+              <p><strong>Last Updated:</strong> August 2024</p>
+              <p><strong>Version:</strong> 1.0</p>
+              <p><strong>License:</strong> Academic Use Only</p>
             </div>
           </div>
 

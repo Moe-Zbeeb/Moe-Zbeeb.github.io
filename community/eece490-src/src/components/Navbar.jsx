@@ -38,14 +38,7 @@ function Navbar() {
             </a>
           ))}
         </div>
-        <div className="hidden md:inline-flex">
-          <a
-            href="#overview"
-            className="rounded-full bg-[var(--accent-primary)] px-5 py-2 text-sm font-semibold text-white shadow-md transition hover:bg-[#751711]"
-          >
-            Register
-          </a>
-        </div>
+        <div className="hidden md:inline-flex"></div>
       </nav>
     </header>
   );

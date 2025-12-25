@@ -10,7 +10,7 @@ React + Tailwind single-page landing site for the American University of Beirut 
 
 ## Getting Started
 1. Install dependencies: `npm install`
-2. Run locally: `npm run dev` (base path is configured for `/lab/eece490/`)
+2. Run locally: `npm run dev` (base path is configured for `/community/eece490/`)
 3. Build for production: `npm run build`
 
 Update the image list in `src/App.jsx` if you add or rename background images. Team photos are optional; when omitted, initials render automatically.
