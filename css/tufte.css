@@ -212,3 +212,91 @@ article.group.about::after {
 @media (max-width: 720px) {
   .about-photo { float: none; margin: 0 auto 1.5rem; }
 }
+
+/* Acknowledgments Section - Special Styling */
+.acknowledgment-header {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 2px solid var(--rule);
+  position: relative;
+}
+
+.acknowledgment-header::before {
+  content: "✦";
+  position: absolute;
+  top: -0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--body);
+  padding: 0 1rem;
+  color: var(--link);
+  font-size: 1.2rem;
+}
+
+.acknowledgment-section {
+  background: linear-gradient(to bottom,
+    rgba(140, 20, 1, 0.02) 0%,
+    rgba(140, 20, 1, 0.04) 50%,
+    rgba(140, 20, 1, 0.02) 100%);
+  padding: 2rem;
+  margin: 1.5rem -2rem;
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+}
+
+.acknowledgment-intro {
+  font-size: 1.15rem;
+  font-style: italic;
+  color: var(--muted);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.mentor-highlight {
+  background: rgba(255, 255, 255, 0.6);
+  padding: 1.8rem;
+  border-radius: 6px;
+  margin: 1.5rem 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(140, 20, 1, 0.1);
+}
+
+.mentor-highlight strong {
+  color: var(--accent);
+  font-size: 1.15rem;
+  letter-spacing: 0.01em;
+}
+
+.mentor-highlight p {
+  margin: 1rem 0;
+  line-height: 1.75;
+}
+
+.gratitude {
+  margin-top: 1.5rem;
+  font-style: italic;
+  color: var(--link);
+  padding-left: 1rem;
+  border-left: 2px solid var(--accent);
+}
+
+.acknowledgment-close {
+  margin-top: 1.5rem;
+  font-size: 1.05rem;
+}
+
+.acknowledgment-close strong {
+  color: var(--link);
+  font-weight: 600;
+}
+
+@media (max-width: 720px) {
+  .acknowledgment-section {
+    margin: 1.5rem -1rem;
+    padding: 1.5rem 1rem;
+  }
+
+  .mentor-highlight {
+    padding: 1.2rem;
+  }
+}
