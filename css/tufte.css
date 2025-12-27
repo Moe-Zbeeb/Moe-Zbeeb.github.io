@@ -213,90 +213,198 @@ article.group.about::after {
   .about-photo { float: none; margin: 0 auto 1.5rem; }
 }
 
-/* Acknowledgments Section - Special Styling */
+/* Acknowledgments Section - Featured Subpage Styling */
 .acknowledgment-header {
-  margin-top: 3rem;
-  padding-top: 2rem;
-  border-top: 2px solid var(--rule);
+  margin-top: 4rem;
+  padding-top: 2.5rem;
+  border-top: 3px double var(--accent);
   position: relative;
+  text-align: center;
+  font-size: 2.2rem;
+  color: var(--accent);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-weight: 400;
 }
 
 .acknowledgment-header::before {
-  content: "✦";
+  content: "✦ ✦ ✦";
   position: absolute;
-  top: -0.75rem;
+  top: -1rem;
   left: 50%;
   transform: translateX(-50%);
   background: var(--body);
-  padding: 0 1rem;
-  color: var(--link);
-  font-size: 1.2rem;
+  padding: 0 2rem;
+  color: var(--accent);
+  font-size: 1rem;
+  letter-spacing: 0.8rem;
+}
+
+.acknowledgment-header::after {
+  content: "";
+  display: block;
+  width: 120px;
+  height: 3px;
+  background: linear-gradient(to right, transparent, var(--accent), transparent);
+  margin: 1rem auto 0;
 }
 
 .acknowledgment-section {
-  background: linear-gradient(to bottom,
-    rgba(140, 20, 1, 0.02) 0%,
-    rgba(140, 20, 1, 0.04) 50%,
-    rgba(140, 20, 1, 0.02) 100%);
-  padding: 2rem;
-  margin: 1.5rem -2rem;
-  border-left: 3px solid var(--accent);
-  border-radius: 0 8px 8px 0;
+  background: linear-gradient(135deg,
+    rgba(252, 249, 239, 0.95) 0%,
+    rgba(255, 250, 240, 1) 50%,
+    rgba(252, 249, 239, 0.95) 100%);
+  padding: 3rem;
+  margin: 2rem -3rem;
+  border: 2px solid var(--accent);
+  border-radius: 12px;
+  box-shadow:
+    0 8px 24px rgba(124, 8, 1, 0.12),
+    0 2px 8px rgba(124, 8, 1, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  position: relative;
+}
+
+.acknowledgment-section::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--link) 100%);
+  border-radius: 12px;
+  z-index: -1;
+  opacity: 0.15;
 }
 
 .acknowledgment-intro {
-  font-size: 1.15rem;
+  font-size: 1.3rem;
   font-style: italic;
-  color: var(--muted);
-  margin-bottom: 1.5rem;
+  color: var(--ink);
+  margin-bottom: 2rem;
   text-align: center;
+  font-weight: 300;
+  line-height: 1.8;
+  padding: 0 1rem;
 }
 
 .mentor-highlight {
-  background: rgba(255, 255, 255, 0.6);
-  padding: 1.8rem;
-  border-radius: 6px;
-  margin: 1.5rem 0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-  border: 1px solid rgba(140, 20, 1, 0.1);
+  background: linear-gradient(to bottom,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(255, 255, 255, 0.95) 100%);
+  padding: 2.5rem;
+  border-radius: 10px;
+  margin: 2rem 0;
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.08),
+    0 4px 12px rgba(124, 8, 1, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+  border: 1px solid rgba(124, 8, 1, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.mentor-highlight::before {
+  content: """;
+  position: absolute;
+  top: -20px;
+  left: 20px;
+  font-size: 120px;
+  color: rgba(124, 8, 1, 0.06);
+  font-family: Georgia, serif;
+  line-height: 1;
+  z-index: 0;
+}
+
+.mentor-highlight::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--accent), var(--link));
 }
 
 .mentor-highlight strong {
   color: var(--accent);
-  font-size: 1.15rem;
-  letter-spacing: 0.01em;
+  font-size: 1.25rem;
+  letter-spacing: 0.02em;
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
 .mentor-highlight p {
-  margin: 1rem 0;
-  line-height: 1.75;
+  margin: 1.2rem 0;
+  line-height: 1.85;
+  position: relative;
+  z-index: 1;
+  color: var(--ink);
+  font-size: 1.05rem;
 }
 
 .gratitude {
-  margin-top: 1.5rem;
+  margin-top: 2rem;
+  padding: 1.2rem 1.5rem;
   font-style: italic;
-  color: var(--link);
-  padding-left: 1rem;
-  border-left: 2px solid var(--accent);
+  color: var(--accent);
+  background: rgba(124, 8, 1, 0.03);
+  border-left: 4px solid var(--accent);
+  border-radius: 0 6px 6px 0;
+  font-size: 1.08rem;
+  box-shadow: inset 0 1px 3px rgba(124, 8, 1, 0.05);
 }
 
 .acknowledgment-close {
-  margin-top: 1.5rem;
-  font-size: 1.05rem;
+  margin-top: 2rem;
+  font-size: 1.08rem;
+  text-align: center;
+  padding: 1.5rem;
+  background: rgba(124, 8, 1, 0.02);
+  border-radius: 8px;
+  border: 1px dashed var(--accent);
+  color: var(--ink);
 }
 
 .acknowledgment-close strong {
   color: var(--link);
   font-weight: 600;
+  font-size: 1.12rem;
 }
 
 @media (max-width: 720px) {
+  .acknowledgment-header {
+    font-size: 1.6rem;
+  }
+
   .acknowledgment-section {
-    margin: 1.5rem -1rem;
-    padding: 1.5rem 1rem;
+    margin: 2rem -1rem;
+    padding: 2rem 1.5rem;
   }
 
   .mentor-highlight {
+    padding: 1.8rem 1.2rem;
+  }
+
+  .mentor-highlight::before {
+    font-size: 80px;
+    top: -10px;
+    left: 10px;
+  }
+
+  .acknowledgment-intro {
+    font-size: 1.1rem;
+    padding: 0;
+  }
+
+  .gratitude {
+    padding: 1rem;
+  }
+
+  .acknowledgment-close {
     padding: 1.2rem;
   }
 }
