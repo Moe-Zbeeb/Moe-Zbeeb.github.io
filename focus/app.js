@@ -682,6 +682,7 @@ function render() {
 
 function openModal() {
   el.taskModal.hidden = false;
+  document.body.classList.add("modal-open");
   el.quickTitle.value = "";
   el.quickNote.value = "";
   el.quickLink.value = "";
@@ -691,6 +692,7 @@ function openModal() {
 
 function closeModal() {
   el.taskModal.hidden = true;
+  document.body.classList.remove("modal-open");
 }
 
 function quickAddSubmit() {
@@ -787,6 +789,17 @@ function bindEvents() {
   el.taskModal.addEventListener("click", (e) => {
     if (e.target && e.target.getAttribute && e.target.getAttribute("data-close-modal")) closeModal();
   });
+
+  document.addEventListener(
+    "pointerdown",
+    (e) => {
+      if (el.taskModal.hidden) return;
+      const card = el.taskModal.querySelector(".modal-card");
+      if (!card) return;
+      if (!card.contains(e.target)) closeModal();
+    },
+    true
+  );
 
   el.quickTitle.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {

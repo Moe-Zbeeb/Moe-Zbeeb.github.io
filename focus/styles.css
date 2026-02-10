@@ -32,6 +32,10 @@ body {
   flex-direction: column;
 }
 
+body.modal-open {
+  overflow: hidden;
+}
+
 a {
   color: inherit;
   text-decoration: none;
