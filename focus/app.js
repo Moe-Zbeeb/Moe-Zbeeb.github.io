@@ -174,18 +174,28 @@ function cleanupForNewWeek() {
   }
   if (storedWeek === currentWeek) return;
 
-  const prevState = loadJSON(STORAGE_KEY, null);
-  if (prevState && prevState.directions) {
-    const hasAny = prevState.directions.some((d) => (d.tickets || []).length > 0);
+  const prevRaw =
+    loadJSON(STORAGE_KEY, null) ||
+    loadJSON("focusLens_state_v2", null) ||
+    loadJSON("focusLens_state_v1", null);
+  if (prevRaw && prevRaw.directions) {
+    const prevNorm = normalizeState(prevRaw);
+    const hasAny = prevNorm.directions.some((d) => (d.tickets || []).length > 0);
     if (hasAny) {
-      const prevArchive = loadJSON(ARCHIVE_KEY, []);
-      prevArchive.push({ weekKey: storedWeek, archivedAt: nowTs(), state: deepClone(prevState) });
+      const prevArchive =
+        loadJSON(ARCHIVE_KEY, null) ||
+        loadJSON("focusLens_archive_v2", null) ||
+        loadJSON("focusLens_archive_v1", null) ||
+        [];
+      prevArchive.push({ weekKey: storedWeek, archivedAt: nowTs(), state: deepClone(prevNorm) });
       saveJSON(ARCHIVE_KEY, prevArchive);
     }
   }
 
   localStorage.setItem(WEEK_KEY, currentWeek);
   saveJSON(STORAGE_KEY, initState());
+  localStorage.removeItem("focusLens_state_v1");
+  localStorage.removeItem("focusLens_state_v2");
   showBanner("New week started. Tickets reset.");
 }
 
