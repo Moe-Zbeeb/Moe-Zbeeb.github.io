@@ -1,5 +1,5 @@
-const STORAGE_KEY = "focusLens_state_v1";
-const ARCHIVE_KEY = "focusLens_archive_v1";
+const STORAGE_KEY = "focusLens_state_v2";
+const ARCHIVE_KEY = "focusLens_archive_v2";
 const WEEK_KEY = "focusLens_weekKey_v1";
 
 const DEFAULT_DIRECTIONS = [
@@ -11,13 +11,9 @@ const DEFAULT_DIRECTIONS = [
   "Today (P0)",
 ];
 
-const PRIORITIES = ["P0", "P1", "P2"];
-const PRIORITY_RANK = { P0: 0, P1: 1, P2: 2 };
-
 let state = null;
 let archive = [];
 let searchQuery = "";
-let openEditor = null;
 let drag = { type: null };
 let toastTimer = null;
 
@@ -32,8 +28,8 @@ const el = {
   toast: document.getElementById("toast"),
   quickAdd: document.getElementById("quickAdd"),
   quickDir: document.getElementById("quickDir"),
-  quickPrio: document.getElementById("quickPrio"),
-  quickText: document.getElementById("quickText"),
+  quickTitle: document.getElementById("quickTitle"),
+  quickNote: document.getElementById("quickNote"),
   quickLink: document.getElementById("quickLink"),
   quickAddBtn: document.getElementById("quickAddBtn"),
   quickCloseBtn: document.getElementById("quickCloseBtn"),
@@ -94,7 +90,7 @@ function initState() {
     name,
     tickets: [],
   }));
-  return { version: 1, directions };
+  return { version: 2, directions };
 }
 
 function deepClone(x) {
@@ -142,29 +138,30 @@ function showToast(text) {
   el.toast.hidden = false;
   toastTimer = setTimeout(() => {
     el.toast.hidden = true;
-  }, 1600);
-}
-
-function findDirection(dirId) {
-  return state.directions.find((d) => d.id === dirId) || null;
-}
-
-function findTicket(ticketId) {
-  for (const d of state.directions) {
-    const t = d.tickets.find((x) => x.id === ticketId);
-    if (t) return { dir: d, ticket: t };
-  }
-  return null;
+  }, 1400);
 }
 
 function normalizeTicket(t) {
+  const title = String((t && (t.title ?? t.text)) || "").trim();
   return {
-    id: t.id || uid(),
-    text: String(t.text || "").trim(),
-    priority: PRIORITIES.includes(t.priority) ? t.priority : "P1",
-    link: t.link ? String(t.link) : "",
-    createdAt: typeof t.createdAt === "number" ? t.createdAt : nowTs(),
-    done: !!t.done,
+    id: (t && t.id) || uid(),
+    title,
+    note: String((t && t.note) || "").trim(),
+    link: t && t.link ? String(t.link).trim() : "",
+    createdAt: t && typeof t.createdAt === "number" ? t.createdAt : nowTs(),
+    done: !!(t && t.done),
+  };
+}
+
+function normalizeState(raw) {
+  if (!raw || !Array.isArray(raw.directions)) return initState();
+  return {
+    version: 2,
+    directions: raw.directions.map((d) => ({
+      id: d.id || uid(),
+      name: String(d.name || "Untitled"),
+      tickets: Array.isArray(d.tickets) ? d.tickets.map(normalizeTicket).filter((t) => t.title) : [],
+    })),
   };
 }
 
@@ -175,9 +172,10 @@ function persist() {
 function matchesSearch(ticket) {
   const q = searchQuery.trim().toLowerCase();
   if (!q) return true;
-  const t = (ticket.text || "").toLowerCase();
-  const l = (ticket.link || "").toLowerCase();
-  return t.includes(q) || l.includes(q);
+  const a = (ticket.title || "").toLowerCase();
+  const b = (ticket.note || "").toLowerCase();
+  const c = (ticket.link || "").toLowerCase();
+  return a.includes(q) || b.includes(q) || c.includes(q);
 }
 
 function humanAge(ts) {
@@ -185,6 +183,22 @@ function humanAge(ts) {
   if (days <= 0) return "today";
   if (days === 1) return "1d";
   return `${days}d`;
+}
+
+function findDirection(dirId) {
+  return state.directions.find((d) => d.id === dirId) || null;
+}
+
+function findDirectionByName(name) {
+  return state.directions.find((d) => d.name === name) || null;
+}
+
+function findTicket(ticketId) {
+  for (const d of state.directions) {
+    const t = d.tickets.find((x) => x.id === ticketId);
+    if (t) return { dir: d, ticket: t };
+  }
+  return null;
 }
 
 function render() {
@@ -205,26 +219,20 @@ function renderQuickDirOptions() {
   if (current && state.directions.some((d) => d.id === current)) el.quickDir.value = current;
 }
 
-function priorityPill(prio) {
-  const span = document.createElement("span");
-  span.className = `pill ${prio.toLowerCase()}`;
-  span.textContent = prio;
-  return span;
-}
-
 function focusCandidates() {
+  const todayId = (findDirectionByName("Today (P0)") || {}).id;
   const items = [];
   for (const d of state.directions) {
     for (const t of d.tickets) {
       if (t.done) continue;
       if (!matchesSearch(t)) continue;
-      items.push({ dirId: d.id, dirName: d.name, ticket: t });
+      items.push({ dirId: d.id, dirName: d.name, ticket: t, isToday: todayId && d.id === todayId });
     }
   }
   items.sort((a, b) => {
-    const pa = PRIORITY_RANK[a.ticket.priority] ?? 1;
-    const pb = PRIORITY_RANK[b.ticket.priority] ?? 1;
-    if (pa !== pb) return pa - pb;
+    const ta = a.isToday ? 0 : 1;
+    const tb = b.isToday ? 0 : 1;
+    if (ta !== tb) return ta - tb;
     return a.ticket.createdAt - b.ticket.createdAt;
   });
   return items;
@@ -236,19 +244,18 @@ function renderFocusPanel() {
   if (top.length === 0) {
     const li = document.createElement("li");
     li.className = "focusitem";
-    li.innerHTML = `<span class="pill p2">OK</span><div class="focus-main"><div class="focus-text">No actionable tickets</div><div class="focus-meta">Add a ticket to get started</div></div><div class="focus-age"></div>`;
+    li.innerHTML = `<div class="focus-main"><div class="focus-text">No actionable tickets</div><div class="focus-meta">Add a ticket to get started</div></div><div class="focus-age"></div>`;
     el.focusList.appendChild(li);
     return;
   }
   for (const item of top) {
     const li = document.createElement("li");
     li.className = "focusitem";
-    li.appendChild(priorityPill(item.ticket.priority));
     const main = document.createElement("div");
     main.className = "focus-main";
     const text = document.createElement("div");
     text.className = "focus-text";
-    text.textContent = item.ticket.text;
+    text.textContent = item.ticket.title;
     const meta = document.createElement("div");
     meta.className = "focus-meta";
     meta.textContent = item.dirName;
@@ -259,14 +266,6 @@ function renderFocusPanel() {
     age.textContent = humanAge(item.ticket.createdAt);
     li.appendChild(main);
     li.appendChild(age);
-    li.addEventListener("click", () => {
-      const { dirId, ticket } = item;
-      const node = el.board.querySelector(`[data-dir-id="${cssEscape(dirId)}"] [data-ticket-id="${cssEscape(ticket.id)}"]`);
-      if (node) {
-        node.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
-        openTicketEditor(ticket.id);
-      }
-    });
     el.focusList.appendChild(li);
   }
 }
@@ -276,11 +275,7 @@ function renderBoard() {
   for (const d of state.directions) {
     const col = document.createElement("section");
     col.className = "col";
-    col.dataset.dirId = d.id;
     col.setAttribute("data-dir-id", d.id);
-
-    const activeTickets = d.tickets.filter((t) => !t.done && matchesSearch(t));
-    const doneTickets = d.tickets.filter((t) => t.done && matchesSearch(t));
 
     const head = document.createElement("div");
     head.className = "colhead";
@@ -302,11 +297,9 @@ function renderBoard() {
     const list = document.createElement("div");
     list.className = "collist";
     list.setAttribute("data-ticket-list", d.id);
-
-    for (const t of activeTickets) {
-      list.appendChild(renderTicket(d, t, false));
-    }
-
+    const activeTickets = d.tickets.filter((t) => !t.done && matchesSearch(t));
+    const doneTickets = d.tickets.filter((t) => t.done && matchesSearch(t));
+    for (const t of activeTickets) list.appendChild(renderTicket(t));
     col.appendChild(list);
 
     const doneWrap = document.createElement("div");
@@ -319,9 +312,7 @@ function renderBoard() {
     const doneList = document.createElement("div");
     doneList.className = "done-list";
     doneList.setAttribute("data-done-list", d.id);
-    for (const t of doneTickets) {
-      doneList.appendChild(renderTicket(d, t, true));
-    }
+    for (const t of doneTickets) doneList.appendChild(renderTicket(t));
     details.appendChild(doneList);
     doneWrap.appendChild(details);
     col.appendChild(doneWrap);
@@ -331,21 +322,27 @@ function renderBoard() {
     const input = document.createElement("input");
     input.className = "addinput";
     input.type = "text";
-    input.placeholder = "Add a ticket and press Enter";
-    input.setAttribute("data-add-input", d.id);
+    input.placeholder = "Title (Enter to add)";
+    input.setAttribute("data-add-title", d.id);
     input.autocomplete = "off";
+    const note = document.createElement("input");
+    note.className = "addnote";
+    note.type = "text";
+    note.placeholder = "Note (optional)";
+    note.setAttribute("data-add-note", d.id);
+    note.autocomplete = "off";
     add.appendChild(input);
+    add.appendChild(note);
     col.appendChild(add);
 
     el.board.appendChild(col);
   }
 }
 
-function renderTicket(dir, ticket, isDoneList) {
+function renderTicket(ticket) {
   const card = document.createElement("div");
   card.className = "ticket" + (ticket.done ? " done" : "");
   card.setAttribute("data-ticket-id", ticket.id);
-  card.dataset.ticketId = ticket.id;
 
   const draggable = !ticket.done;
   card.draggable = draggable;
@@ -371,10 +368,28 @@ function renderTicket(dir, ticket, isDoneList) {
 
   const text = document.createElement("div");
   text.className = "tickettext";
-  text.textContent = ticket.text;
+  text.textContent = ticket.title;
+
+  const actions = document.createElement("div");
+  actions.className = "ticketactions";
+  const del = document.createElement("button");
+  del.className = "iconbtn";
+  del.type = "button";
+  del.textContent = "Remove";
+  del.setAttribute("data-delete", ticket.id);
+  actions.appendChild(del);
 
   top.appendChild(text);
-  top.appendChild(priorityPill(ticket.priority));
+  top.appendChild(actions);
+
+  body.appendChild(top);
+
+  if (ticket.note) {
+    const note = document.createElement("div");
+    note.className = "ticketnote";
+    note.textContent = ticket.note;
+    body.appendChild(note);
+  }
 
   const meta = document.createElement("div");
   meta.className = "ticketmeta";
@@ -391,106 +406,30 @@ function renderTicket(dir, ticket, isDoneList) {
     a.addEventListener("click", (e) => e.stopPropagation());
     meta.appendChild(a);
   }
-
-  body.appendChild(top);
   body.appendChild(meta);
+
   row.appendChild(boxWrap);
   row.appendChild(body);
   card.appendChild(row);
-
-  if (openEditor && openEditor.ticketId === ticket.id) {
-    card.appendChild(renderEditor(ticket.id));
-  }
-
-  card.addEventListener("click", (e) => {
-    if (e.target && (e.target.matches('input[type="checkbox"]') || e.target.matches("a"))) return;
-    openTicketEditor(ticket.id);
-  });
-
   return card;
-}
-
-function renderEditor(ticketId) {
-  const found = findTicket(ticketId);
-  if (!found) return document.createElement("div");
-  const { ticket } = found;
-  const wrap = document.createElement("div");
-  wrap.className = "editor";
-  wrap.setAttribute("data-editor", ticketId);
-
-  const row1 = document.createElement("div");
-  row1.className = "editor-row";
-  const text = document.createElement("input");
-  text.className = "field grow";
-  text.type = "text";
-  text.value = ticket.text;
-  text.setAttribute("data-edit-text", ticketId);
-  text.autocomplete = "off";
-  row1.appendChild(text);
-  wrap.appendChild(row1);
-
-  const row2 = document.createElement("div");
-  row2.className = "editor-row";
-  const prio = document.createElement("select");
-  prio.className = "field";
-  prio.setAttribute("data-edit-prio", ticketId);
-  for (const p of PRIORITIES) {
-    const opt = document.createElement("option");
-    opt.value = p;
-    opt.textContent = p;
-    if (p === ticket.priority) opt.selected = true;
-    prio.appendChild(opt);
-  }
-  const link = document.createElement("input");
-  link.className = "field grow";
-  link.type = "url";
-  link.placeholder = "Link (optional)";
-  link.value = ticket.link || "";
-  link.setAttribute("data-edit-link", ticketId);
-  link.autocomplete = "off";
-  row2.appendChild(prio);
-  row2.appendChild(link);
-  wrap.appendChild(row2);
-
-  const row3 = document.createElement("div");
-  row3.className = "editor-row";
-  const save = document.createElement("button");
-  save.className = "btn primary";
-  save.textContent = "Save";
-  save.setAttribute("data-edit-save", ticketId);
-  const close = document.createElement("button");
-  close.className = "btn";
-  close.textContent = "Close";
-  close.setAttribute("data-edit-close", ticketId);
-  row3.appendChild(save);
-  row3.appendChild(close);
-  wrap.appendChild(row3);
-
-  setTimeout(() => {
-    const node = el.board.querySelector(`[data-edit-text="${cssEscape(ticketId)}"]`);
-    if (node) node.focus();
-  }, 0);
-
-  return wrap;
-}
-
-function openTicketEditor(ticketId) {
-  openEditor = { ticketId };
-  render();
-}
-
-function closeEditors() {
-  openEditor = null;
-  el.quickAdd.hidden = true;
-  render();
 }
 
 function addTicketToDirection(dirId, ticketLike) {
   const dir = findDirection(dirId);
   if (!dir) return;
   const t = normalizeTicket(ticketLike);
-  if (!t.text) return;
+  if (!t.title) return;
   dir.tickets.push(t);
+  persist();
+  render();
+}
+
+function deleteTicket(ticketId) {
+  const found = findTicket(ticketId);
+  if (!found) return;
+  const idx = found.dir.tickets.findIndex((t) => t.id === ticketId);
+  if (idx < 0) return;
+  found.dir.tickets.splice(idx, 1);
   persist();
   render();
 }
@@ -509,16 +448,11 @@ function moveTicket(ticketId, toDirId, toIndex) {
   const done = toDir.tickets.filter((t) => t.done);
   const mapped = active.map((t) => t.id);
   const targetIdx = Math.max(0, Math.min(toIndex, mapped.length));
-
   const activeTickets = active.slice();
   activeTickets.splice(targetIdx, 0, ticket);
   toDir.tickets = activeTickets.concat(done);
   persist();
   render();
-}
-
-function reorderWithinDirection(dirId, ticketId, toIndex) {
-  moveTicket(ticketId, dirId, toIndex);
 }
 
 function reorderDirections(fromId, toId) {
@@ -530,10 +464,6 @@ function reorderDirections(fromId, toId) {
   state.directions.splice(toIdx, 0, d);
   persist();
   render();
-}
-
-function cssEscape(s) {
-  return String(s).replace(/[^a-zA-Z0-9_-]/g, (m) => "\\" + m);
 }
 
 function clearDropClasses() {
@@ -552,32 +482,13 @@ function ticketDropIndex(dirId, overTicketId, after) {
   return after ? idx + 1 : idx;
 }
 
-function applyEditorSave(ticketId) {
-  const found = findTicket(ticketId);
-  if (!found) return;
-  const t = found.ticket;
-  const text = el.board.querySelector(`[data-edit-text="${cssEscape(ticketId)}"]`);
-  const prio = el.board.querySelector(`[data-edit-prio="${cssEscape(ticketId)}"]`);
-  const link = el.board.querySelector(`[data-edit-link="${cssEscape(ticketId)}"]`);
-  const nextText = text ? text.value.trim() : t.text;
-  const nextPrio = prio ? prio.value : t.priority;
-  const nextLink = link ? link.value.trim() : t.link;
-  if (!nextText) return;
-  t.text = nextText;
-  t.priority = PRIORITIES.includes(nextPrio) ? nextPrio : "P1";
-  t.link = nextLink;
-  persist();
-  showToast("Saved");
-  render();
-}
-
 function openQuickAdd() {
   el.quickAdd.hidden = false;
   renderQuickDirOptions();
-  el.quickText.value = "";
+  el.quickTitle.value = "";
+  el.quickNote.value = "";
   el.quickLink.value = "";
-  el.quickPrio.value = "P1";
-  setTimeout(() => el.quickText.focus(), 0);
+  setTimeout(() => el.quickTitle.focus(), 0);
 }
 
 function closeQuickAdd() {
@@ -586,11 +497,11 @@ function closeQuickAdd() {
 
 function quickAddSubmit() {
   const dirId = el.quickDir.value;
-  const text = el.quickText.value.trim();
-  const prio = el.quickPrio.value;
+  const title = el.quickTitle.value.trim();
+  const note = el.quickNote.value.trim();
   const link = el.quickLink.value.trim();
-  if (!text) return;
-  addTicketToDirection(dirId, { text, priority: prio, link });
+  if (!title) return;
+  addTicketToDirection(dirId, { title, note, link });
   closeQuickAdd();
 }
 
@@ -633,23 +544,35 @@ async function importJSON(file) {
   const ok = confirm("Replace current Focus Lens data with this JSON? This cannot be undone.");
   if (!ok) return;
 
-  const normalized = {
-    version: 1,
-    directions: nextState.directions.map((d) => ({
-      id: d.id || uid(),
-      name: String(d.name || "Untitled"),
-      tickets: Array.isArray(d.tickets) ? d.tickets.map(normalizeTicket) : [],
-    })),
-  };
-
-  state = normalized;
+  state = normalizeState(nextState);
   archive = Array.isArray(nextArchive) ? nextArchive : [];
   persist();
   saveJSON(ARCHIVE_KEY, archive);
   localStorage.setItem(WEEK_KEY, parsed.weekKey || isoWeekKeyForBeirut());
-  closeEditors();
+  closeQuickAdd();
   showToast("Imported");
   render();
+}
+
+function templatesApply(kind) {
+  const dir = findDirectionByName("Papers & Blogs") || findDirectionByName("Papers & Blogs");
+  if (!dir) return;
+  const list = [];
+  if (kind === "writing_sprint") {
+    list.push({ title: "Writing sprint (45 min)", note: "Goal: ship 1 page. No edits until the end." });
+    list.push({ title: "Outline next section", note: "3 bullets: claim, evidence, transition." });
+  }
+  if (kind === "review_papers") {
+    list.push({ title: "Review 2 papers", note: "Skim -> 5 key points -> 3 limitations -> 1 idea." });
+    list.push({ title: "Update related work notes", note: "Add 5 bullets + citation links." });
+  }
+  if (kind === "revise_draft") {
+    list.push({ title: "Revise draft", note: "Cut fluff, tighten claims, check figures and captions." });
+    list.push({ title: "Run a clarity pass", note: "Each paragraph: topic sentence + takeaway." });
+  }
+  if (list.length === 0) return;
+  for (const t of list) addTicketToDirection(dir.id, t);
+  showToast("Added templates");
 }
 
 function bindEvents() {
@@ -668,17 +591,20 @@ function bindEvents() {
   });
 
   el.quickAddBtn.addEventListener("click", quickAddSubmit);
-  el.quickCloseBtn.addEventListener("click", () => {
-    closeQuickAdd();
-  });
+  el.quickCloseBtn.addEventListener("click", closeQuickAdd);
 
-  el.quickText.addEventListener("keydown", (e) => {
+  el.quickTitle.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
       quickAddSubmit();
     }
   });
-
+  el.quickNote.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      quickAddSubmit();
+    }
+  });
   el.quickLink.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -690,7 +616,7 @@ function bindEvents() {
     const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : "";
     const isTyping = tag === "input" || tag === "textarea" || tag === "select";
     if (e.key === "Escape") {
-      closeEditors();
+      closeQuickAdd();
       return;
     }
     if (e.key === "n" && !isTyping) {
@@ -699,15 +625,28 @@ function bindEvents() {
     }
   });
 
+  document.addEventListener("click", (e) => {
+    const btn = e.target && e.target.closest ? e.target.closest("[data-template]") : null;
+    if (!btn) return;
+    const k = btn.getAttribute("data-template");
+    templatesApply(k);
+  });
+
   el.board.addEventListener("keydown", (e) => {
-    const add = e.target && e.target.matches && e.target.matches("[data-add-input]");
-    if (!add) return;
+    const titleInput = e.target && e.target.matches && e.target.matches("[data-add-title]");
+    const noteInput = e.target && e.target.matches && e.target.matches("[data-add-note]");
+    if (!titleInput && !noteInput) return;
     if (e.key !== "Enter") return;
-    const dirId = e.target.getAttribute("data-add-input");
-    const text = e.target.value.trim();
-    if (!text) return;
-    e.target.value = "";
-    addTicketToDirection(dirId, { text });
+    e.preventDefault();
+    const dirId = e.target.getAttribute(titleInput ? "data-add-title" : "data-add-note");
+    const titleEl = el.board.querySelector(`[data-add-title="${cssEscape(dirId)}"]`);
+    const noteEl = el.board.querySelector(`[data-add-note="${cssEscape(dirId)}"]`);
+    const title = titleEl ? titleEl.value.trim() : "";
+    const note = noteEl ? noteEl.value.trim() : "";
+    if (!title) return;
+    if (titleEl) titleEl.value = "";
+    if (noteEl) noteEl.value = "";
+    addTicketToDirection(dirId, { title, note });
   });
 
   el.board.addEventListener("click", (e) => {
@@ -721,16 +660,10 @@ function bindEvents() {
       render();
       return;
     }
-
-    const save = e.target && e.target.matches && e.target.matches("[data-edit-save]");
-    if (save) {
-      const id = e.target.getAttribute("data-edit-save");
-      applyEditorSave(id);
-      return;
-    }
-    const close = e.target && e.target.matches && e.target.matches("[data-edit-close]");
-    if (close) {
-      closeEditors();
+    const del = e.target && e.target.closest ? e.target.closest("[data-delete]") : null;
+    if (del) {
+      const id = del.getAttribute("data-delete");
+      deleteTicket(id);
       return;
     }
   });
@@ -770,7 +703,6 @@ function bindEvents() {
     if (!drag || !drag.type) return;
     e.preventDefault();
     const target = e.target;
-
     clearDropClasses();
 
     if (drag.type === "dir") {
@@ -823,31 +755,30 @@ function bindEvents() {
         after = (e.clientY - rect.top) > rect.height / 2;
       }
       const idx = ticketDropIndex(toDirId, overId, after);
-      if (toDirId === drag.fromDirId) reorderWithinDirection(toDirId, drag.ticketId, idx);
-      else moveTicket(drag.ticketId, toDirId, idx);
+      moveTicket(drag.ticketId, toDirId, idx);
       clearDropClasses();
       drag = { type: null };
     }
   });
 }
 
+function cssEscape(s) {
+  return String(s).replace(/[^a-zA-Z0-9_-]/g, (m) => "\\" + m);
+}
+
 function bootstrap() {
   cleanupForNewWeek();
-  state = loadJSON(STORAGE_KEY, null) || initState();
-  archive = loadJSON(ARCHIVE_KEY, []);
 
-  if (!state || !Array.isArray(state.directions) || state.directions.length === 0) {
-    state = initState();
-    persist();
-  } else {
-    state.directions = state.directions.map((d) => ({
-      id: d.id || uid(),
-      name: String(d.name || "Untitled"),
-      tickets: Array.isArray(d.tickets) ? d.tickets.map(normalizeTicket) : [],
-    }));
-    persist();
-  }
+  const v1 = loadJSON("focusLens_state_v1", null);
+  const v2 = loadJSON(STORAGE_KEY, null);
+  state = normalizeState(v2 || v1 || initState());
 
+  const a1 = loadJSON("focusLens_archive_v1", []);
+  const a2 = loadJSON(ARCHIVE_KEY, []);
+  archive = Array.isArray(a2) && a2.length ? a2 : a1;
+
+  persist();
+  saveJSON(ARCHIVE_KEY, archive);
   bindEvents();
   render();
 }

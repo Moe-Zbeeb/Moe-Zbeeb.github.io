@@ -9,14 +9,14 @@ Focus Lens is a fully static, in-browser weekly action dashboard for a researche
 - Drag and drop tickets within and across directions
 - Reorder directions by dragging column headers
 - Mark tickets done; done items collapse under a `Done (N)` section
-- Click a ticket to edit text, priority, and link inline
-- Focus Panel shows top 5 immediate actions (P0, then P1, then P2; oldest first)
-- Search filters tickets by text and link
+- Remove tickets with the `Remove` button
+- Focus Panel shows top 5 immediate actions (Today first, then oldest first)
+- Search filters tickets by title, note, and link
 - Export/Import JSON
 - Weekly auto-cleanup with archive saved in `localStorage`
 - Keyboard shortcuts:
   - `n`: open global quick add
-  - `Esc`: close editors/quick add
+  - `Esc`: close quick add
 
 ## Local Development
 
@@ -41,4 +41,3 @@ This app is static and is meant to be served from:
 If GitHub Pages is configured for this repo, the app will be available at:
 
 - `https://moe-zbeeb.github.io/focus/`
-
