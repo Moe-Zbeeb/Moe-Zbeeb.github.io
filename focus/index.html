@@ -11,11 +11,27 @@
     <header class="topbar">
       <div class="topbar-left">
         <a class="brand" href="./">Focus Lens</a>
+        <button id="newTaskBtn" class="btn primary">New Task</button>
+        <select id="sortSelect" class="btn select" aria-label="Sort">
+          <option value="manual" selected>Sort: Manual</option>
+          <option value="oldest">Sort: Oldest</option>
+          <option value="newest">Sort: Newest</option>
+          <option value="title">Sort: Title</option>
+        </select>
+        <select id="filterSelect" class="btn select" aria-label="Filter">
+          <option value="open" selected>Filter: Open</option>
+          <option value="all">Filter: All</option>
+          <option value="done">Filter: Done</option>
+        </select>
       </div>
       <div class="topbar-center">
         <input id="search" class="search" type="search" placeholder="Search tickets..." autocomplete="off" />
       </div>
       <div class="topbar-right">
+        <div class="seg">
+          <button id="viewKanban" class="segbtn active" type="button">Kanban</button>
+          <button id="viewList" class="segbtn" type="button">List</button>
+        </div>
         <button id="exportBtn" class="btn">Export JSON</button>
         <button id="importBtn" class="btn">Import JSON</button>
         <input id="importFile" type="file" accept="application/json" hidden />
@@ -24,22 +40,46 @@
 
     <div id="banner" class="banner" hidden></div>
 
-    <section id="quickAdd" class="quickadd" hidden>
-      <div class="quickadd-inner">
-        <div class="quickadd-title">Quick add</div>
-        <div class="quickadd-row">
-          <select id="quickDir" class="field"></select>
-          <input id="quickTitle" class="field grow" type="text" placeholder="Title" autocomplete="off" />
+    <div id="taskModal" class="modal" hidden>
+      <div class="modal-backdrop" data-close-modal="1"></div>
+      <div class="modal-card" role="dialog" aria-modal="true" aria-label="New Task">
+        <div class="modal-head">
+          <div class="modal-title">New Task</div>
+          <button id="modalCloseBtn" class="iconx" type="button" aria-label="Close">×</button>
         </div>
-        <div class="quickadd-row">
-          <input id="quickNote" class="field grow" type="text" placeholder="Note (optional)" autocomplete="off" />
-          <input id="quickLink" class="field grow" type="url" placeholder="Link (optional)" autocomplete="off" />
-          <button id="quickAddBtn" class="btn primary">Add</button>
-          <button id="quickCloseBtn" class="btn">Close</button>
+        <div class="modal-body">
+          <div class="row">
+            <label class="lbl" for="quickDir">Direction</label>
+            <select id="quickDir" class="field"></select>
+          </div>
+          <div class="row">
+            <label class="lbl" for="quickTitle">Title</label>
+            <input id="quickTitle" class="field" type="text" placeholder="What is the next atomic action?" autocomplete="off" />
+          </div>
+          <div class="row">
+            <label class="lbl" for="quickNote">Note</label>
+            <input id="quickNote" class="field" type="text" placeholder="Context, constraint, or success criteria" autocomplete="off" />
+          </div>
+          <div class="row">
+            <label class="lbl" for="quickLink">Link</label>
+            <input id="quickLink" class="field" type="url" placeholder="Optional" autocomplete="off" />
+          </div>
+          <div class="tpl">
+            <div class="tpl-title">Writing &amp; Reviewing</div>
+            <div class="tpl-actions">
+              <button class="chip" type="button" data-template="writing_sprint">Writing sprint</button>
+              <button class="chip" type="button" data-template="review_papers">Review 2 papers</button>
+              <button class="chip" type="button" data-template="revise_draft">Revise draft</button>
+            </div>
+          </div>
         </div>
-        <div class="quickadd-hint">Shortcut: press <kbd>n</kbd> to open, <kbd>Esc</kbd> to close</div>
+        <div class="modal-foot">
+          <button id="quickAddBtn" class="btn primary" type="button">Add</button>
+          <button id="quickCloseBtn" class="btn" type="button">Cancel</button>
+        </div>
+        <div class="modal-hint">Shortcut: <kbd>n</kbd> new task, <kbd>Esc</kbd> close</div>
       </div>
-    </section>
+    </div>
 
     <section class="focuswrap">
       <div class="focushead">
@@ -47,16 +87,6 @@
         <div class="focus-sub">Top 5 immediate actions across all directions</div>
       </div>
       <ol id="focusList" class="focuslist"></ol>
-      <div class="minicards">
-        <div class="minicard">
-          <div class="minicard-title">Writing &amp; Reviewing</div>
-          <div class="minicard-actions">
-            <button class="chip" data-template="writing_sprint">Writing sprint</button>
-            <button class="chip" data-template="review_papers">Review 2 papers</button>
-            <button class="chip" data-template="revise_draft">Revise draft</button>
-          </div>
-        </div>
-      </div>
     </section>
 
     <main class="boardwrap">

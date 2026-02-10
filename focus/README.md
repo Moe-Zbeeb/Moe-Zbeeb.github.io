@@ -5,13 +5,15 @@ Focus Lens is a fully static, in-browser weekly action dashboard for a researche
 ## Features
 
 - Six default directions (columns) on first load
-- Add tickets by typing and pressing Enter in a direction
-- Drag and drop tickets within and across directions
-- Reorder directions by dragging column headers
+- Add tickets by typing and pressing Enter in a direction (title + optional note)
+- Drag and drop tickets within and across directions (Manual sort only)
+- Reorder directions by dragging column headers (Manual sort only)
 - Mark tickets done; done items collapse under a `Done (N)` section
 - Remove tickets with the `Remove` button
 - Focus Panel shows top 5 immediate actions (Today first, then oldest first)
 - Search filters tickets by title, note, and link
+- Kanban/List view toggle
+- Sort and filter controls
 - Export/Import JSON
 - Weekly auto-cleanup with archive saved in `localStorage`
 - Keyboard shortcuts:

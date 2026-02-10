@@ -1,5 +1,5 @@
-const STORAGE_KEY = "focusLens_state_v2";
-const ARCHIVE_KEY = "focusLens_archive_v2";
+const STORAGE_KEY = "focusLens_state_v3";
+const ARCHIVE_KEY = "focusLens_archive_v3";
 const WEEK_KEY = "focusLens_weekKey_v1";
 
 const DEFAULT_DIRECTIONS = [
@@ -11,6 +11,15 @@ const DEFAULT_DIRECTIONS = [
   "Today (P0)",
 ];
 
+const DIR_COLORS = [
+  "#6366f1",
+  "#f59e0b",
+  "#a855f7",
+  "#22c55e",
+  "#0ea5e9",
+  "#ef4444",
+];
+
 let state = null;
 let archive = [];
 let searchQuery = "";
@@ -20,13 +29,19 @@ let toastTimer = null;
 const el = {
   board: document.getElementById("board"),
   focusList: document.getElementById("focusList"),
-  search: document.getElementById("search"),
   banner: document.getElementById("banner"),
+  search: document.getElementById("search"),
   exportBtn: document.getElementById("exportBtn"),
   importBtn: document.getElementById("importBtn"),
   importFile: document.getElementById("importFile"),
   toast: document.getElementById("toast"),
-  quickAdd: document.getElementById("quickAdd"),
+  newTaskBtn: document.getElementById("newTaskBtn"),
+  sortSelect: document.getElementById("sortSelect"),
+  filterSelect: document.getElementById("filterSelect"),
+  viewKanban: document.getElementById("viewKanban"),
+  viewList: document.getElementById("viewList"),
+  taskModal: document.getElementById("taskModal"),
+  modalCloseBtn: document.getElementById("modalCloseBtn"),
   quickDir: document.getElementById("quickDir"),
   quickTitle: document.getElementById("quickTitle"),
   quickNote: document.getElementById("quickNote"),
@@ -42,6 +57,20 @@ function uid() {
 
 function nowTs() {
   return Date.now();
+}
+
+function loadJSON(key, fallback) {
+  try {
+    const raw = localStorage.getItem(key);
+    if (!raw) return fallback;
+    return JSON.parse(raw);
+  } catch {
+    return fallback;
+  }
+}
+
+function saveJSON(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
 }
 
 function getBeirutYMD() {
@@ -70,42 +99,79 @@ function isoWeekKeyForBeirut() {
   return `${weekYear}-W${String(weekNo).padStart(2, "0")}`;
 }
 
-function loadJSON(key, fallback) {
-  try {
-    const raw = localStorage.getItem(key);
-    if (!raw) return fallback;
-    return JSON.parse(raw);
-  } catch {
-    return fallback;
-  }
-}
-
-function saveJSON(key, value) {
-  localStorage.setItem(key, JSON.stringify(value));
+function deepClone(x) {
+  return JSON.parse(JSON.stringify(x));
 }
 
 function initState() {
-  const directions = DEFAULT_DIRECTIONS.map((name) => ({
+  const directions = DEFAULT_DIRECTIONS.map((name, i) => ({
     id: uid(),
     name,
+    color: DIR_COLORS[i % DIR_COLORS.length],
     tickets: [],
   }));
-  return { version: 2, directions };
+  return { version: 3, ui: { view: "kanban", sort: "manual", filter: "open" }, directions };
 }
 
-function deepClone(x) {
-  return JSON.parse(JSON.stringify(x));
+function colorForName(name) {
+  const idx = DEFAULT_DIRECTIONS.indexOf(name);
+  if (idx >= 0) return DIR_COLORS[idx % DIR_COLORS.length];
+  let h = 0;
+  for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) >>> 0;
+  return DIR_COLORS[h % DIR_COLORS.length];
+}
+
+function normalizeTicket(t) {
+  const title = String((t && (t.title ?? t.text)) || "").trim();
+  return {
+    id: (t && t.id) || uid(),
+    title,
+    note: String((t && t.note) || "").trim(),
+    link: t && t.link ? String(t.link).trim() : "",
+    createdAt: t && typeof t.createdAt === "number" ? t.createdAt : nowTs(),
+    done: !!(t && t.done),
+  };
+}
+
+function normalizeState(raw) {
+  const base = initState();
+  if (!raw || !Array.isArray(raw.directions)) return base;
+
+  const ui = raw.ui && typeof raw.ui === "object" ? raw.ui : {};
+  const view = ui.view === "list" ? "list" : "kanban";
+  const sort = ["manual", "oldest", "newest", "title"].includes(ui.sort) ? ui.sort : "manual";
+  const filter = ["open", "all", "done"].includes(ui.filter) ? ui.filter : "open";
+
+  const existing = raw.directions.map((d) => ({
+    id: d.id || uid(),
+    name: String(d.name || "Untitled"),
+    color: String(d.color || ""),
+    tickets: Array.isArray(d.tickets) ? d.tickets.map(normalizeTicket).filter((x) => x.title) : [],
+  }));
+
+  const byName = new Map(existing.map((d) => [d.name, d]));
+  for (const name of DEFAULT_DIRECTIONS) {
+    if (!byName.has(name)) {
+      const nd = { id: uid(), name, color: colorForName(name), tickets: [] };
+      existing.push(nd);
+      byName.set(name, nd);
+    }
+  }
+
+  for (const d of existing) {
+    if (!d.color) d.color = colorForName(d.name);
+  }
+
+  return { version: 3, ui: { view, sort, filter }, directions: existing };
 }
 
 function cleanupForNewWeek() {
   const currentWeek = isoWeekKeyForBeirut();
   const storedWeek = localStorage.getItem(WEEK_KEY);
-
   if (!storedWeek) {
     localStorage.setItem(WEEK_KEY, currentWeek);
     return;
   }
-
   if (storedWeek === currentWeek) return;
 
   const prevState = loadJSON(STORAGE_KEY, null);
@@ -113,11 +179,7 @@ function cleanupForNewWeek() {
     const hasAny = prevState.directions.some((d) => (d.tickets || []).length > 0);
     if (hasAny) {
       const prevArchive = loadJSON(ARCHIVE_KEY, []);
-      prevArchive.push({
-        weekKey: storedWeek,
-        archivedAt: nowTs(),
-        state: deepClone(prevState),
-      });
+      prevArchive.push({ weekKey: storedWeek, archivedAt: nowTs(), state: deepClone(prevState) });
       saveJSON(ARCHIVE_KEY, prevArchive);
     }
   }
@@ -141,48 +203,8 @@ function showToast(text) {
   }, 1400);
 }
 
-function normalizeTicket(t) {
-  const title = String((t && (t.title ?? t.text)) || "").trim();
-  return {
-    id: (t && t.id) || uid(),
-    title,
-    note: String((t && t.note) || "").trim(),
-    link: t && t.link ? String(t.link).trim() : "",
-    createdAt: t && typeof t.createdAt === "number" ? t.createdAt : nowTs(),
-    done: !!(t && t.done),
-  };
-}
-
-function normalizeState(raw) {
-  if (!raw || !Array.isArray(raw.directions)) return initState();
-  return {
-    version: 2,
-    directions: raw.directions.map((d) => ({
-      id: d.id || uid(),
-      name: String(d.name || "Untitled"),
-      tickets: Array.isArray(d.tickets) ? d.tickets.map(normalizeTicket).filter((t) => t.title) : [],
-    })),
-  };
-}
-
 function persist() {
   saveJSON(STORAGE_KEY, state);
-}
-
-function matchesSearch(ticket) {
-  const q = searchQuery.trim().toLowerCase();
-  if (!q) return true;
-  const a = (ticket.title || "").toLowerCase();
-  const b = (ticket.note || "").toLowerCase();
-  const c = (ticket.link || "").toLowerCase();
-  return a.includes(q) || b.includes(q) || c.includes(q);
-}
-
-function humanAge(ts) {
-  const days = Math.floor((nowTs() - ts) / 86400000);
-  if (days <= 0) return "today";
-  if (days === 1) return "1d";
-  return `${days}d`;
 }
 
 function findDirection(dirId) {
@@ -201,10 +223,20 @@ function findTicket(ticketId) {
   return null;
 }
 
-function render() {
-  renderQuickDirOptions();
-  renderFocusPanel();
-  renderBoard();
+function matchesSearch(ticket) {
+  const q = searchQuery.trim().toLowerCase();
+  if (!q) return true;
+  const a = (ticket.title || "").toLowerCase();
+  const b = (ticket.note || "").toLowerCase();
+  const c = (ticket.link || "").toLowerCase();
+  return a.includes(q) || b.includes(q) || c.includes(q);
+}
+
+function humanAge(ts) {
+  const days = Math.floor((nowTs() - ts) / 86400000);
+  if (days <= 0) return "today";
+  if (days === 1) return "1d";
+  return `${days}d`;
 }
 
 function renderQuickDirOptions() {
@@ -219,6 +251,32 @@ function renderQuickDirOptions() {
   if (current && state.directions.some((d) => d.id === current)) el.quickDir.value = current;
 }
 
+function setView(view) {
+  state.ui.view = view;
+  persist();
+  render();
+}
+
+function setSort(sort) {
+  state.ui.sort = sort;
+  if (state.ui.sort !== "manual") showToast("Sorting disables drag. Switch to Manual to drag.");
+  persist();
+  render();
+}
+
+function setFilter(filter) {
+  state.ui.filter = filter;
+  persist();
+  render();
+}
+
+function renderTopbarState() {
+  el.sortSelect.value = state.ui.sort;
+  el.filterSelect.value = state.ui.filter;
+  el.viewKanban.classList.toggle("active", state.ui.view === "kanban");
+  el.viewList.classList.toggle("active", state.ui.view === "list");
+}
+
 function focusCandidates() {
   const todayId = (findDirectionByName("Today (P0)") || {}).id;
   const items = [];
@@ -226,7 +284,7 @@ function focusCandidates() {
     for (const t of d.tickets) {
       if (t.done) continue;
       if (!matchesSearch(t)) continue;
-      items.push({ dirId: d.id, dirName: d.name, ticket: t, isToday: todayId && d.id === todayId });
+      items.push({ dirName: d.name, ticket: t, isToday: todayId && d.id === todayId });
     }
   }
   items.sort((a, b) => {
@@ -270,148 +328,14 @@ function renderFocusPanel() {
   }
 }
 
-function renderBoard() {
-  el.board.innerHTML = "";
-  for (const d of state.directions) {
-    const col = document.createElement("section");
-    col.className = "col";
-    col.setAttribute("data-dir-id", d.id);
-
-    const head = document.createElement("div");
-    head.className = "colhead";
-    head.draggable = true;
-    head.setAttribute("data-drag-dir", d.id);
-
-    const title = document.createElement("div");
-    title.className = "coltitle";
-    title.textContent = d.name;
-
-    const count = document.createElement("div");
-    count.className = "colcount";
-    count.textContent = `${d.tickets.filter((t) => !t.done).length} open`;
-
-    head.appendChild(title);
-    head.appendChild(count);
-    col.appendChild(head);
-
-    const list = document.createElement("div");
-    list.className = "collist";
-    list.setAttribute("data-ticket-list", d.id);
-    const activeTickets = d.tickets.filter((t) => !t.done && matchesSearch(t));
-    const doneTickets = d.tickets.filter((t) => t.done && matchesSearch(t));
-    for (const t of activeTickets) list.appendChild(renderTicket(t));
-    col.appendChild(list);
-
-    const doneWrap = document.createElement("div");
-    doneWrap.className = "donewrap";
-    const details = document.createElement("details");
-    details.className = "donedetails";
-    const summary = document.createElement("summary");
-    summary.textContent = `Done (${d.tickets.filter((t) => t.done).length})`;
-    details.appendChild(summary);
-    const doneList = document.createElement("div");
-    doneList.className = "done-list";
-    doneList.setAttribute("data-done-list", d.id);
-    for (const t of doneTickets) doneList.appendChild(renderTicket(t));
-    details.appendChild(doneList);
-    doneWrap.appendChild(details);
-    col.appendChild(doneWrap);
-
-    const add = document.createElement("div");
-    add.className = "addbar";
-    const input = document.createElement("input");
-    input.className = "addinput";
-    input.type = "text";
-    input.placeholder = "Title (Enter to add)";
-    input.setAttribute("data-add-title", d.id);
-    input.autocomplete = "off";
-    const note = document.createElement("input");
-    note.className = "addnote";
-    note.type = "text";
-    note.placeholder = "Note (optional)";
-    note.setAttribute("data-add-note", d.id);
-    note.autocomplete = "off";
-    add.appendChild(input);
-    add.appendChild(note);
-    col.appendChild(add);
-
-    el.board.appendChild(col);
-  }
-}
-
-function renderTicket(ticket) {
-  const card = document.createElement("div");
-  card.className = "ticket" + (ticket.done ? " done" : "");
-  card.setAttribute("data-ticket-id", ticket.id);
-
-  const draggable = !ticket.done;
-  card.draggable = draggable;
-  if (draggable) card.setAttribute("data-drag-ticket", ticket.id);
-
-  const row = document.createElement("div");
-  row.className = "ticketrow";
-
-  const boxWrap = document.createElement("div");
-  boxWrap.className = "donebox";
-  const cb = document.createElement("input");
-  cb.type = "checkbox";
-  cb.className = "donebox";
-  cb.checked = !!ticket.done;
-  cb.setAttribute("data-done-toggle", ticket.id);
-  boxWrap.appendChild(cb);
-
-  const body = document.createElement("div");
-  body.className = "ticketbody";
-
-  const top = document.createElement("div");
-  top.className = "tickettop";
-
-  const text = document.createElement("div");
-  text.className = "tickettext";
-  text.textContent = ticket.title;
-
-  const actions = document.createElement("div");
-  actions.className = "ticketactions";
-  const del = document.createElement("button");
-  del.className = "iconbtn";
-  del.type = "button";
-  del.textContent = "Remove";
-  del.setAttribute("data-delete", ticket.id);
-  actions.appendChild(del);
-
-  top.appendChild(text);
-  top.appendChild(actions);
-
-  body.appendChild(top);
-
-  if (ticket.note) {
-    const note = document.createElement("div");
-    note.className = "ticketnote";
-    note.textContent = ticket.note;
-    body.appendChild(note);
-  }
-
-  const meta = document.createElement("div");
-  meta.className = "ticketmeta";
-  const age = document.createElement("span");
-  age.textContent = humanAge(ticket.createdAt);
-  meta.appendChild(age);
-  if (ticket.link) {
-    const a = document.createElement("a");
-    a.className = "tlink";
-    a.href = ticket.link;
-    a.target = "_blank";
-    a.rel = "noopener noreferrer";
-    a.textContent = ticket.link;
-    a.addEventListener("click", (e) => e.stopPropagation());
-    meta.appendChild(a);
-  }
-  body.appendChild(meta);
-
-  row.appendChild(boxWrap);
-  row.appendChild(body);
-  card.appendChild(row);
-  return card;
+function sortTicketsView(tickets) {
+  const mode = state.ui.sort;
+  if (mode === "manual") return tickets;
+  const copy = tickets.slice();
+  if (mode === "oldest") copy.sort((a, b) => a.createdAt - b.createdAt);
+  if (mode === "newest") copy.sort((a, b) => b.createdAt - a.createdAt);
+  if (mode === "title") copy.sort((a, b) => a.title.localeCompare(b.title));
+  return copy;
 }
 
 function addTicketToDirection(dirId, ticketLike) {
@@ -482,17 +406,291 @@ function ticketDropIndex(dirId, overTicketId, after) {
   return after ? idx + 1 : idx;
 }
 
-function openQuickAdd() {
-  el.quickAdd.hidden = false;
+function cssEscape(s) {
+  return String(s).replace(/[^a-zA-Z0-9_-]/g, (m) => "\\" + m);
+}
+
+function renderTicketCard(ticket, draggable) {
+  const card = document.createElement("div");
+  card.className = "ticket" + (ticket.done ? " done" : "");
+  card.setAttribute("data-ticket-id", ticket.id);
+  card.draggable = !!draggable;
+  if (draggable) card.setAttribute("data-drag-ticket", ticket.id);
+
+  const row = document.createElement("div");
+  row.className = "ticketrow";
+
+  const boxWrap = document.createElement("div");
+  boxWrap.className = "donebox";
+  const cb = document.createElement("input");
+  cb.type = "checkbox";
+  cb.className = "donebox";
+  cb.checked = !!ticket.done;
+  cb.setAttribute("data-done-toggle", ticket.id);
+  boxWrap.appendChild(cb);
+
+  const body = document.createElement("div");
+  body.className = "ticketbody";
+
+  const top = document.createElement("div");
+  top.className = "tickettop";
+
+  const text = document.createElement("div");
+  text.className = "tickettext";
+  text.textContent = ticket.title;
+
+  const actions = document.createElement("div");
+  actions.className = "ticketactions";
+  const del = document.createElement("button");
+  del.className = "iconbtn";
+  del.type = "button";
+  del.textContent = "Remove";
+  del.setAttribute("data-delete", ticket.id);
+  actions.appendChild(del);
+
+  top.appendChild(text);
+  top.appendChild(actions);
+  body.appendChild(top);
+
+  if (ticket.note) {
+    const note = document.createElement("div");
+    note.className = "ticketnote";
+    note.textContent = ticket.note;
+    body.appendChild(note);
+  }
+
+  const meta = document.createElement("div");
+  meta.className = "ticketmeta";
+  const age = document.createElement("span");
+  age.textContent = humanAge(ticket.createdAt);
+  meta.appendChild(age);
+  if (ticket.link) {
+    const a = document.createElement("a");
+    a.className = "tlink";
+    a.href = ticket.link;
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    a.textContent = ticket.link;
+    a.addEventListener("click", (e) => e.stopPropagation());
+    meta.appendChild(a);
+  }
+  body.appendChild(meta);
+
+  row.appendChild(boxWrap);
+  row.appendChild(body);
+  card.appendChild(row);
+  return card;
+}
+
+function renderKanban() {
+  el.board.classList.remove("list");
+  el.board.innerHTML = "";
+
+  const allowDrag = state.ui.sort === "manual";
+
+  for (const d of state.directions) {
+    const col = document.createElement("section");
+    col.className = "col";
+    col.setAttribute("data-dir-id", d.id);
+
+    const head = document.createElement("div");
+    head.className = "colhead";
+    head.draggable = allowDrag;
+    head.setAttribute("data-drag-dir", d.id);
+
+    const title = document.createElement("div");
+    title.className = "coltitle";
+    const dot = document.createElement("span");
+    dot.className = "dot";
+    dot.style.background = d.color;
+    title.appendChild(dot);
+    const text = document.createElement("span");
+    text.textContent = d.name;
+    title.appendChild(text);
+
+    const count = document.createElement("div");
+    count.className = "colcount";
+    count.textContent = `${d.tickets.filter((t) => !t.done).length}`;
+
+    head.appendChild(title);
+    head.appendChild(count);
+    col.appendChild(head);
+
+    const list = document.createElement("div");
+    list.className = "collist";
+    list.setAttribute("data-ticket-list", d.id);
+
+    const open = d.tickets.filter((t) => !t.done && matchesSearch(t));
+    const done = d.tickets.filter((t) => t.done && matchesSearch(t));
+
+    let openView = sortTicketsView(open);
+    if (state.ui.filter === "done") openView = [];
+    if (state.ui.filter === "open") {
+      for (const t of openView) list.appendChild(renderTicketCard(t, allowDrag));
+    } else {
+      for (const t of openView) list.appendChild(renderTicketCard(t, allowDrag));
+    }
+
+    col.appendChild(list);
+
+    if (state.ui.filter !== "open") {
+      const doneWrap = document.createElement("div");
+      doneWrap.className = "donewrap";
+      const details = document.createElement("details");
+      details.className = "donedetails";
+      details.open = state.ui.filter === "done";
+      const summary = document.createElement("summary");
+      summary.textContent = `Done (${d.tickets.filter((t) => t.done).length})`;
+      details.appendChild(summary);
+      const doneList = document.createElement("div");
+      doneList.className = "done-list";
+      doneList.setAttribute("data-done-list", d.id);
+      const doneView = sortTicketsView(done);
+      for (const t of doneView) doneList.appendChild(renderTicketCard(t, false));
+      details.appendChild(doneList);
+      doneWrap.appendChild(details);
+      col.appendChild(doneWrap);
+    }
+
+    if (state.ui.filter !== "done") {
+      const add = document.createElement("div");
+      add.className = "addbar";
+      const input = document.createElement("input");
+      input.className = "addinput";
+      input.type = "text";
+      input.placeholder = "Title (Enter to add)";
+      input.setAttribute("data-add-title", d.id);
+      input.autocomplete = "off";
+      const note = document.createElement("input");
+      note.className = "addnote";
+      note.type = "text";
+      note.placeholder = "Note (optional)";
+      note.setAttribute("data-add-note", d.id);
+      note.autocomplete = "off";
+      add.appendChild(input);
+      add.appendChild(note);
+      col.appendChild(add);
+    }
+
+    el.board.appendChild(col);
+  }
+}
+
+function renderList() {
+  el.board.classList.add("list");
+  el.board.innerHTML = "";
+
+  for (const d of state.directions) {
+    const group = document.createElement("section");
+    group.className = "listgroup";
+
+    const head = document.createElement("div");
+    head.className = "listhead";
+    const t = document.createElement("div");
+    t.className = "coltitle";
+    const dot = document.createElement("span");
+    dot.className = "dot";
+    dot.style.background = d.color;
+    t.appendChild(dot);
+    const txt = document.createElement("span");
+    txt.textContent = d.name;
+    t.appendChild(txt);
+    const c = document.createElement("div");
+    c.className = "colcount";
+    c.textContent = `${d.tickets.filter((x) => !x.done).length} open`;
+    head.appendChild(t);
+    head.appendChild(c);
+    group.appendChild(head);
+
+    const items = document.createElement("div");
+    items.className = "listitems";
+
+    const open = d.tickets.filter((x) => !x.done && matchesSearch(x));
+    const done = d.tickets.filter((x) => x.done && matchesSearch(x));
+
+    let view = [];
+    if (state.ui.filter === "open") view = open;
+    if (state.ui.filter === "done") view = done;
+    if (state.ui.filter === "all") view = open.concat(done);
+    view = sortTicketsView(view);
+
+    for (const ticket of view) {
+      const row = document.createElement("div");
+      row.className = "listrow" + (ticket.done ? " done" : "");
+
+      const cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.checked = !!ticket.done;
+      cb.setAttribute("data-done-toggle", ticket.id);
+
+      const main = document.createElement("div");
+      main.className = "listmain";
+      const title = document.createElement("div");
+      title.className = "listtitle";
+      title.textContent = ticket.title;
+      main.appendChild(title);
+      if (ticket.note) {
+        const note = document.createElement("div");
+        note.className = "listnote";
+        note.textContent = ticket.note;
+        main.appendChild(note);
+      }
+      const meta = document.createElement("div");
+      meta.className = "listmeta";
+      const age = document.createElement("span");
+      age.textContent = humanAge(ticket.createdAt);
+      meta.appendChild(age);
+      if (ticket.link) {
+        const a = document.createElement("a");
+        a.className = "tlink";
+        a.href = ticket.link;
+        a.target = "_blank";
+        a.rel = "noopener noreferrer";
+        a.textContent = ticket.link;
+        meta.appendChild(a);
+      }
+      main.appendChild(meta);
+
+      const del = document.createElement("button");
+      del.className = "iconbtn";
+      del.type = "button";
+      del.textContent = "Remove";
+      del.setAttribute("data-delete", ticket.id);
+
+      row.appendChild(cb);
+      row.appendChild(main);
+      row.appendChild(del);
+      items.appendChild(row);
+    }
+
+    group.appendChild(items);
+    el.board.appendChild(group);
+  }
+}
+
+function renderBoard() {
+  if (state.ui.view === "list") renderList();
+  else renderKanban();
+}
+
+function render() {
+  renderTopbarState();
   renderQuickDirOptions();
+  renderFocusPanel();
+  renderBoard();
+}
+
+function openModal() {
+  el.taskModal.hidden = false;
   el.quickTitle.value = "";
   el.quickNote.value = "";
   el.quickLink.value = "";
+  renderQuickDirOptions();
   setTimeout(() => el.quickTitle.focus(), 0);
 }
 
-function closeQuickAdd() {
-  el.quickAdd.hidden = true;
+function closeModal() {
+  el.taskModal.hidden = true;
 }
 
 function quickAddSubmit() {
@@ -502,7 +700,28 @@ function quickAddSubmit() {
   const link = el.quickLink.value.trim();
   if (!title) return;
   addTicketToDirection(dirId, { title, note, link });
-  closeQuickAdd();
+  closeModal();
+}
+
+function templatesApply(kind) {
+  const dir = findDirectionByName("Papers & Blogs");
+  if (!dir) return;
+  const list = [];
+  if (kind === "writing_sprint") {
+    list.push({ title: "Writing sprint (45 min)", note: "Goal: ship 1 page. No edits until the end." });
+    list.push({ title: "Outline next section", note: "3 bullets: claim, evidence, transition." });
+  }
+  if (kind === "review_papers") {
+    list.push({ title: "Review 2 papers", note: "Skim -> 5 key points -> 3 limitations -> 1 idea." });
+    list.push({ title: "Update related work notes", note: "Add 5 bullets + citation links." });
+  }
+  if (kind === "revise_draft") {
+    list.push({ title: "Revise draft", note: "Cut fluff, tighten claims, check figures and captions." });
+    list.push({ title: "Run a clarity pass", note: "Each paragraph: topic sentence + takeaway." });
+  }
+  if (list.length === 0) return;
+  for (const t of list) addTicketToDirection(dir.id, t);
+  showToast("Templates added");
 }
 
 function exportJSON() {
@@ -549,30 +768,9 @@ async function importJSON(file) {
   persist();
   saveJSON(ARCHIVE_KEY, archive);
   localStorage.setItem(WEEK_KEY, parsed.weekKey || isoWeekKeyForBeirut());
-  closeQuickAdd();
+  closeModal();
   showToast("Imported");
   render();
-}
-
-function templatesApply(kind) {
-  const dir = findDirectionByName("Papers & Blogs") || findDirectionByName("Papers & Blogs");
-  if (!dir) return;
-  const list = [];
-  if (kind === "writing_sprint") {
-    list.push({ title: "Writing sprint (45 min)", note: "Goal: ship 1 page. No edits until the end." });
-    list.push({ title: "Outline next section", note: "3 bullets: claim, evidence, transition." });
-  }
-  if (kind === "review_papers") {
-    list.push({ title: "Review 2 papers", note: "Skim -> 5 key points -> 3 limitations -> 1 idea." });
-    list.push({ title: "Update related work notes", note: "Add 5 bullets + citation links." });
-  }
-  if (kind === "revise_draft") {
-    list.push({ title: "Revise draft", note: "Cut fluff, tighten claims, check figures and captions." });
-    list.push({ title: "Run a clarity pass", note: "Each paragraph: topic sentence + takeaway." });
-  }
-  if (list.length === 0) return;
-  for (const t of list) addTicketToDirection(dir.id, t);
-  showToast("Added templates");
 }
 
 function bindEvents() {
@@ -581,17 +779,14 @@ function bindEvents() {
     render();
   });
 
-  el.exportBtn.addEventListener("click", exportJSON);
-  el.importBtn.addEventListener("click", () => el.importFile.click());
-  el.importFile.addEventListener("change", async () => {
-    const f = el.importFile.files && el.importFile.files[0];
-    el.importFile.value = "";
-    if (!f) return;
-    await importJSON(f);
-  });
-
+  el.newTaskBtn.addEventListener("click", openModal);
+  el.modalCloseBtn.addEventListener("click", closeModal);
+  el.quickCloseBtn.addEventListener("click", closeModal);
   el.quickAddBtn.addEventListener("click", quickAddSubmit);
-  el.quickCloseBtn.addEventListener("click", closeQuickAdd);
+
+  el.taskModal.addEventListener("click", (e) => {
+    if (e.target && e.target.getAttribute && e.target.getAttribute("data-close-modal")) closeModal();
+  });
 
   el.quickTitle.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
@@ -612,16 +807,31 @@ function bindEvents() {
     }
   });
 
+  el.sortSelect.addEventListener("change", () => setSort(el.sortSelect.value));
+  el.filterSelect.addEventListener("change", () => setFilter(el.filterSelect.value));
+
+  el.viewKanban.addEventListener("click", () => setView("kanban"));
+  el.viewList.addEventListener("click", () => setView("list"));
+
+  el.exportBtn.addEventListener("click", exportJSON);
+  el.importBtn.addEventListener("click", () => el.importFile.click());
+  el.importFile.addEventListener("change", async () => {
+    const f = el.importFile.files && el.importFile.files[0];
+    el.importFile.value = "";
+    if (!f) return;
+    await importJSON(f);
+  });
+
   document.addEventListener("keydown", (e) => {
     const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : "";
     const isTyping = tag === "input" || tag === "textarea" || tag === "select";
     if (e.key === "Escape") {
-      closeQuickAdd();
+      closeModal();
       return;
     }
     if (e.key === "n" && !isTyping) {
       e.preventDefault();
-      openQuickAdd();
+      openModal();
     }
   });
 
@@ -633,6 +843,8 @@ function bindEvents() {
   });
 
   el.board.addEventListener("keydown", (e) => {
+    if (state.ui.view !== "kanban") return;
+    if (state.ui.filter === "done") return;
     const titleInput = e.target && e.target.matches && e.target.matches("[data-add-title]");
     const noteInput = e.target && e.target.matches && e.target.matches("[data-add-note]");
     if (!titleInput && !noteInput) return;
@@ -669,6 +881,8 @@ function bindEvents() {
   });
 
   el.board.addEventListener("dragstart", (e) => {
+    if (state.ui.view !== "kanban") return;
+    if (state.ui.sort !== "manual") return;
     const t = e.target;
     clearDropClasses();
 
@@ -700,6 +914,8 @@ function bindEvents() {
   });
 
   el.board.addEventListener("dragover", (e) => {
+    if (state.ui.view !== "kanban") return;
+    if (state.ui.sort !== "manual") return;
     if (!drag || !drag.type) return;
     e.preventDefault();
     const target = e.target;
@@ -728,6 +944,8 @@ function bindEvents() {
   });
 
   el.board.addEventListener("drop", (e) => {
+    if (state.ui.view !== "kanban") return;
+    if (state.ui.sort !== "manual") return;
     if (!drag || !drag.type) return;
     e.preventDefault();
     const target = e.target;
@@ -762,21 +980,13 @@ function bindEvents() {
   });
 }
 
-function cssEscape(s) {
-  return String(s).replace(/[^a-zA-Z0-9_-]/g, (m) => "\\" + m);
-}
-
 function bootstrap() {
   cleanupForNewWeek();
-
+  const v3 = loadJSON(STORAGE_KEY, null);
+  const v2 = loadJSON("focusLens_state_v2", null);
   const v1 = loadJSON("focusLens_state_v1", null);
-  const v2 = loadJSON(STORAGE_KEY, null);
-  state = normalizeState(v2 || v1 || initState());
-
-  const a1 = loadJSON("focusLens_archive_v1", []);
-  const a2 = loadJSON(ARCHIVE_KEY, []);
-  archive = Array.isArray(a2) && a2.length ? a2 : a1;
-
+  state = normalizeState(v3 || v2 || v1 || initState());
+  archive = loadJSON(ARCHIVE_KEY, loadJSON("focusLens_archive_v2", loadJSON("focusLens_archive_v1", [])));
   persist();
   saveJSON(ARCHIVE_KEY, archive);
   bindEvents();
@@ -784,4 +994,3 @@ function bootstrap() {
 }
 
 bootstrap();
-
