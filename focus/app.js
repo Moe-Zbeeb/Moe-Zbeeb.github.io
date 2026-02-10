@@ -36,6 +36,7 @@ const el = {
   exportBtn: document.getElementById("exportBtn"),
   importBtn: document.getElementById("importBtn"),
   importFile: document.getElementById("importFile"),
+  clearBtn: document.getElementById("clearBtn"),
   toast: document.getElementById("toast"),
   newTaskBtn: document.getElementById("newTaskBtn"),
   sortSelect: document.getElementById("sortSelect"),
@@ -434,6 +435,19 @@ function deleteTicket(ticketId) {
     render();
     lastDeleted = null;
   });
+}
+
+function clearAllTickets() {
+  const ok = confirm("Clear ALL tickets (open + done) from every direction? This cannot be undone.");
+  if (!ok) return;
+  for (const d of state.directions) d.tickets = [];
+  searchQuery = "";
+  el.search.value = "";
+  closeModal();
+  lastDeleted = null;
+  persist();
+  render();
+  showToast("Cleared");
 }
 
 function moveTicket(ticketId, toDirId, toIndex) {
@@ -886,6 +900,7 @@ function bindEvents() {
     render();
   });
 
+  el.clearBtn.addEventListener("click", clearAllTickets);
   el.newTaskBtn.addEventListener("click", () => openModalForDir(el.quickDir.value));
   el.modalCloseBtn.addEventListener("click", closeModal);
   el.quickCloseBtn.addEventListener("click", closeModal);

@@ -873,3 +873,19 @@ kbd {
     flex-wrap: wrap;
   }
 }
+
+@media (min-width: 1200px) {
+  .board {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-rows: minmax(0, 1fr);
+    gap: 16px;
+    overflow: hidden;
+    padding: 14px 0 16px;
+    scroll-snap-type: none;
+  }
+
+  .col {
+    width: auto;
+  }
+}
