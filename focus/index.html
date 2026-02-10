@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Focus Lens</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <meta name="color-scheme" content="light" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar-left">
+        <a class="brand" href="./">Focus Lens</a>
+      </div>
+      <div class="topbar-center">
+        <input id="search" class="search" type="search" placeholder="Search tickets..." autocomplete="off" />
+      </div>
+      <div class="topbar-right">
+        <button id="exportBtn" class="btn">Export JSON</button>
+        <button id="importBtn" class="btn">Import JSON</button>
+        <input id="importFile" type="file" accept="application/json" hidden />
+      </div>
+    </header>
+
+    <div id="banner" class="banner" hidden></div>
+
+    <section id="quickAdd" class="quickadd" hidden>
+      <div class="quickadd-inner">
+        <div class="quickadd-title">Quick add</div>
+        <div class="quickadd-row">
+          <select id="quickDir" class="field"></select>
+          <select id="quickPrio" class="field">
+            <option value="P0">P0</option>
+            <option value="P1" selected>P1</option>
+            <option value="P2">P2</option>
+          </select>
+          <input id="quickText" class="field grow" type="text" placeholder="Ticket text" autocomplete="off" />
+        </div>
+        <div class="quickadd-row">
+          <input id="quickLink" class="field grow" type="url" placeholder="Link (optional)" autocomplete="off" />
+          <button id="quickAddBtn" class="btn primary">Add</button>
+          <button id="quickCloseBtn" class="btn">Close</button>
+        </div>
+        <div class="quickadd-hint">Shortcut: press <kbd>n</kbd> to open, <kbd>Esc</kbd> to close</div>
+      </div>
+    </section>
+
+    <section class="focuswrap">
+      <div class="focushead">
+        <div class="focus-title">Focus Panel</div>
+        <div class="focus-sub">Top 5 immediate actions across all directions</div>
+      </div>
+      <ol id="focusList" class="focuslist"></ol>
+    </section>
+
+    <main class="boardwrap">
+      <div id="board" class="board" aria-label="Directions board"></div>
+    </main>
+
+    <div id="toast" class="toast" hidden></div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
+
