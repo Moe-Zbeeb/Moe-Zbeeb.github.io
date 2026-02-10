@@ -121,6 +121,34 @@ a {
   padding-right: 10px;
 }
 
+select.btn.select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 34px;
+  background-image: linear-gradient(45deg, transparent 50%, rgba(15, 23, 42, 0.55) 50%),
+    linear-gradient(135deg, rgba(15, 23, 42, 0.55) 50%, transparent 50%);
+  background-position: calc(100% - 16px) 50%, calc(100% - 11px) 50%;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+}
+
+.btn:disabled,
+.iconbtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.segbtn:focus-visible,
+.btn:focus-visible,
+.search:focus-visible,
+.field:focus-visible,
+.iconbtn:focus-visible,
+.chip:focus-visible,
+.iconx:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.22);
+  outline-offset: 2px;
+}
+
 .seg {
   display: inline-flex;
   border: 1px solid var(--line);
@@ -403,6 +431,12 @@ kbd {
   box-shadow: 0 6px 18px rgba(2, 6, 23, 0.05);
 }
 
+.listrow.ping {
+  animation: ping 900ms ease-out 1;
+  outline: 3px solid rgba(37, 99, 235, 0.18);
+  outline-offset: 2px;
+}
+
 .listrow.done {
   opacity: 0.7;
 }
@@ -464,6 +498,28 @@ kbd {
   backdrop-filter: blur(10px);
 }
 
+.headactions {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.headbtn {
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.92);
+  cursor: pointer;
+  font-weight: 950;
+  color: var(--muted);
+}
+
+.headbtn:hover {
+  border-color: rgba(15, 23, 42, 0.18);
+  color: var(--ink);
+}
+
 .colhead:active {
   cursor: grabbing;
 }
@@ -499,6 +555,27 @@ kbd {
   background: rgba(255, 255, 255, 0.95);
   padding: 12px 12px 10px;
   box-shadow: 0 8px 20px rgba(2, 6, 23, 0.06);
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+
+.ticket:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 30px rgba(2, 6, 23, 0.09);
+}
+
+.ping {
+  animation: ping 900ms ease-out 1;
+  outline: 3px solid rgba(37, 99, 235, 0.18);
+  outline-offset: 2px;
+}
+
+@keyframes ping {
+  0% {
+    outline-color: rgba(37, 99, 235, 0.4);
+  }
+  100% {
+    outline-color: rgba(37, 99, 235, 0);
+  }
 }
 
 .ticket[draggable="true"] {
@@ -713,6 +790,9 @@ kbd {
   box-shadow: var(--shadow);
   font-weight: 650;
   z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .modal-body {

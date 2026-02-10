@@ -25,6 +25,8 @@ let archive = [];
 let searchQuery = "";
 let drag = { type: null };
 let toastTimer = null;
+let toastAction = null;
+let lastDeleted = null;
 
 const el = {
   board: document.getElementById("board"),
@@ -205,12 +207,39 @@ function showBanner(text) {
 }
 
 function showToast(text) {
+  showToastAction(text);
+}
+
+function hideToast() {
   clearTimeout(toastTimer);
-  el.toast.textContent = text;
+  toastTimer = null;
+  el.toast.hidden = true;
+  el.toast.replaceChildren();
+  toastAction = null;
+}
+
+function showToastAction(text, actionLabel, actionFn) {
+  clearTimeout(toastTimer);
+  el.toast.replaceChildren();
+  const msg = document.createElement("span");
+  msg.textContent = text;
+  el.toast.appendChild(msg);
+  if (actionLabel && typeof actionFn === "function") {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "iconbtn";
+    btn.textContent = actionLabel;
+    btn.addEventListener("click", () => {
+      actionFn();
+      hideToast();
+    });
+    el.toast.appendChild(btn);
+    toastAction = actionFn;
+  } else {
+    toastAction = null;
+  }
   el.toast.hidden = false;
-  toastTimer = setTimeout(() => {
-    el.toast.hidden = true;
-  }, 1400);
+  toastTimer = setTimeout(hideToast, 1600);
 }
 
 function persist() {
@@ -294,7 +323,7 @@ function focusCandidates() {
     for (const t of d.tickets) {
       if (t.done) continue;
       if (!matchesSearch(t)) continue;
-      items.push({ dirName: d.name, ticket: t, isToday: todayId && d.id === todayId });
+      items.push({ dirId: d.id, dirName: d.name, ticket: t, isToday: todayId && d.id === todayId });
     }
   }
   items.sort((a, b) => {
@@ -334,8 +363,36 @@ function renderFocusPanel() {
     age.textContent = humanAge(item.ticket.createdAt);
     li.appendChild(main);
     li.appendChild(age);
+    li.style.cursor = "pointer";
+    li.addEventListener("click", () => revealTicket(item.ticket.id));
     el.focusList.appendChild(li);
   }
+}
+
+function revealTicket(ticketId) {
+  const q = searchQuery.trim();
+  if (q) {
+    searchQuery = "";
+    el.search.value = "";
+    render();
+    requestAnimationFrame(() => revealTicket(ticketId));
+    return;
+  }
+
+  const found = findTicket(ticketId);
+  if (!found) return;
+  const isKanban = state.ui.view === "kanban";
+  if (isKanban) {
+    const col = el.board.querySelector(`[data-dir-id="${cssEscape(found.dir.id)}"]`);
+    if (col && col.scrollIntoView) col.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+  }
+
+  const node = el.board.querySelector(`[data-ticket-id="${cssEscape(ticketId)}"]`);
+  if (!node) return;
+  node.classList.remove("ping");
+  node.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
+  node.classList.add("ping");
+  setTimeout(() => node.classList.remove("ping"), 1000);
 }
 
 function sortTicketsView(tickets) {
@@ -363,9 +420,20 @@ function deleteTicket(ticketId) {
   if (!found) return;
   const idx = found.dir.tickets.findIndex((t) => t.id === ticketId);
   if (idx < 0) return;
-  found.dir.tickets.splice(idx, 1);
+  const removed = found.dir.tickets.splice(idx, 1)[0];
+  lastDeleted = { dirId: found.dir.id, index: idx, ticket: removed };
   persist();
   render();
+  showToastAction("Removed", "Undo", () => {
+    if (!lastDeleted) return;
+    const d = findDirection(lastDeleted.dirId);
+    if (!d) return;
+    const at = Math.max(0, Math.min(lastDeleted.index, d.tickets.length));
+    d.tickets.splice(at, 0, lastDeleted.ticket);
+    persist();
+    render();
+    lastDeleted = null;
+  });
 }
 
 function moveTicket(ticketId, toDirId, toIndex) {
@@ -496,7 +564,7 @@ function renderKanban() {
   el.board.classList.remove("list");
   el.board.innerHTML = "";
 
-  const allowDrag = state.ui.sort === "manual";
+  const allowDrag = state.ui.sort === "manual" && !searchQuery.trim() && state.ui.filter !== "done";
 
   for (const d of state.directions) {
     const col = document.createElement("section");
@@ -522,8 +590,24 @@ function renderKanban() {
     count.className = "colcount";
     count.textContent = `${d.tickets.filter((t) => !t.done).length}`;
 
+    const actions = document.createElement("div");
+    actions.className = "headactions";
+    const add = document.createElement("button");
+    add.type = "button";
+    add.className = "headbtn";
+    add.textContent = "+";
+    add.setAttribute("data-col-add", d.id);
+    const more = document.createElement("button");
+    more.type = "button";
+    more.className = "headbtn";
+    more.textContent = "⋯";
+    more.setAttribute("data-col-menu", d.id);
+    actions.appendChild(add);
+    actions.appendChild(more);
+
     head.appendChild(title);
     head.appendChild(count);
+    head.appendChild(actions);
     col.appendChild(head);
 
     const list = document.createElement("div");
@@ -627,6 +711,7 @@ function renderList() {
     for (const ticket of view) {
       const row = document.createElement("div");
       row.className = "listrow" + (ticket.done ? " done" : "");
+      row.setAttribute("data-ticket-id", ticket.id);
 
       const cb = document.createElement("input");
       cb.type = "checkbox";
@@ -697,6 +782,7 @@ function openModal() {
   el.quickNote.value = "";
   el.quickLink.value = "";
   renderQuickDirOptions();
+  updateModalCTA();
   setTimeout(() => el.quickTitle.focus(), 0);
 }
 
@@ -713,6 +799,15 @@ function quickAddSubmit() {
   if (!title) return;
   addTicketToDirection(dirId, { title, note, link });
   closeModal();
+}
+
+function openModalForDir(dirId) {
+  openModal();
+  if (dirId) el.quickDir.value = dirId;
+}
+
+function updateModalCTA() {
+  el.quickAddBtn.disabled = !el.quickTitle.value.trim();
 }
 
 function templatesApply(kind) {
@@ -791,7 +886,7 @@ function bindEvents() {
     render();
   });
 
-  el.newTaskBtn.addEventListener("click", openModal);
+  el.newTaskBtn.addEventListener("click", () => openModalForDir(el.quickDir.value));
   el.modalCloseBtn.addEventListener("click", closeModal);
   el.quickCloseBtn.addEventListener("click", closeModal);
   el.quickAddBtn.addEventListener("click", quickAddSubmit);
@@ -817,6 +912,7 @@ function bindEvents() {
       quickAddSubmit();
     }
   });
+  el.quickTitle.addEventListener("input", updateModalCTA);
   el.quickNote.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -854,11 +950,22 @@ function bindEvents() {
     }
     if (e.key === "n" && !isTyping) {
       e.preventDefault();
-      openModal();
+      openModalForDir(el.quickDir.value);
     }
   });
 
   document.addEventListener("click", (e) => {
+    const colAdd = e.target && e.target.closest ? e.target.closest("[data-col-add]") : null;
+    if (colAdd) {
+      const dirId = colAdd.getAttribute("data-col-add");
+      openModalForDir(dirId);
+      return;
+    }
+    const colMenu = e.target && e.target.closest ? e.target.closest("[data-col-menu]") : null;
+    if (colMenu) {
+      showToast("Menu soon");
+      return;
+    }
     const btn = e.target && e.target.closest ? e.target.closest("[data-template]") : null;
     if (!btn) return;
     const k = btn.getAttribute("data-template");
@@ -906,6 +1013,16 @@ function bindEvents() {
   el.board.addEventListener("dragstart", (e) => {
     if (state.ui.view !== "kanban") return;
     if (state.ui.sort !== "manual") return;
+    if (state.ui.filter === "done") {
+      e.preventDefault();
+      showToast("Switch filter to Open/All to drag");
+      return;
+    }
+    if (searchQuery.trim()) {
+      e.preventDefault();
+      showToast("Clear search to drag");
+      return;
+    }
     const t = e.target;
     clearDropClasses();
 
