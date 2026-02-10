@@ -1,0 +1,168 @@
+\\documentclass[letterpaper,11pt]{article}
+
+\\usepackage{mathptmx}
+\\usepackage{microtype}
+\\usepackage{setspace}
+\\setstretch{1.05}
+
+\\usepackage{latexsym}
+\\usepackage[empty]{fullpage}
+\\usepackage{titlesec}
+\\usepackage[usenames,dvipsnames]{color}
+\\usepackage{enumitem}
+\\usepackage[hidelinks]{hyperref}
+\\usepackage[english]{babel}
+\\usepackage{tabularx}
+\\usepackage{xcolor}
+\\input{glyphtounicode}
+
+\\definecolor{cvblue}{HTML}{0E5484}
+\\definecolor{black}{HTML}{130810}
+\\definecolor{darkcolor}{HTML}{0F4539}
+\\definecolor{SlateGrey}{HTML}{2E2E2E}
+\\definecolor{LightGrey}{HTML}{666666}
+
+\\colorlet{name}{black}
+\\colorlet{heading}{darkcolor}
+\\colorlet{headingrule}{cvblue}
+\\colorlet{body}{LightGrey}
+
+\\addtolength{\\oddsidemargin}{-0.6in}
+\\addtolength{\\evensidemargin}{-0.5in}
+\\addtolength{\\textwidth}{1.19in}
+\\addtolength{\\topmargin}{-0.7in}
+\\addtolength{\\textheight}{1.4in}
+\\urlstyle{same}
+\\raggedbottom
+\\raggedright
+
+\\titleformat{\\section}{
+  \\vspace{-4pt}\\scshape\\raggedright\\large\\bfseries
+}{}{0em}{}[\\color{black}\\titlerule \\vspace{-5pt}]
+
+\\pdfgentounicode=1
+
+\\newcommand{\\resumeItem}[1]{\\item\\small{#1 \\vspace{-1pt}}}
+
+\\newcommand{\\resumeSubheading}[4]{
+  \\vspace{-2pt}\\item
+  \\begin{tabular*}{1.0\\textwidth}[t]{l@{\\extracolsep{\\fill}}r}
+    \\textbf{\\large #1} & \\textbf{\\small #2} \\\\
+    \\textit{\\large #3} & \\textit{\\small #4} \\\\
+  \\end{tabular*}\\vspace{-7pt}
+}
+
+\\newcommand{\\resumeSubHeadingListStart}{\\begin{itemize}[leftmargin=0in, label={}]}
+\\newcommand{\\resumeSubHeadingListEnd}{\\end{itemize}}
+\\newcommand{\\resumeItemListStart}{\\begin{itemize}[leftmargin=0.1in]}
+\\newcommand{\\resumeItemListEnd}{\\end{itemize}\\vspace{-5pt}}
+
+\\renewcommand\\labelitemi{$\\vcenter{\\hbox{\\tiny$\\bullet$}}$}
+
+\\begin{document}
+
+\\begin{center}
+  {\\huge Mohammad Zbeeb} \\\\[2pt]
+  {+961 (81) 534 672} ~--~
+  \\href{mailto:mbz02@mail.aub.edu}{mbz02@mail.aub.edu} ~--~
+  \\href{https://www.linkedin.com/in/mohamad-zbib-16b604265/}{LinkedIn} ~--~
+  \\href{https://github.com/Moe-Zbeeb}{GitHub} ~--~
+  \\href{https://scholar.google.com/citations?user=JJg7iTMAAAAJ&hl=en}{Google Scholar}
+\\end{center}
+
+\\section{EDUCATION}
+\\resumeSubHeadingListStart
+  \\resumeSubheading
+    {American University of Beirut}{Beirut, Lebanon}
+    {B.E.\\ Computer and Communication Engineering}{2022 -- 2026}
+\\resumeSubHeadingListEnd
+
+\\section{PUBLICATIONS}
+\\resumeSubHeadingListStart
+
+\\resumeItem{
+\\textbf{Hala Technical Report: Building Arabic-Centric Instruction \\& Translation Models at Scale} \\quad
+\\href{https://huggingface.co/papers/2509.14008}{\\textcolor{blue}{[Paper]}}\\quad
+\\href{https://huggingface.co/collections/hammh0a/hala-68bf02b34a14b9f22305ab3a}{\\textcolor{blue}{[Models]}}\\quad
+\\href{https://github.com/hammoudhasan/Hala}{\\textcolor{blue}{[Code]}}
+}
+
+\\resumeItem{
+\\textbf{Reasoning Vectors: Transferring Chain-of-Thought Capabilities via Task Arithmetic} \\quad
+\\href{https://huggingface.co/papers/2509.01363}{\\textcolor{blue}{[Preprint]}}\\quad
+\\href{https://huggingface.co/zbeeb}{\\textcolor{blue}{[Models]}}
+}
+
+\\resumeItem{
+\\textbf{AraLingBench: A Human-Annotated Benchmark for Evaluating Arabic Linguistic Capabilities of LLMs} \\quad
+\\href{https://huggingface.co/papers/2511.14295}{\\textcolor{blue}{[Paper]}}
+}
+
+\\resumeItem{
+\\textbf{Optimizing Deep Neural Networks via Safety-Guided Self Compression} \\quad
+\\href{https://arxiv.org/abs/2505.00350}{\\textcolor{blue}{[Paper]}}\\quad
+\\href{https://github.com/Moe-Zbeeb/Optimizing-Deep-Neural-Networks-via-Safety-Guided-Self-Compression.git}{\\textcolor{blue}{[Code]}}
+}
+
+\\resumeItem{
+\\textbf{Exploring the Landscape for Generative Sequence Models for Specialized Data Synthesis} \\quad
+\\href{https://www.opastpublishers.com/open-access-articles/exploring-the-landscape-for-generative-models-for-specialized-data-synthesis.pdf}{\\textcolor{blue}{[Paper]}}\\quad
+\\href{https://github.com/Moe-Zbeeb/Exploring-the-landscape-for-generative-models-for-specialized-data-generation.git}{\\textcolor{blue}{[Code]}}
+}
+
+\\resumeSubHeadingListEnd
+
+\\section{EXPERIENCE}
+\\resumeSubHeadingListStart
+
+\\resumeSubheading
+  {Research Assistant, Image \\& Video Understanding Lab (IVUL)}{}
+  {King Abdullah University of Science and Technology (KAUST)}{May 2025 -- Present}
+\\resumeItemListStart
+  \\resumeItem{First author of \\textit{Reasoning Vectors}, showing reasoning transfer via task-vector arithmetic without retraining.}
+  \\resumeItem{Co-first author of \\textit{Hala}, an Arabic instruction and translation suite built with translate-and-tune pipelines, SLERP merging, and bilingual fine-tuning.}
+  \\resumeItem{Co-first author of \\textit{AraLingBench}, a fully human-annotated benchmark evaluating 35 Arabic and bilingual LLMs across linguistic reasoning tasks.}
+  \\resumeItem{Research on reasoning enhancement, model merging, and cross-lingual representation alignment under Prof.\\ Bernard Ghanem.}
+\\resumeItemListEnd
+
+\\resumeSubheading
+  {Researcher}{}
+  {Edgebot}{Oct 2025 -- Present}
+\\resumeItemListStart
+  \\resumeItem{Post-training work spanning data curation, full training runs, and targeted task finetuning for proprietary LLMs.}
+  \\resumeItem{Edgebot is building an LLM-native research environment for systematic trading from raw market data through training, research, portfolio construction, and execution.}
+\\resumeItemListEnd
+
+\\resumeSubheading
+  {Co-Instructor, AI in Medicine \\& Introduction to Machine Learning}{}
+  {American University of Beirut}{Jan 2024 -- Present}
+\\resumeItemListStart
+  \\resumeItem{Teaching assistant for \\textit{Introduction to Machine Learning} (3 terms): led paper discussions, delivered ~30\\% of lectures, and authored assignments and quizzes.}
+  \\resumeItem{Supported \\textit{AI in Medicine} at AUB Faculty of Medicine: developed deep learning material and delivered lectures to M.D. students.}
+\\resumeItemListEnd
+
+\\resumeSubheading
+  {Research Assistant, Data Science}{}
+  {American University of Beirut Medical Center}{Jul 2024 -- Nov 2024}
+\\resumeItemListStart
+  \\resumeItem{Investigated repeatable features in ophthalmology eye maps to improve clinical diagnostics.}
+\\resumeItemListEnd
+
+\\resumeSubheading
+  {Software/ML Engineer}{}
+  {Chimera Cybersecurity}{Jan 2025 -- Oct 2025}
+\\resumeItemListStart
+  \\resumeItem{Led a mid-sized engineering team building edge-deployed ML for network security, including phishing detection and resource-constrained language models.}
+  \\resumeItem{Worked on an on-prem security appliance connecting directly to routers for SMB environments.}
+\\resumeItemListEnd
+
+\\resumeSubheading
+  {Research Assistant, Differentiable Optimizers}{}
+  {Ubilite, Low-Power Wi-Fi}{Jan 2024 -- May 2024}
+\\resumeItemListStart
+  \\resumeItem{Built differentiable optimization routines for low-power SoC wireless transceivers (2.5--7 GHz) to improve performance tuning and design efficiency.}
+\\resumeItemListEnd
+
+\\resumeSubHeadingListEnd
+
+\\end{document}

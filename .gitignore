@@ -8,4 +8,7 @@ Gemfile.lock
 *.swp
 *.swo
 *~
-
+*.aux
+*.log
+*.fls
+*.fdb_latexmk
