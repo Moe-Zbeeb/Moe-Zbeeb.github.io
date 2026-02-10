@@ -30,7 +30,6 @@ let lastDeleted = null;
 
 const el = {
   board: document.getElementById("board"),
-  focusList: document.getElementById("focusList"),
   banner: document.getElementById("banner"),
   search: document.getElementById("search"),
   exportBtn: document.getElementById("exportBtn"),
@@ -317,85 +316,6 @@ function renderTopbarState() {
   el.viewList.classList.toggle("active", state.ui.view === "list");
 }
 
-function focusCandidates() {
-  const todayId = (findDirectionByName("Today (P0)") || {}).id;
-  const items = [];
-  for (const d of state.directions) {
-    for (const t of d.tickets) {
-      if (t.done) continue;
-      if (!matchesSearch(t)) continue;
-      items.push({ dirId: d.id, dirName: d.name, ticket: t, isToday: todayId && d.id === todayId });
-    }
-  }
-  items.sort((a, b) => {
-    const ta = a.isToday ? 0 : 1;
-    const tb = b.isToday ? 0 : 1;
-    if (ta !== tb) return ta - tb;
-    return a.ticket.createdAt - b.ticket.createdAt;
-  });
-  return items;
-}
-
-function renderFocusPanel() {
-  el.focusList.innerHTML = "";
-  const top = focusCandidates().slice(0, 5);
-  if (top.length === 0) {
-    const li = document.createElement("li");
-    li.className = "focusitem";
-    li.innerHTML = `<div class="focus-main"><div class="focus-text">No actionable tickets</div><div class="focus-meta">Add a ticket to get started</div></div><div class="focus-age"></div>`;
-    el.focusList.appendChild(li);
-    return;
-  }
-  for (const item of top) {
-    const li = document.createElement("li");
-    li.className = "focusitem";
-    const main = document.createElement("div");
-    main.className = "focus-main";
-    const text = document.createElement("div");
-    text.className = "focus-text";
-    text.textContent = item.ticket.title;
-    const meta = document.createElement("div");
-    meta.className = "focus-meta";
-    meta.textContent = item.dirName;
-    main.appendChild(text);
-    main.appendChild(meta);
-    const age = document.createElement("div");
-    age.className = "focus-age";
-    age.textContent = humanAge(item.ticket.createdAt);
-    li.appendChild(main);
-    li.appendChild(age);
-    li.style.cursor = "pointer";
-    li.addEventListener("click", () => revealTicket(item.ticket.id));
-    el.focusList.appendChild(li);
-  }
-}
-
-function revealTicket(ticketId) {
-  const q = searchQuery.trim();
-  if (q) {
-    searchQuery = "";
-    el.search.value = "";
-    render();
-    requestAnimationFrame(() => revealTicket(ticketId));
-    return;
-  }
-
-  const found = findTicket(ticketId);
-  if (!found) return;
-  const isKanban = state.ui.view === "kanban";
-  if (isKanban) {
-    const col = el.board.querySelector(`[data-dir-id="${cssEscape(found.dir.id)}"]`);
-    if (col && col.scrollIntoView) col.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-  }
-
-  const node = el.board.querySelector(`[data-ticket-id="${cssEscape(ticketId)}"]`);
-  if (!node) return;
-  node.classList.remove("ping");
-  node.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
-  node.classList.add("ping");
-  setTimeout(() => node.classList.remove("ping"), 1000);
-}
-
 function sortTicketsView(tickets) {
   const mode = state.ui.sort;
   if (mode === "manual") return tickets;
@@ -440,14 +360,20 @@ function deleteTicket(ticketId) {
 function clearAllTickets() {
   const ok = confirm("Clear ALL tickets (open + done) from every direction? This cannot be undone.");
   if (!ok) return;
-  for (const d of state.directions) d.tickets = [];
+  const next = normalizeState(state);
+  for (const d of next.directions) d.tickets = [];
+  next.ui.sort = "manual";
+  next.ui.filter = "open";
+  state = next;
   searchQuery = "";
   el.search.value = "";
-  closeModal();
   lastDeleted = null;
+  closeModal();
+  localStorage.removeItem("focusLens_state_v1");
+  localStorage.removeItem("focusLens_state_v2");
   persist();
   render();
-  showToast("Cleared");
+  showToast("Cleared all");
 }
 
 function moveTicket(ticketId, toDirId, toIndex) {
@@ -785,7 +711,6 @@ function renderBoard() {
 function render() {
   renderTopbarState();
   renderQuickDirOptions();
-  renderFocusPanel();
   renderBoard();
 }
 

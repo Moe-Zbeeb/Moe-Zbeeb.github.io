@@ -264,109 +264,6 @@ kbd {
   box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
 }
 
-.focuswrap {
-  max-width: 1500px;
-  margin: 14px auto 0;
-  padding: 0 16px;
-}
-
-.focushead {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 10px;
-}
-
-.focus-title {
-  font-weight: 900;
-  letter-spacing: -0.4px;
-  font-size: 18px;
-}
-
-.focus-sub {
-  color: var(--muted);
-  font-size: 13px;
-}
-
-.focuslist {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  overflow: hidden;
-  background: rgba(255, 255, 255, 0.92);
-}
-
-.focusitem {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  gap: 10px;
-  align-items: center;
-  padding: 12px 14px;
-  border-top: 1px solid var(--line);
-}
-
-.focusitem:first-child {
-  border-top: 0;
-}
-
-.pill {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 22px;
-  padding: 0 8px;
-  border-radius: 999px;
-  border: 1px solid var(--line);
-  background: var(--soft);
-  font-weight: 800;
-  font-size: 12px;
-}
-
-.pill.p0 {
-  background: rgba(239, 68, 68, 0.1);
-  border-color: rgba(239, 68, 68, 0.25);
-  color: #b91c1c;
-}
-
-.pill.p1 {
-  background: rgba(234, 179, 8, 0.12);
-  border-color: rgba(234, 179, 8, 0.25);
-  color: #92400e;
-}
-
-.pill.p2 {
-  background: rgba(59, 130, 246, 0.08);
-  border-color: rgba(59, 130, 246, 0.2);
-  color: #1e40af;
-}
-
-.focus-main {
-  min-width: 0;
-}
-
-.focus-text {
-  font-weight: 750;
-  letter-spacing: -0.2px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.focus-meta {
-  color: var(--muted);
-  font-size: 12px;
-  margin-top: 2px;
-}
-
-.focus-age {
-  color: var(--muted);
-  font-size: 12px;
-  white-space: nowrap;
-}
-
 .boardwrap {
   max-width: 1500px;
   margin: 12px auto 18px;
@@ -556,11 +453,6 @@ kbd {
   padding: 12px 12px 10px;
   box-shadow: 0 8px 20px rgba(2, 6, 23, 0.06);
   transition: transform 120ms ease, box-shadow 120ms ease;
-}
-
-.ticket:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 12px 30px rgba(2, 6, 23, 0.09);
 }
 
 .ping {
@@ -862,11 +754,6 @@ kbd {
   .topbar-right {
     justify-content: flex-start;
     flex-wrap: wrap;
-  }
-
-  .focushead {
-    flex-direction: column;
-    align-items: flex-start;
   }
 
   .topbar-left {
