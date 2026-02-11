@@ -4,6 +4,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Focus Lens</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bangers&family=Patrick+Hand&family=Schoolbell&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="./styles.css" />
     <meta name="color-scheme" content="light" />
   </head>
@@ -12,29 +18,34 @@
       <div class="topbar-left">
         <a class="brand" href="./">Focus Lens</a>
         <button id="newTaskBtn" class="btn primary">New Task</button>
-        <select id="sortSelect" class="btn select" aria-label="Sort">
-          <option value="manual" selected>Sort: Manual</option>
-          <option value="oldest">Sort: Oldest</option>
-          <option value="newest">Sort: Newest</option>
-          <option value="title">Sort: Title</option>
-        </select>
-        <select id="filterSelect" class="btn select" aria-label="Filter">
-          <option value="open" selected>Filter: Open</option>
-          <option value="all">Filter: All</option>
-          <option value="done">Filter: Done</option>
-        </select>
       </div>
       <div class="topbar-center">
-        <input id="search" class="search" type="search" placeholder="Search tickets..." autocomplete="off" />
+        <input id="search" class="search" type="search" placeholder="Search sticky notes..." autocomplete="off" />
       </div>
       <div class="topbar-right">
-        <div class="seg">
-          <button id="viewKanban" class="segbtn active" type="button">Kanban</button>
-          <button id="viewList" class="segbtn" type="button">List</button>
-        </div>
-        <button id="clearBtn" class="btn" type="button">Clear All</button>
-        <button id="exportBtn" class="btn">Export JSON</button>
-        <button id="importBtn" class="btn">Import JSON</button>
+        <details class="toolbox">
+          <summary class="btn toolbox-toggle">Board Tools</summary>
+          <div class="toolbox-panel">
+            <select id="sortSelect" class="btn select" aria-label="Sort">
+              <option value="manual" selected>Sort: Manual</option>
+              <option value="oldest">Sort: Oldest</option>
+              <option value="newest">Sort: Newest</option>
+              <option value="title">Sort: Title</option>
+            </select>
+            <select id="filterSelect" class="btn select" aria-label="Filter">
+              <option value="open" selected>Filter: Open</option>
+              <option value="all">Filter: All</option>
+              <option value="done">Filter: Done</option>
+            </select>
+            <div class="seg">
+              <button id="viewKanban" class="segbtn active" type="button">Kanban</button>
+              <button id="viewList" class="segbtn" type="button">List</button>
+            </div>
+            <button id="exportBtn" class="btn" type="button">Export JSON</button>
+            <button id="importBtn" class="btn" type="button">Import JSON</button>
+            <button id="clearBtn" class="btn danger" type="button">Clear All</button>
+          </div>
+        </details>
         <input id="importFile" type="file" accept="application/json" hidden />
       </div>
     </header>

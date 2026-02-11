@@ -31,6 +31,7 @@ let lastDeleted = null;
 const el = {
   board: document.getElementById("board"),
   banner: document.getElementById("banner"),
+  toolbox: document.querySelector(".toolbox"),
   search: document.getElementById("search"),
   exportBtn: document.getElementById("exportBtn"),
   importBtn: document.getElementById("importBtn"),
@@ -820,6 +821,12 @@ async function importJSON(file) {
 }
 
 function bindEvents() {
+  document.addEventListener("click", (e) => {
+    if (!el.toolbox || !el.toolbox.open) return;
+    if (el.toolbox.contains(e.target)) return;
+    el.toolbox.open = false;
+  });
+
   el.search.addEventListener("input", () => {
     searchQuery = el.search.value || "";
     render();
