@@ -525,7 +525,6 @@ kbd {
   border-radius: 6px;
   background: #f7f0de;
   padding: 8px 8px 7px;
-  min-height: 138px;
 }
 
 .ticket[draggable="true"] {
@@ -551,18 +550,20 @@ kbd {
 
 .ticketrow {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 16px 1fr;
   gap: 6px;
   align-items: start;
 }
 
 .donebox {
-  display: none;
+  margin-top: 2px;
 }
 
 input.donebox,
 .listrow > input[type="checkbox"] {
-  display: none;
+  width: 14px;
+  height: 14px;
+  accent-color: #406e4d;
 }
 
 .ticketbody {
@@ -725,14 +726,13 @@ input.donebox,
 
 .listrow {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 16px 1fr auto;
   gap: 6px;
   align-items: start;
   padding: 6px;
   border: 1px solid rgba(86, 65, 45, 0.72);
   border-radius: 6px;
   background: #f7f0de;
-  min-height: 110px;
 }
 
 .listmain {

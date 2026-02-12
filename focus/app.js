@@ -46,7 +46,6 @@ const el = {
   modalCloseBtn: document.getElementById("modalCloseBtn"),
   quickDir: document.getElementById("quickDir"),
   quickTitle: document.getElementById("quickTitle"),
-  quickNote: document.getElementById("quickNote"),
   quickLink: document.getElementById("quickLink"),
   quickAddBtn: document.getElementById("quickAddBtn"),
   quickCloseBtn: document.getElementById("quickCloseBtn"),
@@ -128,7 +127,7 @@ function normalizeTicket(t) {
   return {
     id: (t && t.id) || uid(),
     title,
-    note: String((t && t.note) || "").trim(),
+    note: "",
     link: t && t.link ? String(t.link).trim() : "",
     createdAt: t && typeof t.createdAt === "number" ? t.createdAt : nowTs(),
     done: !!(t && t.done),
@@ -281,9 +280,8 @@ function matchesSearch(ticket) {
   const q = searchQuery.trim().toLowerCase();
   if (!q) return true;
   const a = (ticket.title || "").toLowerCase();
-  const b = (ticket.note || "").toLowerCase();
-  const c = (ticket.link || "").toLowerCase();
-  return a.includes(q) || b.includes(q) || c.includes(q);
+  const b = (ticket.link || "").toLowerCase();
+  return a.includes(q) || b.includes(q);
 }
 
 function humanAge(ts) {
@@ -485,13 +483,6 @@ function renderTicketCard(ticket, draggable) {
   top.appendChild(actions);
   body.appendChild(top);
 
-  if (ticket.note) {
-    const note = document.createElement("div");
-    note.className = "ticketnote";
-    note.textContent = ticket.note;
-    body.appendChild(note);
-  }
-
   const meta = document.createElement("div");
   meta.className = "ticketmeta";
   const age = document.createElement("span");
@@ -610,14 +601,7 @@ function renderKanban() {
       input.placeholder = "Title (Enter to add)";
       input.setAttribute("data-add-title", d.id);
       input.autocomplete = "off";
-      const note = document.createElement("input");
-      note.className = "addnote";
-      note.type = "text";
-      note.placeholder = "Note (optional)";
-      note.setAttribute("data-add-note", d.id);
-      note.autocomplete = "off";
       add.appendChild(input);
-      add.appendChild(note);
       col.appendChild(add);
     }
 
@@ -679,12 +663,6 @@ function renderList() {
       title.className = "listtitle";
       title.textContent = ticket.title;
       main.appendChild(title);
-      if (ticket.note) {
-        const note = document.createElement("div");
-        note.className = "listnote";
-        note.textContent = ticket.note;
-        main.appendChild(note);
-      }
       const meta = document.createElement("div");
       meta.className = "listmeta";
       const age = document.createElement("span");
@@ -733,7 +711,6 @@ function openModal() {
   el.taskModal.hidden = false;
   document.body.classList.add("modal-open");
   el.quickTitle.value = "";
-  el.quickNote.value = "";
   el.quickLink.value = "";
   renderQuickDirOptions();
   updateModalCTA();
@@ -748,10 +725,9 @@ function closeModal() {
 function quickAddSubmit() {
   const dirId = el.quickDir.value;
   const title = el.quickTitle.value.trim();
-  const note = el.quickNote.value.trim();
   const link = el.quickLink.value.trim();
   if (!title) return;
-  addTicketToDirection(dirId, { title, note, link });
+  addTicketToDirection(dirId, { title, link });
   closeModal();
 }
 
@@ -874,12 +850,6 @@ function bindEvents() {
     }
   });
   el.quickTitle.addEventListener("input", updateModalCTA);
-  el.quickNote.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      quickAddSubmit();
-    }
-  });
   el.quickLink.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -937,19 +907,15 @@ function bindEvents() {
     if (state.ui.view !== "kanban") return;
     if (state.ui.filter === "done") return;
     const titleInput = e.target && e.target.matches && e.target.matches("[data-add-title]");
-    const noteInput = e.target && e.target.matches && e.target.matches("[data-add-note]");
-    if (!titleInput && !noteInput) return;
+    if (!titleInput) return;
     if (e.key !== "Enter") return;
     e.preventDefault();
-    const dirId = e.target.getAttribute(titleInput ? "data-add-title" : "data-add-note");
+    const dirId = e.target.getAttribute("data-add-title");
     const titleEl = el.board.querySelector(`[data-add-title="${cssEscape(dirId)}"]`);
-    const noteEl = el.board.querySelector(`[data-add-note="${cssEscape(dirId)}"]`);
     const title = titleEl ? titleEl.value.trim() : "";
-    const note = noteEl ? noteEl.value.trim() : "";
     if (!title) return;
     if (titleEl) titleEl.value = "";
-    if (noteEl) noteEl.value = "";
-    addTicketToDirection(dirId, { title, note });
+    addTicketToDirection(dirId, { title });
   });
 
   el.board.addEventListener("click", (e) => {

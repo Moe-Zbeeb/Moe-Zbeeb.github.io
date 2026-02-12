@@ -5,7 +5,7 @@ Focus Lens is a fully static, in-browser weekly action dashboard for a researche
 ## Features
 
 - Five default directions (columns) on first load
-- Add tickets by typing and pressing Enter in a direction (title + optional note)
+- Add tickets by typing and pressing Enter in a direction (title only)
 - Drag and drop tickets within and across directions (Manual sort only)
 - Reorder directions by dragging column headers (Manual sort only)
 - Mark tickets done; done items collapse under a `Done (N)` section
