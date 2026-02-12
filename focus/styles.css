@@ -429,7 +429,7 @@ kbd {
 
 .col {
   scroll-snap-align: start;
-  width: 240px;
+  width: 260px;
   flex: 0 0 auto;
   min-height: 0;
   display: flex;
@@ -525,7 +525,7 @@ kbd {
   border-radius: 6px;
   background: #f7f0de;
   padding: 8px 8px 7px;
-  min-height: 120px;
+  min-height: 138px;
 }
 
 .ticket[draggable="true"] {
@@ -732,7 +732,7 @@ input.donebox,
   border: 1px solid rgba(86, 65, 45, 0.72);
   border-radius: 6px;
   background: #f7f0de;
-  min-height: 92px;
+  min-height: 110px;
 }
 
 .listmain {
@@ -801,7 +801,7 @@ input.donebox,
   }
 
   .col {
-    width: min(92vw, 240px);
+    width: min(92vw, 260px);
   }
 }
 
@@ -827,7 +827,7 @@ input.donebox,
 @media (min-width: 1200px) {
   .board {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     grid-auto-rows: minmax(0, 1fr);
     gap: 8px;
     overflow: hidden;

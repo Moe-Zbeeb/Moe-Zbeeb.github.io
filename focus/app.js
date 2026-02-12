@@ -8,8 +8,8 @@ const DEFAULT_DIRECTIONS = [
   "Emails",
   "Slack",
   "Papers & Blogs",
-  "Today (P0)",
 ];
+const REMOVED_DIRECTION_TODAY = "Today (P0)";
 
 const DIR_COLORS = [
   "#6366f1",
@@ -17,7 +17,6 @@ const DIR_COLORS = [
   "#a855f7",
   "#22c55e",
   "#0ea5e9",
-  "#ef4444",
 ];
 
 let state = null;
@@ -145,12 +144,22 @@ function normalizeState(raw) {
   const sort = ["manual", "oldest", "newest", "title"].includes(ui.sort) ? ui.sort : "manual";
   const filter = ["open", "all", "done"].includes(ui.filter) ? ui.filter : "open";
 
-  const existing = raw.directions.map((d) => ({
+  const mapped = raw.directions.map((d) => ({
     id: d.id || uid(),
     name: String(d.name || "Untitled"),
     color: String(d.color || ""),
     tickets: Array.isArray(d.tickets) ? d.tickets.map(normalizeTicket).filter((x) => x.title) : [],
   }));
+
+  const existing = [];
+  const movedFromToday = [];
+  for (const d of mapped) {
+    if (d.name === REMOVED_DIRECTION_TODAY) {
+      movedFromToday.push(...d.tickets);
+      continue;
+    }
+    existing.push(d);
+  }
 
   const byName = new Map(existing.map((d) => [d.name, d]));
   for (const name of DEFAULT_DIRECTIONS) {
@@ -163,6 +172,11 @@ function normalizeState(raw) {
 
   for (const d of existing) {
     if (!d.color) d.color = colorForName(d.name);
+  }
+
+  if (movedFromToday.length > 0) {
+    const target = existing.find((d) => d.name === DEFAULT_DIRECTIONS[0]);
+    if (target) target.tickets.push(...movedFromToday);
   }
 
   return { version: 3, ui: { view, sort, filter }, directions: existing };
