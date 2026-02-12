@@ -429,7 +429,7 @@ kbd {
 
 .col {
   scroll-snap-align: start;
-  width: 260px;
+  width: 240px;
   flex: 0 0 auto;
   min-height: 0;
   display: flex;
@@ -437,7 +437,6 @@ kbd {
   border: 1px solid #5a4430;
   border-radius: var(--radius-sm);
   background:
-    linear-gradient(90deg, rgba(160, 109, 78, 0.14) 34px, transparent 34px),
     repeating-linear-gradient(
       0deg,
       transparent 0,
@@ -515,7 +514,7 @@ kbd {
   padding: 6px 6px 0;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
   flex: 1;
   min-height: 0;
   overflow: auto;
@@ -525,7 +524,8 @@ kbd {
   border: 1px solid rgba(86, 65, 45, 0.7);
   border-radius: 6px;
   background: #f7f0de;
-  padding: 5px 5px 4px;
+  padding: 8px 8px 7px;
+  min-height: 120px;
 }
 
 .ticket[draggable="true"] {
@@ -551,24 +551,25 @@ kbd {
 
 .ticketrow {
   display: grid;
-  grid-template-columns: 16px 1fr;
+  grid-template-columns: 1fr;
   gap: 6px;
   align-items: start;
 }
 
 .donebox {
-  margin-top: 2px;
+  display: none;
 }
 
 input.donebox,
 .listrow > input[type="checkbox"] {
-  width: 14px;
-  height: 14px;
-  accent-color: #406e4d;
+  display: none;
 }
 
 .ticketbody {
+  display: flex;
+  flex-direction: column;
   min-width: 0;
+  min-height: 100%;
 }
 
 .tickettop {
@@ -580,7 +581,7 @@ input.donebox,
 
 .tickettext,
 .listtitle {
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.15;
   color: #342617;
   overflow-wrap: anywhere;
@@ -607,19 +608,17 @@ input.donebox,
 
 .ticketnote,
 .listnote {
-  margin-top: 3px;
-  font-size: 11px;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  margin-top: 4px;
+  font-size: 12px;
+  display: block;
+  overflow: visible;
   color: #6a5237;
   overflow-wrap: anywhere;
 }
 
 .ticketmeta,
 .listmeta {
-  margin-top: 3px;
+  margin-top: auto;
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
@@ -696,7 +695,6 @@ input.donebox,
   border: 1px solid #5a4430;
   border-radius: var(--radius-sm);
   background:
-    linear-gradient(90deg, rgba(160, 109, 78, 0.14) 34px, transparent 34px),
     repeating-linear-gradient(
       0deg,
       transparent 0,
@@ -727,17 +725,21 @@ input.donebox,
 
 .listrow {
   display: grid;
-  grid-template-columns: 16px 1fr auto;
+  grid-template-columns: 1fr auto;
   gap: 6px;
   align-items: start;
   padding: 6px;
   border: 1px solid rgba(86, 65, 45, 0.72);
   border-radius: 6px;
   background: #f7f0de;
+  min-height: 92px;
 }
 
 .listmain {
+  display: flex;
+  flex-direction: column;
   min-width: 0;
+  min-height: 100%;
 }
 
 .minicards,
@@ -799,7 +801,7 @@ input.donebox,
   }
 
   .col {
-    width: min(92vw, 260px);
+    width: min(92vw, 240px);
   }
 }
 
@@ -813,19 +815,19 @@ input.donebox,
 
   .tickettext,
   .listtitle {
-    font-size: 13px;
+    font-size: 14px;
   }
 
   .ticketnote,
   .listnote {
-    font-size: 10px;
+    font-size: 11px;
   }
 }
 
 @media (min-width: 1200px) {
   .board {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     grid-auto-rows: minmax(0, 1fr);
     gap: 8px;
     overflow: hidden;
