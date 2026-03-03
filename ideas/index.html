@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Idea Inbox</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <meta name="color-scheme" content="light" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar-left">
+        <a class="brand" href="./">Idea Inbox</a>
+      </div>
+      <div class="topbar-center">
+        <div class="capture">
+          <input id="captureTitle" class="field capture-title" type="text" placeholder="New idea (Enter to add, Ctrl/Cmd+Enter to pin)" autocomplete="off" />
+          <input id="captureTag" class="field capture-tag" type="text" placeholder="Tag (optional)" autocomplete="off" />
+          <input id="captureLink" class="field capture-link" type="url" placeholder="Link (optional)" autocomplete="off" />
+          <button id="captureAddBtn" class="btn primary" type="button">Add</button>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <details class="toolbox">
+          <summary class="btn toolbox-toggle">Controls</summary>
+          <div class="toolbox-panel">
+            <input id="search" class="search" type="search" placeholder="Search ideas..." autocomplete="off" />
+            <select id="tagFilter" class="btn select" aria-label="Tag filter">
+              <option value="">Filter: All tags</option>
+            </select>
+            <button id="pinnedToggle" class="btn" type="button">Pinned: Off</button>
+            <select id="sortSelect" class="btn select" aria-label="Sort">
+              <option value="newest" selected>Sort: Newest</option>
+              <option value="oldest">Sort: Oldest</option>
+              <option value="title">Sort: Title</option>
+            </select>
+            <div class="seg">
+              <button id="viewStream" class="segbtn active" type="button">Stream</button>
+              <button id="viewBuckets" class="segbtn" type="button">Buckets</button>
+            </div>
+            <button id="exportBtn" class="btn" type="button">Export JSON</button>
+            <button id="mdExportBtn" class="btn" type="button">Export Markdown</button>
+            <button id="importBtn" class="btn" type="button">Import JSON</button>
+            <button id="clearBtn" class="btn danger" type="button">Clear All</button>
+          </div>
+        </details>
+        <input id="importFile" type="file" accept="application/json" hidden />
+      </div>
+    </header>
+
+    <div id="banner" class="banner" hidden></div>
+
+    <main class="boardwrap">
+      <div id="board" class="board stream" aria-label="Ideas board"></div>
+    </main>
+
+    <div id="toast" class="toast" hidden></div>
+    <div id="dragHint" class="draghint" hidden></div>
+
+    <div id="shortcutHelp" class="shortcut-help" hidden>
+      <div class="shortcut-card">
+        <div class="shortcut-head">
+          <div class="shortcut-title">Shortcuts</div>
+          <button id="shortcutClose" class="iconx" type="button" aria-label="Close">×</button>
+        </div>
+        <div class="shortcut-grid">
+          <div><kbd>n</kbd> Focus capture</div>
+          <div><kbd>/</kbd> Focus search</div>
+          <div><kbd>Enter</kbd> Add idea</div>
+          <div><kbd>Ctrl/Cmd+Enter</kbd> Add pinned</div>
+          <div><kbd>p</kbd> Toggle pin on focused</div>
+          <div><kbd>t</kbd> Cycle triage</div>
+          <div><kbd>Esc</kbd> Close/clear</div>
+          <div><kbd>?</kbd> Toggle help</div>
+        </div>
+      </div>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
