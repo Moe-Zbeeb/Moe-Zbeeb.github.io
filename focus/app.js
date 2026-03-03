@@ -3,11 +3,11 @@ const ARCHIVE_KEY = "focusLens_archive_v3";
 const WEEK_KEY = "focusLens_weekKey_v1";
 
 const DEFAULT_DIRECTIONS = [
-  "Leading Projects",
-  "Contributing",
-  "Emails",
-  "Slack",
-  "Papers & Blogs",
+  "Research Roadmap",
+  "Experiments",
+  "Open-Source PRs",
+  "Reading Queue",
+  "Comms & Admin",
 ];
 const REMOVED_DIRECTION_TODAY = "Today (P0)";
 
@@ -46,9 +46,11 @@ const el = {
   modalCloseBtn: document.getElementById("modalCloseBtn"),
   quickDir: document.getElementById("quickDir"),
   quickTitle: document.getElementById("quickTitle"),
+  quickNote: document.getElementById("quickNote"),
   quickLink: document.getElementById("quickLink"),
   quickAddBtn: document.getElementById("quickAddBtn"),
   quickCloseBtn: document.getElementById("quickCloseBtn"),
+  dragHint: document.getElementById("dragHint"),
 };
 
 function uid() {
@@ -127,7 +129,7 @@ function normalizeTicket(t) {
   return {
     id: (t && t.id) || uid(),
     title,
-    note: "",
+    note: t && typeof t.note === "string" ? t.note.trim() : "",
     link: t && t.link ? String(t.link).trim() : "",
     createdAt: t && typeof t.createdAt === "number" ? t.createdAt : nowTs(),
     done: !!(t && t.done),
@@ -253,7 +255,7 @@ function showToastAction(text, actionLabel, actionFn) {
     toastAction = null;
   }
   el.toast.hidden = false;
-  toastTimer = setTimeout(hideToast, 1600);
+  toastTimer = setTimeout(hideToast, 2600);
 }
 
 function persist() {
@@ -281,7 +283,8 @@ function matchesSearch(ticket) {
   if (!q) return true;
   const a = (ticket.title || "").toLowerCase();
   const b = (ticket.link || "").toLowerCase();
-  return a.includes(q) || b.includes(q);
+  const c = (ticket.note || "").toLowerCase();
+  return a.includes(q) || b.includes(q) || c.includes(q);
 }
 
 function humanAge(ts) {
@@ -327,6 +330,14 @@ function renderTopbarState() {
   el.filterSelect.value = state.ui.filter;
   el.viewKanban.classList.toggle("active", state.ui.view === "kanban");
   el.viewList.classList.toggle("active", state.ui.view === "list");
+  if (el.dragHint) {
+    const allow = state.ui.view === "kanban" && state.ui.sort === "manual" && !searchQuery.trim() && state.ui.filter !== "done";
+    document.body.setAttribute("data-drag-allowed", allow ? "1" : "0");
+    el.dragHint.hidden = false;
+    el.dragHint.textContent = allow
+      ? "Drag columns and cards to prioritize"
+      : "Drag disabled: switch to Manual/Open and clear search";
+  }
 }
 
 function sortTicketsView(tickets) {
@@ -488,6 +499,17 @@ function renderTicketCard(ticket, draggable) {
   const age = document.createElement("span");
   age.textContent = humanAge(ticket.createdAt);
   meta.appendChild(age);
+  if (ticket.note) {
+    const noteDetails = document.createElement("details");
+    noteDetails.className = "noteline";
+    const summary = document.createElement("summary");
+    summary.textContent = "Note";
+    const bodyNote = document.createElement("div");
+    bodyNote.textContent = ticket.note;
+    noteDetails.appendChild(summary);
+    noteDetails.appendChild(bodyNote);
+    meta.appendChild(noteDetails);
+  }
   if (ticket.link) {
     const a = document.createElement("a");
     a.className = "tlink";
@@ -663,16 +685,27 @@ function renderList() {
       title.className = "listtitle";
       title.textContent = ticket.title;
       main.appendChild(title);
-      const meta = document.createElement("div");
-      meta.className = "listmeta";
-      const age = document.createElement("span");
-      age.textContent = humanAge(ticket.createdAt);
-      meta.appendChild(age);
-      if (ticket.link) {
-        const a = document.createElement("a");
-        a.className = "tlink";
-        a.href = ticket.link;
-        a.target = "_blank";
+    const meta = document.createElement("div");
+    meta.className = "listmeta";
+    const age = document.createElement("span");
+    age.textContent = humanAge(ticket.createdAt);
+    meta.appendChild(age);
+    if (ticket.note) {
+      const noteDetails = document.createElement("details");
+      noteDetails.className = "noteline";
+      const summary = document.createElement("summary");
+      summary.textContent = "Note";
+      const bodyNote = document.createElement("div");
+      bodyNote.textContent = ticket.note;
+      noteDetails.appendChild(summary);
+      noteDetails.appendChild(bodyNote);
+      meta.appendChild(noteDetails);
+    }
+    if (ticket.link) {
+      const a = document.createElement("a");
+      a.className = "tlink";
+      a.href = ticket.link;
+      a.target = "_blank";
         a.rel = "noopener noreferrer";
         a.textContent = ticket.link;
         meta.appendChild(a);
@@ -711,6 +744,7 @@ function openModal() {
   el.taskModal.hidden = false;
   document.body.classList.add("modal-open");
   el.quickTitle.value = "";
+  el.quickNote.value = "";
   el.quickLink.value = "";
   renderQuickDirOptions();
   updateModalCTA();
@@ -725,9 +759,10 @@ function closeModal() {
 function quickAddSubmit() {
   const dirId = el.quickDir.value;
   const title = el.quickTitle.value.trim();
+  const note = el.quickNote.value.trim();
   const link = el.quickLink.value.trim();
   if (!title) return;
-  addTicketToDirection(dirId, { title, link });
+  addTicketToDirection(dirId, { title, note, link });
   closeModal();
 }
 
@@ -741,20 +776,28 @@ function updateModalCTA() {
 }
 
 function templatesApply(kind) {
-  const dir = findDirectionByName("Papers & Blogs");
+  const dir = findDirectionByName("Reading Queue") || findDirectionByName(DEFAULT_DIRECTIONS[0]);
   if (!dir) return;
   const list = [];
-  if (kind === "writing_sprint") {
-    list.push({ title: "Writing sprint (45 min)", note: "Goal: ship 1 page. No edits until the end." });
-    list.push({ title: "Outline next section", note: "3 bullets: claim, evidence, transition." });
+  if (kind === "paper_triage") {
+    list.push({ title: "Paper triage", note: "Skim -> decide keep/drop -> 3 bullets summary." });
+    list.push({ title: "Pull citations", note: "Export bib entries and add to Zotero." });
   }
-  if (kind === "review_papers") {
-    list.push({ title: "Review 2 papers", note: "Skim -> 5 key points -> 3 limitations -> 1 idea." });
-    list.push({ title: "Update related work notes", note: "Add 5 bullets + citation links." });
+  if (kind === "experiment_checklist") {
+    list.push({ title: "Experiment run checklist", note: "Config, seed, baseline, metrics, logging." });
+    list.push({ title: "Publish run sheet", note: "Link to tracking doc + commit hash." });
   }
-  if (kind === "revise_draft") {
-    list.push({ title: "Revise draft", note: "Cut fluff, tighten claims, check figures and captions." });
-    list.push({ title: "Run a clarity pass", note: "Each paragraph: topic sentence + takeaway." });
+  if (kind === "repro_steps") {
+    list.push({ title: "Repro steps", note: "Clone, data path, env, expected loss after 100 steps." });
+    list.push({ title: "Record diffs", note: "Hardware, libs, config deltas vs paper." });
+  }
+  if (kind === "rebuttal") {
+    list.push({ title: "Draft rebuttal points", note: "One claim per reviewer, evidence link." });
+    list.push({ title: "Tighten figures", note: "Update axes labels + caption clarity." });
+  }
+  if (kind === "weekly_sync") {
+    list.push({ title: "Weekly sync prep", note: "Wins, blockers, asks, risks, next experiments." });
+    list.push({ title: "PRs to surface", note: "Top 3 PRs to merge/unblock." });
   }
   if (list.length === 0) return;
   for (const t of list) addTicketToDirection(dir.id, t);
@@ -764,6 +807,7 @@ function templatesApply(kind) {
 function exportJSON() {
   const payload = {
     app: "Focus Lens",
+    schemaVersion: "v3",
     exportedAt: nowTs(),
     weekKey: localStorage.getItem(WEEK_KEY) || isoWeekKeyForBeirut(),
     state,
@@ -791,6 +835,9 @@ async function importJSON(file) {
 
   const nextState = parsed.state && parsed.state.directions ? parsed.state : parsed;
   const nextArchive = Array.isArray(parsed.archive) ? parsed.archive : loadJSON(ARCHIVE_KEY, []);
+  if (parsed.schemaVersion && parsed.schemaVersion !== "v3") {
+    alert(`Importing schema ${parsed.schemaVersion}; expected v3. Data will be normalized.`);
+  }
 
   if (!nextState || !Array.isArray(nextState.directions)) {
     alert("JSON does not contain a valid Focus Lens state.");
@@ -850,6 +897,13 @@ function bindEvents() {
     }
   });
   el.quickTitle.addEventListener("input", updateModalCTA);
+  el.quickNote.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      quickAddSubmit();
+    }
+  });
+  el.quickNote.addEventListener("input", updateModalCTA);
   el.quickLink.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       e.preventDefault();

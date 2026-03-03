@@ -63,15 +63,21 @@
             <input id="quickTitle" class="field" type="text" placeholder="What is the next atomic action?" autocomplete="off" />
           </div>
           <div class="row">
+            <label class="lbl" for="quickNote">Note</label>
+            <input id="quickNote" class="field" type="text" placeholder="Context, hypothesis, blocker" autocomplete="off" />
+          </div>
+          <div class="row">
             <label class="lbl" for="quickLink">Link</label>
             <input id="quickLink" class="field" type="url" placeholder="Optional" autocomplete="off" />
           </div>
           <div class="tpl">
             <div class="tpl-title">Writing &amp; Reviewing</div>
             <div class="tpl-actions">
-              <button class="chip" type="button" data-template="writing_sprint">Writing sprint</button>
-              <button class="chip" type="button" data-template="review_papers">Review 2 papers</button>
-              <button class="chip" type="button" data-template="revise_draft">Revise draft</button>
+              <button class="chip" type="button" data-template="paper_triage">Paper triage</button>
+              <button class="chip" type="button" data-template="experiment_checklist">Experiment run checklist</button>
+              <button class="chip" type="button" data-template="repro_steps">Repro steps</button>
+              <button class="chip" type="button" data-template="rebuttal">Draft rebuttal points</button>
+              <button class="chip" type="button" data-template="weekly_sync">Weekly sync prep</button>
             </div>
           </div>
         </div>
@@ -88,6 +94,7 @@
     </main>
 
     <div id="toast" class="toast" hidden></div>
+    <div id="dragHint" class="draghint" hidden></div>
 
     <script src="./app.js"></script>
   </body>
