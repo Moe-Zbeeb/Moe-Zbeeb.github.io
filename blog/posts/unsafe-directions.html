@@ -26,9 +26,9 @@
         <p class="subtitle">Research sketch / blog note — testing whether a single safety axis emerges across models after aligning their activations into a shared space.</p>
 
         <h2>Executive Summary</h2>
-        <figure style="max-width: 420px; margin: 12px auto 18px; text-align: center;">
+        <figure style="max-width: 260px; float: right; margin: 0 0 12px 18px; text-align: center;">
           <img src="unsafe-directions/image5.png" alt="Conceptual illustration of safe and unsafe activation vectors and their difference as a direction in activation space." style="width: 100%; height: auto;" />
-          <figcaption>Figure 1: Safe and unsafe prompt means define a direction that points toward unsafe activations.</figcaption>
+          <figcaption style="font-size: 14px; color: #555;">Figure 1: Safe and unsafe prompt means define a direction that points toward unsafe activations.</figcaption>
         </figure>
         <p>The work asks whether safety-related representations line up across models. Safety vectors are extracted per model, aligned into a reference activation space, and combined to reveal a dominant “universal” safety direction.</p>
         <p>After alignment, the universal vector closely matches native safety vectors (cosine similarity ≈0.72 on average) and separates safe vs. unsafe activations with AUROC comparable to or better than model-specific directions, especially for smaller models.</p>
