@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Do Language Models Share Unsafe Directions in Activation Space?</title>
+    <meta name="description" content="Exploring whether safety-related activation directions align across language models through shared projections and a universal safety vector." />
+    <link rel="stylesheet" href="/css/site.css" />
+    <link rel="canonical" href="/blog/posts/unsafe-directions.html" />
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="nav-inner">
+        <a class="site-title" href="/">Mohammad Zbeeb's Blog</a>
+        <nav class="nav-links">
+          <a href="/about/">About</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      <article class="article">
+        <h1>Do Language Models Share Unsafe Directions in Activation Space?</h1>
+        <p class="subtitle">Testing whether a single safety axis emerges across models after aligning their activations into a shared space.</p>
+
+        <h2>Executive Summary</h2>
+        <figure>
+          <img src="unsafe-directions/image5.png" alt="Conceptual illustration of safe and unsafe activation vectors and their difference as a direction in activation space." style="max-width: 100%; height: auto;" />
+          <figcaption>Figure 1: Safe and unsafe prompt means define a direction that points toward unsafe activations.</figcaption>
+        </figure>
+        <p>The work asks whether safety-related representations line up across models. Safety vectors are extracted per model, aligned into a reference activation space, and combined to reveal a dominant “universal” safety direction.</p>
+        <p>After alignment, the universal vector closely matches native safety vectors (cosine similarity ≈0.72 on average) and separates safe vs. unsafe activations with AUROC comparable to or better than model-specific directions, especially for smaller models.</p>
+        <p>The approach can score relative safety across models and shows a coherent generation-time signal, but it does not yield a universal decision threshold and can break when alignment regimes differ.</p>
+
+        <h3>High-Level Takeaways</h3>
+        <ul>
+          <li>Safety directions are extracted from Pythia 160M/410M/1B and larger aligned models (LLaMA 2 13B, LLaMA 3 8B, Mistral 7B, Qwen2.5-7B) using 300 safe and 300 unsafe prompts.</li>
+          <li>An alignment matrix, learned on benign Alpaca instructions, maps activations into a shared reference space, enabling cross-model comparison.</li>
+          <li>Aligned safety vectors cluster: cosine similarity with the universal vector averages around 0.72, indicating a shared axis.</li>
+          <li>The universal vector matches or beats native vectors on AUROC, notably improving weaker directions in smaller models.</li>
+          <li>No global safety threshold emerged; projection scores require per-model calibration.</li>
+          <li>During decoding, unsafe generations show rising projection scores while safe ones stay lower and steadier.</li>
+          <li>The shared axis could support routing across models by picking the response with the safest projection.</li>
+          <li>Potential for standardized interventions exists, but it remains untested beyond preliminary sketches.</li>
+        </ul>
+
+        <h2>Detailed Methodology and Analysis</h2>
+
+        <h3>2.1 Identifying individual safety vectors</h3>
+        <p>Using 600 prompts from SalKhan12/prompt-safety-dataset (balanced safe/unsafe), safety directions are built per model by averaging hidden states over the final five tokens, then subtracting safe from unsafe means to obtain an unsafe direction.</p>
+        <figure>
+          <img src="unsafe-directions/image6.png" alt="Projection score curves for Pythia models, showing safe vs. unsafe prompt distributions." style="max-width: 100%; height: auto;" />
+          <figcaption>Figure 2: Pythia projection scores onto native unsafe directions (safe in blue, unsafe in red).</figcaption>
+        </figure>
+        <figure>
+          <img src="unsafe-directions/image11.png" alt="Projection histograms for LLaMA2-13B-Chat and LLaMA3-8B-Instruct." style="max-width: 100%; height: auto;" />
+          <figcaption>Figure 3: Larger instruction-tuned models also show separation between safe and unsafe activations.</figcaption>
+        </figure>
+        <p>Smaller models reveal noisier separation, motivating a shared direction to stabilize safety cues. Including both LLaMA 2 and LLaMA 3 tests whether the idea holds across alignment strategies as well as scale.</p>
+
+        <h3>2.2 Identifying alignment matrices</h3>
+        <p>For each family, a reference model is chosen (Pythia-1B for smaller models, LLaMA3-8B-Instruct for larger ones). A linear alignment matrix, learned with ridge regression on 3,000 Alpaca instructions, maps each model’s activations into its reference space.</p>
+        <figure>
+          <img src="unsafe-directions/image4.png" alt="Alignment setup showing mappings from model activations into a shared reference space." style="max-width: 100%; height: auto;" />
+          <figcaption>Figure 4: Alignment setup for projecting model activations into a shared reference space.</figcaption>
+        </figure>
+        <figure>
+          <img src="unsafe-directions/image12.png" alt="Aligned benign activation visualizations across Pythia and instruction-tuned models." style="max-width: 100%; height: auto;" />
+          <figcaption>Figure 5: Aligned benign activations preserve structure when mapped into the reference models.</figcaption>
+        </figure>
+        <figure>
+          <img src="unsafe-directions/image9.png" alt="Plot showing ridge regularization effect on alignment error." style="max-width: 100%; height: auto;" />
+          <figcaption>Figure 6: Moderate ridge regularization (λ = 1.0) minimizes alignment error across models.</figcaption>
+        </figure>
+        <p>Alignment uses only benign data; safety labels are not involved. Each model ends up with a matrix that projects its safety vector into the reference space.</p>
+
+        <h3>2.3 Safety vectors represented together</h3>
+        <p>Projected safety vectors are collected in the reference space and decomposed with SVD to obtain a universal safety vector for each model group.</p>
+        <figure>
+          <img src="unsafe-directions/image8.png" alt="Cosine similarity of aligned safety vectors across small and large model groups." style="max-width: 100%; height: auto;" />
+          <figcaption>Figure 7: Cosine similarity across aligned safety vectors for small (left) and large (right) models.</figcaption>
+        </figure>
+        <ul>
+          <li>Similarity with the reference model direction stays positive, mostly above 0.5, confirming projection preserves orientation.</li>
+          <li>Similarity with the universal vector averages about 0.72, indicating a shared low-dimensional axis across models.</li>
+        </ul>
+
+        <h3>2.4 Separating safe vs unsafe activations using the universal axis</h3>
+        <p>AUROC is measured by projecting activations onto each model’s native direction and onto the universal direction.</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Model</th>
+              <th>AUROC (native)</th>
+              <th>AUROC (universal)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Pythia-160M</td>
+              <td>0.7109</td>
+              <td>0.6984</td>
+            </tr>
+            <tr>
+              <td>Pythia-410M</td>
+              <td>0.6600</td>
+              <td>0.7376</td>
+            </tr>
+            <tr>
+              <td>Pythia-1B</td>
+              <td>0.7971</td>
+              <td>0.7714</td>
+            </tr>
+          </tbody>
+        </table>
+        <table>
+          <thead>
+            <tr>
+              <th>Model</th>
+              <th>AUROC (native)</th>
+              <th>AUROC (universal)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>LLaMA3-8B-Instruct</td>
+              <td>0.8607</td>
+              <td>0.7969</td>
+            </tr>
+            <tr>
+              <td>Mistral-7B-Instruct</td>
+              <td>0.6758</td>
+              <td>0.7911</td>
+            </tr>
+            <tr>
+              <td>Qwen2.5-7B-Instruct</td>
+              <td>0.8655</td>
+              <td>0.8190</td>
+            </tr>
+            <tr>
+              <td>LLaMA2-13B-Chat</td>
+              <td>0.8508</td>
+              <td>0.2347</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>Universal projections match or exceed native directions overall, with clear gains for Pythia-410M and Mistral-7B. LLaMA2-13B-Chat is a counterexample where alignment strategy differences hurt semantic separation despite high cosine similarity.</p>
+        <p>No single decision threshold transfers across models; calibration remains model-specific, making the universal axis better for relative comparisons or controlled analysis than for absolute classification.</p>
+
+        <h3>Preliminary implications: relative safety comparison, routing, and control</h3>
+        <p>Projecting responses from multiple models onto the shared axis enables routing based on relative safety scores rather than model-specific thresholds.</p>
+        <figure>
+          <img src="unsafe-directions/image7.png" alt="Diagram of routing across models using a shared safety score." style="max-width: 100%; height: auto;" />
+          <figcaption>Figure 8: Conceptual routing across models using a shared safety representation.</figcaption>
+        </figure>
+
+        <h3>Generation-time signal</h3>
+        <p>Tracking projection scores during decoding shows unsafe generations drifting upward while safe ones stay lower, hinting at a usable control signal during generation.</p>
+        <figure>
+          <img src="unsafe-directions/image10.png" alt="Line plot of universal safety scores over generation steps for safe vs unsafe prompts." style="max-width: 100%; height: auto;" />
+          <figcaption>Figure 9: Safety score trajectories during generation for LLaMA3-8B-Instruct.</figcaption>
+        </figure>
+
+        <h3>Preliminary exploration of intervention</h3>
+        <p>Early tests injected the universal vector during generation as a possible intervention; results were inconclusive but motivate future controlled experiments.</p>
+
+        <h3>Limitations</h3>
+        <ul>
+          <li>No universal safety threshold emerged; scores must be calibrated per model.</li>
+          <li>Effectiveness likely depends on coverage across architectures and alignment methods; current pool is limited.</li>
+          <li>Differences between alignment regimes (for example LLaMA2 vs. LLaMA3) can break semantic transfer.</li>
+          <li>Alignment matrices use a simple closed-form solution; gradient-based learning on larger data may yield stronger projections.</li>
+        </ul>
+      </article>
+    </main>
+  </body>
+</html>
