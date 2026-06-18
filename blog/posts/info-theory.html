@@ -8,6 +8,41 @@
     <meta name="description" content="Notes on entropy, KL, cross-entropy, and mutual information in modern ML." />
     <link rel="stylesheet" href="/css/site.css" />
     <link rel="canonical" href="/blog/posts/info-theory.html" />
+    <style>
+      .article figure {
+        margin: 28px 0;
+        text-align: center;
+      }
+      .article figure img {
+        width: 100%;
+        max-width: 620px;
+        height: auto;
+        border-radius: 10px;
+        box-shadow: 0 2px 14px rgba(74, 59, 47, 0.12);
+        border: 1px solid #ece2cf;
+      }
+      .article figcaption {
+        font-size: 0.92em;
+        font-style: italic;
+        color: #6a6a6a;
+        margin-top: 0.6em;
+      }
+      .article figure.float-right {
+        float: right;
+        width: 42%;
+        margin: 6px 0 1em 2em;
+      }
+      .article figure.float-right img {
+        max-width: 100%;
+      }
+      @media (max-width: 720px) {
+        .article figure.float-right {
+          float: none;
+          width: 100%;
+          margin: 28px 0;
+        }
+      }
+    </style>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   </head>
@@ -48,11 +83,11 @@
           \[ I(p_i) = -\log(p_i) \]
         </p>
 
+        <figure class="float-right">
+          <img src="diagrams/graph1.png" alt="Information content curve: -log2(p) as a function of probability" />
+          <figcaption>Information content as a function of probability.</figcaption>
+        </figure>
         <p>
-          <figure style="float: right; width: 40%; margin: 0 0 1em 2em; clear: right;">
-            <img src="diagrams/graph1.png" alt="Graph showing ln(x) and -ln(x) functions" style="width: 100%; height: auto; display: block;" />
-            <figcaption style="font-size: 0.9em; font-style: italic; margin-top: 0.5em;">Information content as a function of probability</figcaption>
-          </figure>
           Take a close look at the graph. You'll notice that when an event is certain (i.e., its probability is \( p = 1 \)), the information content is zero. As the probability decreases, the value of \( -\log(p) \) increases. In other words, the less likely an event is, the more information it conveys when it occurs.
         </p>
 
@@ -72,6 +107,10 @@
         <p>
           \[ H(X) = -\sum_i p_i \log(p_i) \]
         </p>
+        <figure>
+          <img src="diagrams/entropy.png" alt="Binary entropy curve peaking at p = 0.5" />
+          <figcaption>For a coin, entropy peaks at \( p = 0.5 \) — the point of greatest uncertainty — and falls to zero as the outcome becomes certain.</figcaption>
+        </figure>
 
         <h3>Coding Scheme Interpretation</h3>
         <p>
@@ -92,6 +131,10 @@
         <p>
           \[ \text{Bits}(p_i) = \log_2\left(\frac{1}{p_i}\right) = -\log_2(p_i) \]
         </p>
+        <figure>
+          <img src="diagrams/coding.png" alt="Bar chart of optimal code lengths for full-timers, part-timers, and contractors" />
+          <figcaption>Frequent outcomes (full-timers) earn short codes; rare ones (contractors) pay for longer codes.</figcaption>
+        </figure>
         <p>
           So, the entropy of the random variable is the average number of bits needed to represent its outcomes under this optimal coding scheme:
         </p>
@@ -126,6 +169,10 @@
         <p>
           \[ D_{KL}(y \,||\, y') = \sum_i y_i \log\left(\frac{y_i}{y'_i}\right) \]
         </p>
+        <figure>
+          <img src="diagrams/cross-entropy-kl.png" alt="True distribution versus a uniform belief, with entropy, cross-entropy, and KL values" />
+          <figcaption>Encoding the true distribution \( y \) with a wrong belief \( y' \) costs cross-entropy \( H(y, y') \) bits; the gap above the optimal \( H(y) \) is the KL divergence.</figcaption>
+        </figure>
         <p>
           Minimizing cross-entropy is equivalent to minimizing the KL term.
         </p>
@@ -155,6 +202,10 @@
         <p>
           Hence, mutual information exists, and it's in the order of \( p(x \cap y) \), measuring how much the joint distribution deviates from independence.
         </p>
+        <figure>
+          <img src="diagrams/mutual-info.png" alt="Venn diagram of H(X), H(Y), the conditional entropies, and the mutual information overlap" />
+          <figcaption>Mutual information \( I(X;Y) \) is the overlap between the two entropies — the uncertainty about one variable that knowing the other removes.</figcaption>
+        </figure>
       </section>
       </article>
     </main>
