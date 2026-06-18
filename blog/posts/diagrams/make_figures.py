@@ -5,10 +5,10 @@ from matplotlib.patches import Circle, FancyArrowPatch
 from matplotlib import font_manager
 
 # ---- Cozy palette --------------------------------------------------------
-CREAM      = "#FBF4E6"   # page / figure background
-PAPER      = "#FFFBF2"   # plot area, a touch lighter
-INK        = "#4A3B2F"   # warm dark brown for text/axes
-GRID       = "#E4D8C2"   # soft tan gridlines
+CREAM      = "#fffff8"   # Tufte page / figure background
+PAPER      = "#fffff8"   # plot area matches the page
+INK        = "#3a3631"   # warm near-black for text/axes
+GRID       = "#e6e1cf"   # soft tan gridlines
 TERRACOTTA = "#D9774B"   # primary warm accent
 SAGE       = "#7C9473"   # muted green secondary
 GOLD       = "#E0A458"   # warm gold

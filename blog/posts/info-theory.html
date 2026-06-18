@@ -6,58 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>What we borrowed in ML from info theory?</title>
     <meta name="description" content="Notes on entropy, KL, cross-entropy, and mutual information in modern ML." />
+    <link rel="stylesheet" href="/css/tufte.css" />
     <link rel="stylesheet" href="/css/site.css" />
     <link rel="canonical" href="/blog/posts/info-theory.html" />
-    <style>
-      .article figure {
-        margin: 28px 0;
-        text-align: center;
-      }
-      .article figure img {
-        width: 100%;
-        max-width: 620px;
-        height: auto;
-        border-radius: 10px;
-        box-shadow: 0 2px 14px rgba(74, 59, 47, 0.12);
-        border: 1px solid #ece2cf;
-      }
-      .article figcaption {
-        font-size: 0.92em;
-        font-style: italic;
-        color: #6a6a6a;
-        margin-top: 0.6em;
-      }
-      .article figure.float-right {
-        float: right;
-        width: 42%;
-        margin: 6px 0 1em 2em;
-      }
-      .article figure.float-right img {
-        max-width: 100%;
-      }
-      @media (max-width: 720px) {
-        .article figure.float-right {
-          float: none;
-          width: 100%;
-          margin: 28px 0;
-        }
-      }
-    </style>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   </head>
   <body>
-    <header class="site-header">
-      <div class="nav-inner">
-        <a class="site-title" href="/">Mohammad Zbeeb's Blog</a>
-        <nav class="nav-links">
-          <a href="/about/">About</a>
-        </nav>
-      </div>
+    <header>
+      <nav class="group">
+        <a href="/">Mohammad Zbeeb</a>
+        <a href="/about/">About</a>
+      </nav>
     </header>
 
-    <main class="container">
-      <article class="article">
+    <article class="group">
       <h1>What we borrowed in ML from info theory?</h1>
       <p class="subtitle">Notes on entropy, KL, cross-entropy, and mutual information in modern ML.</p>
 
@@ -83,7 +46,7 @@
           \[ I(p_i) = -\log(p_i) \]
         </p>
 
-        <figure class="float-right">
+        <figure class="fullwidth">
           <img src="diagrams/graph1.png" alt="Information content curve: -log2(p) as a function of probability" />
           <figcaption>Information content as a function of probability.</figcaption>
         </figure>
@@ -107,7 +70,7 @@
         <p>
           \[ H(X) = -\sum_i p_i \log(p_i) \]
         </p>
-        <figure>
+        <figure class="fullwidth">
           <img src="diagrams/entropy.png" alt="Binary entropy curve peaking at p = 0.5" />
           <figcaption>For a coin, entropy peaks at \( p = 0.5 \) — the point of greatest uncertainty — and falls to zero as the outcome becomes certain.</figcaption>
         </figure>
@@ -131,7 +94,7 @@
         <p>
           \[ \text{Bits}(p_i) = \log_2\left(\frac{1}{p_i}\right) = -\log_2(p_i) \]
         </p>
-        <figure>
+        <figure class="fullwidth">
           <img src="diagrams/coding.png" alt="Bar chart of optimal code lengths for full-timers, part-timers, and contractors" />
           <figcaption>Frequent outcomes (full-timers) earn short codes; rare ones (contractors) pay for longer codes.</figcaption>
         </figure>
@@ -169,7 +132,7 @@
         <p>
           \[ D_{KL}(y \,||\, y') = \sum_i y_i \log\left(\frac{y_i}{y'_i}\right) \]
         </p>
-        <figure>
+        <figure class="fullwidth">
           <img src="diagrams/cross-entropy-kl.png" alt="True distribution versus a uniform belief, with entropy, cross-entropy, and KL values" />
           <figcaption>Encoding the true distribution \( y \) with a wrong belief \( y' \) costs cross-entropy \( H(y, y') \) bits; the gap above the optimal \( H(y) \) is the KL divergence.</figcaption>
         </figure>
@@ -202,12 +165,21 @@
         <p>
           Hence, mutual information exists, and it's in the order of \( p(x \cap y) \), measuring how much the joint distribution deviates from independence.
         </p>
-        <figure>
+        <figure class="fullwidth">
           <img src="diagrams/mutual-info.png" alt="Venn diagram of H(X), H(Y), the conditional entropies, and the mutual information overlap" />
           <figcaption>Mutual information \( I(X;Y) \) is the overlap between the two entropies — the uncertainty about one variable that knowing the other removes.</figcaption>
         </figure>
       </section>
-      </article>
-    </main>
+    </article>
+
+    <footer>
+      <hr class="slender" />
+      <div class="credits">
+        <a href="https://github.com/Moe-Zbeeb">GitHub</a>
+        <a href="https://www.linkedin.com/in/mohamad-zbib-16b604265/">LinkedIn</a>
+        <a href="https://scholar.google.com/citations?user=JJg7iTMAAAAJ&hl=en">Scholar</a>
+        <a href="mailto:mbz02@mail.aub.edu">Email</a>
+      </div>
+    </footer>
   </body>
 </html>

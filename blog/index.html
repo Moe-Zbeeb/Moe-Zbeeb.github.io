@@ -5,39 +5,76 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Blog</title>
-    <meta name="description" content="Blog — Mohammad Zbeeb" />
+    <title>Mohammad Zbeeb</title>
+    <meta name="description" content="Mohammad Zbeeb — notes on machine learning, large language models, and interpretability." />
 
-    <meta property="og:title" content="Blog" />
-    <meta property="og:description" content="Blog — Mohammad Zbeeb" />
+    <meta property="og:title" content="Mohammad Zbeeb" />
+    <meta property="og:description" content="Notes on machine learning, large language models, and interpretability." />
     <meta property="og:type" content="website" />
 
+    <link rel="stylesheet" href="/css/tufte.css" />
     <link rel="stylesheet" href="/css/site.css" />
     <link rel="canonical" href="/blog/" />
   </head>
 
   <body>
-    <header class="site-header">
-      <div class="nav-inner">
-        <a class="site-title" href="/">Mohammad Zbeeb's Blog</a>
-        <nav class="nav-links">
-          <a href="/about/">About</a>
-        </nav>
-      </div>
+    <header>
+      <nav class="group">
+        <a class="active" href="/">Mohammad Zbeeb</a>
+        <a href="/about/">About</a>
+      </nav>
     </header>
 
-    <main class="container">
-      <h1>Posts</h1>
-      <div class="post-list">
-        <article class="post-entry">
-          <p class="post-date">Mar 15, 2026</p>
-          <a class="post-title" href="/blog/posts/unsafe-directions.html">Do Language Models Share Unsafe Directions in Activation Space?</a>
-        </article>
-        <article class="post-entry">
-          <p class="post-date">Feb 10, 2026</p>
-          <a class="post-title" href="/blog/posts/info-theory.html">What we borrowed in ML from info theory?</a>
-        </article>
+    <article class="group">
+      <h1>Mohammad Zbeeb</h1>
+      <p class="subtitle">Notes on machine learning, large language models, and interpretability.</p>
+
+      <p>
+        I am a computer and communication engineering student at the American University of Beirut,
+        working on large language models, reasoning transfer, model merging, and Arabic NLP. This is
+        where I write up what I am learning. Find me on
+        <a href="https://github.com/Moe-Zbeeb">GitHub</a> or read a little
+        <a href="/about/">about me</a>.
+      </p>
+
+      <ul class="content-listing">
+        <li>
+          <hr class="invisible" />
+          <a href="/blog/posts/unsafe-directions.html">
+            <h2>Do Language Models Share Unsafe Directions in Activation Space?</h2>
+          </a>
+          <p class="post-meta">March 15, 2026</p>
+          <p class="post-summary">
+            Testing whether a single safety axis emerges across models once their activations are
+            aligned into a shared space. Per-model safety vectors are extracted, aligned, and combined
+            into a dominant &ldquo;universal&rdquo; safety direction that separates safe from unsafe
+            activations.
+          </p>
+        </li>
+
+        <li>
+          <hr class="invisible" />
+          <a href="/blog/posts/info-theory.html">
+            <h2>What we borrowed in ML from info theory?</h2>
+          </a>
+          <p class="post-meta">February 10, 2026</p>
+          <p class="post-summary">
+            A walk through entropy, cross-entropy, KL divergence, and mutual information &mdash; the
+            information-theoretic ideas that quietly underpin modern machine learning, with cozy
+            figures for each one.
+          </p>
+        </li>
+      </ul>
+    </article>
+
+    <footer>
+      <hr class="slender" />
+      <div class="credits">
+        <a href="https://github.com/Moe-Zbeeb">GitHub</a>
+        <a href="https://www.linkedin.com/in/mohamad-zbib-16b604265/">LinkedIn</a>
+        <a href="https://scholar.google.com/citations?user=JJg7iTMAAAAJ&hl=en">Scholar</a>
+        <a href="mailto:mbz02@mail.aub.edu">Email</a>
       </div>
-    </main>
+    </footer>
   </body>
 </html>
