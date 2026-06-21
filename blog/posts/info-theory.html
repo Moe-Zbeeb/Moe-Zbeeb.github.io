@@ -169,6 +169,32 @@
           <img src="diagrams/mutual-info.png" alt="Venn diagram of H(X), H(Y), the conditional entropies, and the mutual information overlap" />
           <figcaption>Mutual information \( I(X;Y) \) is the overlap between the two entropies — the uncertainty about one variable that knowing the other removes.</figcaption>
         </figure>
+
+        <h3>Bayes' Rule</h3>
+        <p>
+          We just wrote the conditional probability \( p(y \mid x) \) in terms of the joint. The neat thing is that the joint is symmetric — \( p(x \cap y) = p(y \cap x) \) — so we can expand it two different ways:
+        </p>
+        <p>
+          \[ p(y \mid x)\,p(x) = p(x \cap y) = p(x \mid y)\,p(y) \]
+        </p>
+        <p>
+          Divide through by \( p(x) \) and you get Bayes' rule:
+        </p>
+        <p>
+          \[ p(y \mid x) = \frac{p(x \mid y)\,p(y)}{p(x)} \]
+        </p>
+        <p>
+          Each piece has a name worth knowing. \( p(y) \) is the <em>prior</em> — what you believed about \( y \) before seeing anything. \( p(x \mid y) \) is the <em>likelihood</em> — how well a hypothesis \( y \) explains the evidence \( x \). \( p(y \mid x) \) is the <em>posterior</em> — your updated belief after the evidence arrives. The denominator \( p(x) = \sum_{y} p(x \mid y)\,p(y) \) is the <em>evidence</em>, a normalizer that makes the posterior sum to one.
+        </p>
+        <p>
+          This is exactly the move a classifier makes. Pulling our earlier example back in: \( y \) is the label and \( x \) is the input. A generative model learns the likelihood \( p(x \mid y) \) and the prior \( p(y) \), then Bayes' rule flips them into the posterior \( p(y \mid x) \) — the thing we actually want to predict. And since the evidence \( p(x) \) doesn't depend on \( y \), choosing the most probable label only needs the numerator:
+        </p>
+        <p>
+          \[ \hat{y} = \arg\max_{y} \; p(x \mid y)\,p(y) \]
+        </p>
+        <p>
+          It also closes the loop with the information we started from. Taking \( -\log \) of Bayes' rule turns multiplication into addition, so the surprisal of the posterior is just the prior's surprisal plus the bits the evidence carries about \( y \). Updating a belief, in those units, is bookkeeping on information content.
+        </p>
       </section>
     </article>
 
