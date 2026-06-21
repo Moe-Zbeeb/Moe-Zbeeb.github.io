@@ -78,6 +78,53 @@ ul.content-listing > li:first-child hr.invisible {
   margin-top: 1rem;
 }
 
+.note-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1rem;
+  width: 100%;
+  margin: 2rem 0 2.5rem;
+}
+.note-card {
+  border: 1px solid #e3e0d0;
+  border-radius: 6px;
+  padding: 1rem;
+  background: #fffff8;
+}
+.note-card h2 {
+  margin-top: 0;
+  font-size: 1.5rem;
+  line-height: 1.15;
+}
+.note-card p {
+  width: 100%;
+  font-size: 1.1rem;
+  line-height: 1.35;
+}
+.note-actions a {
+  display: inline-block;
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  padding: 0.35rem 0.7rem;
+  color: var(--accent);
+  text-decoration: none;
+  background: none;
+  text-shadow: none;
+}
+.note-actions a:hover {
+  color: #111;
+  border-color: #111;
+}
+.pdf-frame {
+  display: block;
+  width: 100%;
+  min-height: 46rem;
+  border: 1px solid #e3e0d0;
+  border-radius: 6px;
+  background: #fff;
+  margin: 0.8rem 0 2rem;
+}
+
 /* ---- Figures ---------------------------------------------------------- */
 figure img {
   max-width: 100%;
