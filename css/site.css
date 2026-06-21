@@ -80,9 +80,10 @@ ul.content-listing > li:first-child hr.invisible {
 
 .note-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-  gap: 1rem;
-  width: 100%;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.8rem;
+  width: 87.5vw;
+  max-width: 1400px;
   margin: 2rem 0 2.5rem;
 }
 .note-card {
@@ -90,16 +91,19 @@ ul.content-listing > li:first-child hr.invisible {
   border-radius: 6px;
   padding: 1rem;
   background: #fffff8;
+  box-sizing: border-box;
+  min-width: 0;
 }
 .note-card h2 {
   margin-top: 0;
-  font-size: 1.5rem;
+  font-size: 1.35rem;
   line-height: 1.15;
 }
 .note-card p {
   width: 100%;
   font-size: 1.1rem;
   line-height: 1.35;
+  text-align: left;
 }
 .note-actions a {
   display: inline-block;
@@ -114,6 +118,18 @@ ul.content-listing > li:first-child hr.invisible {
 .note-actions a:hover {
   color: #111;
   border-color: #111;
+}
+@media (max-width: 900px) {
+  .note-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+    max-width: 100%;
+  }
+}
+@media (max-width: 560px) {
+  .note-grid {
+    grid-template-columns: 1fr;
+  }
 }
 /* ---- Figures ---------------------------------------------------------- */
 figure img {
