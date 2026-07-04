@@ -3,6 +3,8 @@
 :root {
   --accent: #a00000;
   --muted: #5a5a52;
+  --paper-line: #e3e0d0;
+  --paper-soft: #faf9ef;
 }
 
 /* ---- Navigation ------------------------------------------------------- */
@@ -174,4 +176,98 @@ footer .credits a {
 }
 footer .credits a:hover {
   text-decoration: underline;
+}
+
+.tutorial-article .post-meta {
+  font-style: italic;
+  color: var(--muted);
+  font-size: 1.15rem;
+  margin-top: -0.6rem;
+}
+.tutorial-article .lead-card,
+.tutorial-article .article-map,
+.tutorial-article .takeaway {
+  width: 55%;
+  box-sizing: border-box;
+}
+.tutorial-article .lead-card {
+  border-left: 3px solid var(--accent);
+  background: var(--paper-soft);
+  padding: 0.85rem 1rem;
+  margin: 1.4rem 0 1.8rem;
+}
+.tutorial-article .lead-card p {
+  width: 100%;
+  margin: 0.35rem 0;
+}
+.tutorial-article .article-map {
+  border-top: 1px solid var(--paper-line);
+  border-bottom: 1px solid var(--paper-line);
+  padding: 0.75rem 0;
+  margin: 1.6rem 0 2.2rem;
+}
+.tutorial-article .article-map h2 {
+  font-size: 1.35rem;
+  margin: 0 0 0.4rem;
+}
+.tutorial-article .article-map ol {
+  margin: 0;
+  padding-left: 1.4rem;
+}
+.tutorial-article .article-map li {
+  margin: 0.2rem 0;
+}
+.tutorial-article h2 {
+  margin-top: 2.2rem;
+}
+.tutorial-article h3 {
+  font-size: 1.25rem;
+  margin-top: 1.35rem;
+}
+.tutorial-article .takeaway {
+  border-left: 3px solid var(--paper-line);
+  background: #fffef6;
+  padding: 0.75rem 0.95rem;
+  margin: 1rem 0 1.4rem;
+}
+.tutorial-article .takeaway p {
+  width: 100%;
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.45;
+}
+.tutorial-article .math-block {
+  overflow-x: auto;
+}
+.tutorial-article table {
+  width: 87.5%;
+  border-collapse: collapse;
+  margin: 1rem 0 1.6rem;
+  font-size: 1.1rem;
+  line-height: 1.35;
+}
+.tutorial-article th,
+.tutorial-article td {
+  border-bottom: 1px solid var(--paper-line);
+  padding: 0.45rem 0.55rem;
+  vertical-align: top;
+}
+.tutorial-article th {
+  text-align: left;
+  font-weight: 600;
+}
+.tutorial-article tbody tr:last-child td {
+  border-bottom: none;
+}
+.tutorial-article .formula-table td:first-child,
+.tutorial-article .distribution-table td:first-child {
+  font-weight: 600;
+}
+@media (max-width: 760px) {
+  .tutorial-article .lead-card,
+  .tutorial-article .article-map,
+  .tutorial-article .takeaway,
+  .tutorial-article table {
+    width: 100%;
+  }
 }

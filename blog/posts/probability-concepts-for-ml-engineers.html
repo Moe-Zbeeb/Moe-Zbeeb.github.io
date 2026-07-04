@@ -5,9 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Probability Concepts for Machine Learning Engineers</title>
-    <meta name="description" content="A practical blog tutorial on the probability concepts machine learning engineers use every day." />
+    <meta name="description" content="A readable tutorial on the probability concepts machine learning engineers use in training, evaluation, calibration, and deployment." />
     <meta property="og:title" content="Probability Concepts for Machine Learning Engineers" />
-    <meta property="og:description" content="A practical blog tutorial on uncertainty, distributions, likelihood, Bayes' rule, calibration, and decision-making in ML." />
+    <meta property="og:description" content="A readable tutorial on uncertainty, distributions, likelihood, Bayes' rule, calibration, and decision-making in ML." />
     <meta property="og:type" content="article" />
     <link rel="stylesheet" href="/css/tufte.css" />
     <link rel="stylesheet" href="/css/site.css" />
@@ -24,75 +24,110 @@
       </nav>
     </header>
 
-    <article class="group">
+    <article class="group tutorial-article">
       <h1>Probability Concepts for Machine Learning Engineers</h1>
-      <p class="subtitle">A practical tutorial on uncertainty, estimation, inference, and probabilistic decision-making.</p>
+      <p class="subtitle">A practical guide to uncertainty, estimation, inference, and decisions.</p>
+      <p class="post-meta">July 4, 2026</p>
+
+      <section class="lead-card">
+        <p>
+          Probability is the language we use when a model sees incomplete evidence and still has to
+          make a decision.
+        </p>
+        <p>
+          The goal of this tutorial is not to list formulas. The goal is to connect each concept to
+          the engineering questions that show up in training, evaluation, calibration, monitoring, and
+          deployment.
+        </p>
+      </section>
+
+      <nav class="article-map" aria-label="Article map">
+        <h2>Reading Map</h2>
+        <ol>
+          <li>Represent uncertainty with random variables and distributions.</li>
+          <li>Use expectation, variance, and likelihood to train models.</li>
+          <li>Use Bayes' rule, entropy, and calibration to reason about confidence.</li>
+          <li>Turn probabilities into decisions under real costs and distribution shift.</li>
+        </ol>
+      </nav>
 
       <section>
+        <h2>1. Start With the Random Variables</h2>
         <p>
-          Machine learning begins with a simple tension: the world has structure, but our observations
-          are incomplete. Probability gives us a clean language for working with that tension. It lets
-          us talk about what the model knows, what it assumes, what the data supports, and what remains
-          uncertain.
+          Before choosing a model, name the quantities that are uncertain. In supervised learning,
+          \(X\) might be the input features and \(Y\) the target. In a recommender system, \(Z\) might
+          be a hidden user intent. In deployment, \(A\) might be the action we take after the model
+          returns a score.
         </p>
         <p>
-          A probabilistic model does not merely return an answer. It assigns probability mass or
-          density to alternatives. That distinction matters in engineering: uncertainty affects how we
-          train, debug, calibrate, threshold, deploy, and monitor models.
+          A random variable maps possible outcomes to values. A distribution tells us how probability
+          is spread over those values.
         </p>
-
-        <h2>Random Variables and Distributions</h2>
-        <p>
-          An event is a set of outcomes. A random variable is a function that maps an outcome to a
-          value. A distribution tells us how probability is allocated across those values.
-        </p>
-        <p>
-          For a discrete random variable \(X\), the probability mass function is:
-        </p>
-        <p>
-          \[ p_X(x) = \mathbb{P}(X = x) \]
-        </p>
-        <p>
-          For a continuous random variable, the probability density function \(f_X(x)\) is not itself
-          a probability. Probabilities come from integrating over regions:
-        </p>
-        <p>
-          \[ \mathbb{P}(a \leq X \leq b) = \int_a^b f_X(x)\,dx \]
-        </p>
-        <p>
-          This is one of the first differences worth keeping sharp. Discrete probability counts
-          possibilities; continuous probability measures regions.
-        </p>
-
-        <h2>Joint, Marginal, and Conditional Distributions</h2>
-        <p>
-          The joint distribution \(p(x,y)\) describes how variables behave together. The marginal
-          distribution removes variables we are not currently asking about:
-        </p>
-        <p>
+        <p class="math-block">
           \[
-            p(x) = \sum_y p(x,y)
-            \qquad \text{or} \qquad
-            p(x) = \int p(x,y)\,dy
+            p_X(x) = \mathbb{P}(X = x)
           \]
         </p>
         <p>
-          The conditional distribution focuses on a slice of the joint:
+          For continuous values, a density is not a probability by itself. Probabilities come from
+          areas under the curve:
         </p>
-        <p>
-          \[ p(y \mid x) = \frac{p(x,y)}{p(x)} \]
+        <p class="math-block">
+          \[
+            \mathbb{P}(a \leq X \leq b) = \int_a^b f_X(x)\,dx
+          \]
         </p>
+        <div class="takeaway">
+          <p>
+            <strong>Engineering read:</strong> discrete probability counts outcomes; continuous
+            probability measures regions. Mixing those up is a common source of confusion around
+            likelihoods and densities.
+          </p>
+        </div>
+
+        <h2>2. Learn the Three Distribution Views</h2>
         <p>
-          In supervised learning, the object we usually want is \(p(y \mid x)\): the uncertainty about
-          a target once features are known. In generative modeling, we often care about \(p(x)\) or
-          \(p(x,y)\): the process that could have produced the data.
+          The joint distribution \(p(x,y)\) describes variables together. The marginal distribution
+          removes variables we are not asking about. The conditional distribution focuses on what is
+          plausible after some evidence is known.
+        </p>
+        <table class="formula-table">
+          <thead>
+            <tr>
+              <th>View</th>
+              <th>Question</th>
+              <th>Formula</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Joint</td>
+              <td>How do \(X\) and \(Y\) behave together?</td>
+              <td>\(p(x,y)\)</td>
+            </tr>
+            <tr>
+              <td>Marginal</td>
+              <td>What does \(X\) look like after removing \(Y\)?</td>
+              <td>\(p(x)=\sum_y p(x,y)\)</td>
+            </tr>
+            <tr>
+              <td>Conditional</td>
+              <td>What does \(Y\) look like once \(X\) is known?</td>
+              <td>\(p(y \mid x)=p(x,y)/p(x)\)</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          In supervised learning, the target is usually \(p(y \mid x)\). In generative modeling, we
+          often care about \(p(x)\) or \(p(x,y)\), because we want to model the process that could
+          have produced the data.
         </p>
 
-        <h2>Expectation, Variance, and Covariance</h2>
+        <h2>3. Expectations Are the Shape of Training</h2>
         <p>
-          Expectation is the long-run average value under a distribution:
+          Expectation is the average value under a distribution:
         </p>
-        <p>
+        <p class="math-block">
           \[
             \mathbb{E}[X] = \sum_x x\,p(x)
             \qquad \text{or} \qquad
@@ -100,9 +135,9 @@
           \]
         </p>
         <p>
-          More generally, for any function \(g\):
+          More generally, we care about the expectation of a function:
         </p>
-        <p>
+        <p class="math-block">
           \[
             \mathbb{E}[g(X)] = \sum_x g(x)p(x)
             \qquad \text{or} \qquad
@@ -110,223 +145,254 @@
           \]
         </p>
         <p>
-          Variance measures spread:
+          This is exactly how we should think about loss. A training loss is usually an empirical
+          estimate of an expected loss over the data distribution.
         </p>
-        <p>
-          \[ \mathrm{Var}(X) = \mathbb{E}[(X-\mathbb{E}[X])^2] = \mathbb{E}[X^2] - \mathbb{E}[X]^2 \]
+        <h3>Spread and Co-Movement</h3>
+        <p class="math-block">
+          \[
+            \mathrm{Var}(X) = \mathbb{E}[X^2] - \mathbb{E}[X]^2
+          \]
         </p>
-        <p>
-          Covariance measures how two variables move together:
+        <p class="math-block">
+          \[
+            \mathrm{Cov}(X,Y) = \mathbb{E}[(X-\mathbb{E}[X])(Y-\mathbb{E}[Y])]
+          \]
         </p>
-        <p>
-          \[ \mathrm{Cov}(X,Y) = \mathbb{E}[(X-\mathbb{E}[X])(Y-\mathbb{E}[Y])] \]
-        </p>
-        <p>
-          Loss functions are expectations. Training on mini-batches estimates those expectations.
-          Generalization asks whether the empirical average is close to the population average.
-          Optimization noise is often variance wearing a different name.
-        </p>
+        <div class="takeaway">
+          <p>
+            <strong>Engineering read:</strong> mini-batch training is noisy because each batch is an
+            estimate of an expectation. Variance is not just a statistic; it is also an optimization
+            behavior.
+          </p>
+        </div>
 
-        <h2>Independence and Conditional Independence</h2>
+        <h2>4. Independence Is an Assumption, Not a Decoration</h2>
         <p>
-          Two variables are independent when knowing one tells us nothing about the other:
+          Two variables are independent when knowing one does not change the distribution of the
+          other:
+        </p>
+        <p class="math-block">
+          \[
+            p(x,y)=p(x)p(y)
+          \]
         </p>
         <p>
-          \[ p(x,y) = p(x)p(y) \]
+          Conditional independence says the relationship disappears after another variable is known:
+        </p>
+        <p class="math-block">
+          \[
+            p(x,y \mid z)=p(x \mid z)p(y \mid z)
+          \]
         </p>
         <p>
-          They are conditionally independent given \(z\) when the relationship disappears after \(z\)
-          is known:
+          This assumption is what makes many models tractable. Naive Bayes, hidden Markov models,
+          Bayesian networks, and graphical models all become useful because they factor a large
+          distribution into smaller pieces.
         </p>
-        <p>
-          \[ p(x,y \mid z) = p(x \mid z)p(y \mid z) \]
-        </p>
-        <p>
-          Conditional independence is the heart of graphical models, Naive Bayes, hidden Markov
-          models, Bayesian networks, and many scalable approximations. It lets us factor large
-          distributions into smaller pieces.
-        </p>
-        <p>
-          Independence is fragile. Variables can be marginally independent but conditionally
-          dependent, or marginally dependent but conditionally independent. Conditioning changes the
-          world you are talking about.
-        </p>
+        <div class="takeaway">
+          <p>
+            <strong>Careful:</strong> variables can be marginally independent but conditionally
+            dependent, or marginally dependent but conditionally independent. Conditioning changes the
+            problem you are solving.
+          </p>
+        </div>
 
-        <h2>Bayes' Rule</h2>
+        <h2>5. Bayes' Rule: Updating Belief With Evidence</h2>
         <p>
-          Bayes' rule is the algebra of belief revision:
+          Bayes' rule is the cleanest expression of how prior belief and evidence combine:
         </p>
-        <p>
-          \[ p(\theta \mid D) = \frac{p(D \mid \theta)p(\theta)}{p(D)} \]
+        <p class="math-block">
+          \[
+            p(\theta \mid D) = \frac{p(D \mid \theta)p(\theta)}{p(D)}
+          \]
         </p>
-        <table>
+        <table class="formula-table">
           <thead>
             <tr>
               <th>Term</th>
+              <th>Name</th>
               <th>Meaning</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>\(p(\theta)\)</td>
-              <td>Prior belief before seeing the data</td>
+              <td>Prior</td>
+              <td>What we believe before seeing the data</td>
             </tr>
             <tr>
               <td>\(p(D \mid \theta)\)</td>
-              <td>Likelihood of the observed data under parameter \(\theta\)</td>
+              <td>Likelihood</td>
+              <td>How well \(\theta\) explains the observed data</td>
             </tr>
             <tr>
               <td>\(p(D)\)</td>
-              <td>Evidence or normalizing constant</td>
+              <td>Evidence</td>
+              <td>The normalizer that makes probabilities sum to one</td>
             </tr>
             <tr>
               <td>\(p(\theta \mid D)\)</td>
-              <td>Posterior belief after observing the data</td>
+              <td>Posterior</td>
+              <td>What we believe after seeing the data</td>
             </tr>
           </tbody>
         </table>
         <p>
-          Maximum likelihood chooses parameters that make the data most probable:
+          Maximum likelihood ignores the prior and chooses parameters that make the data most
+          probable:
+        </p>
+        <p class="math-block">
+          \[
+            \hat{\theta}_{\mathrm{MLE}}=\arg\max_\theta p(D \mid \theta)
+          \]
         </p>
         <p>
-          \[ \hat{\theta}_{\mathrm{MLE}} = \arg\max_\theta p(D \mid \theta) \]
+          Maximum a posteriori estimation includes the prior:
+        </p>
+        <p class="math-block">
+          \[
+            \hat{\theta}_{\mathrm{MAP}}=\arg\max_\theta p(D \mid \theta)p(\theta)
+          \]
         </p>
         <p>
-          Maximum a posteriori estimation includes a prior:
-        </p>
-        <p>
-          \[ \hat{\theta}_{\mathrm{MAP}} = \arg\max_\theta p(D \mid \theta)p(\theta) \]
-        </p>
-        <p>
-          Regularization often has a Bayesian reading. An \(L_2\) penalty corresponds to a Gaussian
-          prior over weights. An \(L_1\) penalty corresponds to a Laplace prior.
+          This is why regularization often has a Bayesian interpretation. An \(L_2\) penalty behaves
+          like a Gaussian prior over weights. An \(L_1\) penalty behaves like a Laplace prior.
         </p>
 
-        <h2>Likelihood, Log-Likelihood, and Cross-Entropy</h2>
+        <h2>6. Likelihood and Cross-Entropy</h2>
         <p>
-          If data points are assumed independent given \(\theta\), then:
+          If data points are assumed independent given \(\theta\), the likelihood factors into a
+          product:
+        </p>
+        <p class="math-block">
+          \[
+            p(D \mid \theta)=\prod_{i=1}^n p(x_i \mid \theta)
+          \]
         </p>
         <p>
-          \[ p(D \mid \theta) = \prod_{i=1}^n p(x_i \mid \theta) \]
+          Products of many probabilities become tiny, so we optimize log-likelihood instead:
+        </p>
+        <p class="math-block">
+          \[
+            \log p(D \mid \theta)=\sum_{i=1}^n \log p(x_i \mid \theta)
+          \]
         </p>
         <p>
-          Products of many probabilities become tiny, so we usually optimize the log-likelihood:
+          Cross-entropy compares the true distribution \(p\) with the model distribution \(q\):
         </p>
-        <p>
-          \[ \log p(D \mid \theta) = \sum_{i=1}^n \log p(x_i \mid \theta) \]
+        <p class="math-block">
+          \[
+            H(p,q)=-\mathbb{E}_{x\sim p}[\log q(x)]
+          \]
         </p>
-        <p>
-          Cross-entropy appears when the true distribution \(p\) is compared to a model distribution
-          \(q\):
-        </p>
-        <p>
-          \[ H(p,q) = -\mathbb{E}_{x \sim p}[\log q(x)] \]
-        </p>
-        <p>
-          In classification, minimizing cross-entropy encourages the model to assign high probability
-          to the correct label. It is not merely a classification penalty; it is a probabilistic
-          scoring rule.
-        </p>
+        <div class="takeaway">
+          <p>
+            <strong>Engineering read:</strong> cross-entropy does not just reward being correct. It
+            rewards calibrated confidence and punishes confident mistakes.
+          </p>
+        </div>
 
-        <h2>Common Distributions</h2>
-        <table>
+        <h2>7. Common Distributions Worth Recognizing</h2>
+        <table class="distribution-table">
           <thead>
             <tr>
               <th>Distribution</th>
-              <th>Use it for</th>
-              <th>ML examples</th>
+              <th>Use it when</th>
+              <th>ML example</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>Bernoulli</td>
-              <td>One binary event</td>
-              <td>Click/no click, fraud/not fraud, success/failure</td>
+              <td>There is one binary outcome.</td>
+              <td>Click or no click, fraud or not fraud.</td>
             </tr>
             <tr>
               <td>Categorical</td>
-              <td>One of \(K\) classes</td>
-              <td>Multiclass labels, token selection</td>
+              <td>There is one label among \(K\) choices.</td>
+              <td>Multiclass classification or next-token prediction.</td>
             </tr>
             <tr>
               <td>Binomial</td>
-              <td>Number of successes in fixed trials</td>
-              <td>A/B tests, repeated binary outcomes</td>
+              <td>You count successes across fixed trials.</td>
+              <td>Conversion counts in an experiment.</td>
             </tr>
             <tr>
               <td>Poisson</td>
-              <td>Counts over time or space</td>
-              <td>Arrivals, defects, rare events</td>
+              <td>You count events over time or space.</td>
+              <td>Arrivals, defects, rare events.</td>
             </tr>
             <tr>
               <td>Gaussian</td>
-              <td>Continuous values with symmetric noise</td>
-              <td>Regression residuals, latent variables, approximate posteriors</td>
+              <td>You model continuous symmetric noise.</td>
+              <td>Regression residuals or approximate posteriors.</td>
             </tr>
             <tr>
               <td>Beta</td>
-              <td>Distribution over probabilities</td>
-              <td>Bayesian conversion rates, uncertainty over Bernoulli parameters</td>
+              <td>You need uncertainty over one probability.</td>
+              <td>Bayesian conversion-rate modeling.</td>
             </tr>
             <tr>
               <td>Dirichlet</td>
-              <td>Distribution over categorical probabilities</td>
-              <td>Topic models, class-proportion priors</td>
+              <td>You need uncertainty over class probabilities.</td>
+              <td>Topic proportions or class-prior uncertainty.</td>
             </tr>
           </tbody>
         </table>
 
-        <h2>Sampling and Monte Carlo Thinking</h2>
+        <h2>8. Sampling: Estimating What We Cannot Compute</h2>
         <p>
-          Many expectations cannot be computed exactly. Monte Carlo methods approximate them with
+          Many expectations are too hard to calculate exactly. Monte Carlo methods estimate them with
           samples:
         </p>
-        <p>
+        <p class="math-block">
           \[
             \mathbb{E}[g(X)] \approx \frac{1}{m}\sum_{j=1}^m g(x^{(j)}),
-            \qquad x^{(j)} \sim p(x)
+            \qquad x^{(j)}\sim p(x)
           \]
         </p>
         <p>
-          This idea appears everywhere: dropout, bootstrapping, Bayesian posterior approximation,
-          policy gradients, simulation, uncertainty estimation, and offline evaluation. More samples
-          usually reduce variance but cost more compute.
+          This pattern appears in bootstrapping, dropout, posterior approximation, simulation,
+          policy gradients, uncertainty estimation, and offline evaluation.
         </p>
+        <div class="takeaway">
+          <p>
+            <strong>Tradeoff:</strong> more samples usually reduce variance, but they cost compute.
+            Better sampling focuses effort where it reduces uncertainty the most.
+          </p>
+        </div>
 
-        <h2>Law of Large Numbers and Central Limit Theorem</h2>
+        <h2>9. Why Averages Work Until They Do Not</h2>
         <p>
           The law of large numbers says sample averages converge toward expectations:
         </p>
-        <p>
-          \[ \frac{1}{n}\sum_{i=1}^n X_i \to \mathbb{E}[X] \]
-        </p>
-        <p>
-          The central limit theorem says that, under broad conditions, normalized sums look
-          approximately Gaussian:
-        </p>
-        <p>
+        <p class="math-block">
           \[
-            \frac{\sum_{i=1}^n X_i - n\mu}{\sigma\sqrt{n}}
+            \frac{1}{n}\sum_{i=1}^n X_i \to \mathbb{E}[X]
+          \]
+        </p>
+        <p>
+          The central limit theorem says normalized sums often look Gaussian:
+        </p>
+        <p class="math-block">
+          \[
+            \frac{\sum_{i=1}^n X_i-n\mu}{\sigma\sqrt{n}}
             \Rightarrow \mathcal{N}(0,1)
           \]
         </p>
         <p>
-          These results justify confidence intervals, error bars, mini-batch estimates, and many
-          approximate diagnostics. They also have limits: dependence, heavy tails, selection bias, and
-          distribution shift can break the comfort they provide.
+          These ideas justify confidence intervals, error bars, and many diagnostics. The catch is
+          that dependence, heavy tails, selection bias, and distribution shift can weaken the comfort
+          they provide.
         </p>
 
-        <h2>Bias, Variance, and Estimation</h2>
+        <h2>10. Bias, Variance, and Irreducible Noise</h2>
         <p>
-          An estimator is a function of data. Its error can often be decomposed into bias and
-          variance. Bias is systematic error; variance is sensitivity to the particular sample.
+          Bias is systematic error. Variance is sensitivity to the sample. Irreducible noise is the
+          part of the target the features simply do not reveal.
         </p>
-        <p>
-          In model selection, a very flexible model may have low bias but high variance. A very
-          restricted model may have high bias but low variance. Regularization, early stopping, data
-          augmentation, ensembling, and better features are all ways of reshaping this tradeoff.
-        </p>
-        <p>
+        <p class="math-block">
           \[
             \mathbb{E}[(\hat{f}(x)-f(x))^2]
             =
@@ -338,102 +404,81 @@
           \]
         </p>
         <p>
-          The final term \(\sigma^2\) is irreducible noise. Even the best model cannot predict what
-          the data-generating process does not reveal.
+          Regularization, early stopping, data augmentation, ensembling, and better features all
+          reshape this tradeoff. They do not remove the irreducible term.
         </p>
 
-        <h2>Information, Entropy, and KL Divergence</h2>
+        <h2>11. Entropy, KL, and Calibration</h2>
         <p>
           Entropy measures uncertainty:
         </p>
-        <p>
-          \[ H(p) = -\sum_x p(x)\log p(x) \]
+        <p class="math-block">
+          \[
+            H(p)=-\sum_x p(x)\log p(x)
+          \]
         </p>
         <p>
-          KL divergence measures the extra cost of using \(q\) when the true distribution is \(p\):
+          KL divergence measures how much extra cost we pay when we use \(q\) while the true
+          distribution is \(p\):
+        </p>
+        <p class="math-block">
+          \[
+            D_{\mathrm{KL}}(p\Vert q)=\sum_x p(x)\log\frac{p(x)}{q(x)}
+          \]
         </p>
         <p>
-          \[ D_{\mathrm{KL}}(p \Vert q) = \sum_x p(x)\log\frac{p(x)}{q(x)} \]
+          Calibration asks a more operational question: when a model says \(0.8\), is it right about
+          \(80\%\) of the time? Accuracy and calibration are different. A model can be accurate but
+          dangerously overconfident.
+        </p>
+        <div class="takeaway">
+          <p>
+            <strong>Engineering read:</strong> if probabilities drive decisions, inspect calibration,
+            not just accuracy.
+          </p>
+        </div>
+
+        <h2>12. Decisions, Thresholds, and Shift</h2>
+        <p>
+          Predictions become useful when they are connected to actions. Decision theory says choose
+          the action with the lowest expected loss:
+        </p>
+        <p class="math-block">
+          \[
+            a^\star=\arg\min_a \mathbb{E}[L(a,Y)\mid x]
+          \]
         </p>
         <p>
-          KL is not symmetric, so \(D_{\mathrm{KL}}(p \Vert q)\) and
-          \(D_{\mathrm{KL}}(q \Vert p)\) punish different mistakes. This asymmetry matters in
-          variational inference and generative modeling.
+          That is why a threshold is not just a model setting. It is a cost decision. A false positive
+          and false negative usually do not cost the same.
+        </p>
+        <p>
+          Finally, remember that production data may not match training data:
+        </p>
+        <p class="math-block">
+          \[
+            p_{\mathrm{train}}(x,y)\neq p_{\mathrm{prod}}(x,y)
+          \]
+        </p>
+        <p>
+          Monitor feature distributions, prediction distributions, labels when they arrive,
+          calibration, delayed outcomes, and downstream actions. Most real systems fail slowly before
+          they fail loudly.
         </p>
 
-        <h2>Calibration and Uncertainty</h2>
-        <p>
-          A classifier is calibrated if its confidence matches reality. If it predicts \(0.8\)
-          probability across many cases, about \(80\%\) of those cases should be correct.
-        </p>
-        <p>
-          Accuracy and calibration are different. A model can be accurate but overconfident, or less
-          accurate but better calibrated. Calibration matters whenever the probability itself drives a
-          decision: medical triage, fraud review, ranking, autonomous systems, and human-in-the-loop
-          review.
-        </p>
-        <p>
-          Common tools include reliability diagrams, expected calibration error, temperature scaling,
-          ensembles, conformal prediction, and abstention policies.
-        </p>
-
-        <h2>Probabilistic Graphical Thinking</h2>
-        <p>
-          Graphical models are useful because they make assumptions visible. A directed edge often
-          means direct dependence. Missing edges often mean conditional independence.
-        </p>
-        <p>
-          Suppose user intent \(Z\) influences query text \(X\) and clicked item \(Y\). A model may
-          assume:
-        </p>
-        <p>
-          \[ p(x,y,z) = p(z)p(x \mid z)p(y \mid z) \]
-        </p>
-        <p>
-          This says text and click are dependent overall, but independent once intent is known.
-          Whether that assumption is true is an engineering question, not just a mathematical one.
-        </p>
-
-        <h2>Decision Theory</h2>
-        <p>
-          Predictions become useful when connected to actions. Decision theory says choose the action
-          with the best expected utility or lowest expected loss:
-        </p>
-        <p>
-          \[ a^\star = \arg\min_a \mathbb{E}[L(a,Y) \mid x] \]
-        </p>
-        <p>
-          This is why thresholds are business decisions, not just model metrics. A false positive and
-          a false negative may have different costs. The default threshold of \(0.5\) is rarely
-          sacred; tune thresholds against the real loss function and operational constraints.
-        </p>
-
-        <h2>Distribution Shift</h2>
-        <p>
-          Training data comes from one distribution; production data may come from another:
-        </p>
-        <p>
-          \[ p_{\mathrm{train}}(x,y) \neq p_{\mathrm{prod}}(x,y) \]
-        </p>
-        <p>
-          Important forms include covariate shift, label shift, concept drift, and selection bias.
-          Monitoring should therefore track data features, labels when available, prediction
-          distributions, calibration, delayed outcomes, and downstream decisions.
-        </p>
-
-        <h2>A Compact Workflow</h2>
+        <h2>Practical Workflow</h2>
         <ol>
-          <li>Define the random variables: inputs, labels, latent factors, decisions, and costs.</li>
-          <li>State the modeling target: \(p(y \mid x)\), \(p(x)\), \(p(x,y)\), a risk score, or an action.</li>
-          <li>Choose assumptions deliberately: independence, noise model, priors, stationarity, and missingness.</li>
-          <li>Train by optimizing a probabilistic objective when probabilities matter.</li>
-          <li>Validate with both predictive metrics and uncertainty diagnostics.</li>
-          <li>Stress-test under shift, imbalance, missing data, and rare edge cases.</li>
-          <li>Connect probabilities to decisions using the real loss function.</li>
+          <li>Name the random variables: inputs, labels, latent factors, decisions, and costs.</li>
+          <li>State the target: \(p(y \mid x)\), \(p(x)\), \(p(x,y)\), a score, or an action.</li>
+          <li>Write down the assumptions: independence, noise model, priors, stationarity, and missingness.</li>
+          <li>Train with an objective that matches the probability you want the model to output.</li>
+          <li>Evaluate both prediction quality and uncertainty quality.</li>
+          <li>Stress-test imbalance, missing data, rare cases, and distribution shift.</li>
+          <li>Choose thresholds using the real loss function, not a default value.</li>
         </ol>
 
         <h2>Formula Sheet</h2>
-        <table>
+        <table class="formula-table">
           <thead>
             <tr>
               <th>Concept</th>
@@ -443,54 +488,51 @@
           <tbody>
             <tr>
               <td>Conditional probability</td>
-              <td>\(p(a \mid b) = p(a,b)/p(b)\)</td>
+              <td>\(p(a\mid b)=p(a,b)/p(b)\)</td>
             </tr>
             <tr>
               <td>Product rule</td>
-              <td>\(p(a,b) = p(a \mid b)p(b) = p(b \mid a)p(a)\)</td>
+              <td>\(p(a,b)=p(a\mid b)p(b)=p(b\mid a)p(a)\)</td>
             </tr>
             <tr>
               <td>Marginalization</td>
-              <td>\(p(a) = \sum_b p(a,b)\) or \(p(a) = \int p(a,b)\,db\)</td>
+              <td>\(p(a)=\sum_b p(a,b)\) or \(p(a)=\int p(a,b)\,db\)</td>
             </tr>
             <tr>
               <td>Bayes' rule</td>
-              <td>\(p(a \mid b) = p(b \mid a)p(a)/p(b)\)</td>
+              <td>\(p(a\mid b)=p(b\mid a)p(a)/p(b)\)</td>
             </tr>
             <tr>
               <td>Expectation</td>
-              <td>\(\mathbb{E}[X] = \sum_x xp(x)\) or \(\int xf(x)\,dx\)</td>
+              <td>\(\mathbb{E}[X]=\sum_x xp(x)\) or \(\int xf(x)\,dx\)</td>
             </tr>
             <tr>
               <td>Variance</td>
-              <td>\(\mathrm{Var}(X) = \mathbb{E}[X^2] - \mathbb{E}[X]^2\)</td>
+              <td>\(\mathrm{Var}(X)=\mathbb{E}[X^2]-\mathbb{E}[X]^2\)</td>
             </tr>
             <tr>
               <td>Entropy</td>
-              <td>\(H(p) = -\sum_x p(x)\log p(x)\)</td>
+              <td>\(H(p)=-\sum_x p(x)\log p(x)\)</td>
             </tr>
             <tr>
               <td>Cross-entropy</td>
-              <td>\(H(p,q) = -\mathbb{E}_{p}[\log q(X)]\)</td>
+              <td>\(H(p,q)=-\mathbb{E}_{p}[\log q(X)]\)</td>
             </tr>
             <tr>
               <td>KL divergence</td>
-              <td>\(D_{\mathrm{KL}}(p \Vert q) = \mathbb{E}_p[\log p(X) - \log q(X)]\)</td>
+              <td>\(D_{\mathrm{KL}}(p\Vert q)=\mathbb{E}_p[\log p(X)-\log q(X)]\)</td>
             </tr>
           </tbody>
         </table>
 
         <h2>Closing Perspective</h2>
         <p>
-          Probability is the grammar behind machine learning systems that must operate under
-          uncertainty. The practical goal is not to make every system fully Bayesian or mathematically
-          elaborate. The goal is to think clearly: define the variables, understand the distribution,
-          optimize the right objective, validate uncertainty honestly, and make decisions with costs
-          in view.
+          Probability is not extra theory attached to machine learning. It is the grammar behind
+          models that learn from incomplete data and act under uncertainty.
         </p>
         <p>
-          An ML model is not just a function from inputs to outputs. It is an engineered approximation
-          to a probabilistic story about data, uncertainty, and decisions.
+          The practical goal is simple: define the variables, understand the distribution, optimize
+          the right objective, validate uncertainty honestly, and make decisions with costs in view.
         </p>
       </section>
     </article>
