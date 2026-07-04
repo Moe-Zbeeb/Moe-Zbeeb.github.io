@@ -221,11 +221,15 @@
           \]
         </p>
         <p>
-          Dependence is the opposite: knowing one variable changes the distribution of the other. If
-          users who search for "running shoes" are more likely to click athletic products, then query
-          text and clicked item are dependent. If a model's error rate changes by hospital, then
-          hospital identity and error are dependent. Dependence is a signal that variables share
-          information.
+          Dependence is the opposite: knowing one variable changes what we believe about the other.
+          If you know it is raining, the chance that a person is carrying an umbrella goes up. So
+          weather and umbrella-carrying are dependent. If you flip a fair coin and roll a fair die,
+          seeing heads tells you nothing about whether the die landed on six. Those two outcomes are
+          independent.
+        </p>
+        <p>
+          A useful test is: after I learn \(X\), would I update my belief about \(Y\)? If yes, the
+          variables are dependent. If no, they are independent.
         </p>
         <table class="formula-table">
           <thead>
@@ -248,7 +252,7 @@
             </tr>
             <tr>
               <td>Conditionally independent</td>
-              <td>The dependence disappears after controlling for \(Z\).</td>
+              <td>The dependence disappears after knowing \(Z\).</td>
               <td>\(p(x,y \mid z)=p(x \mid z)p(y \mid z)\)</td>
             </tr>
           </tbody>
@@ -272,9 +276,11 @@
           explained away.
         </p>
         <p>
-          Suppose \(Z\) is user intent, \(X\) is query text, and \(Y\) is the clicked item. Query text
-          and clicked item are dependent overall. But if intent were fully known, the query and click
-          might be independent given intent:
+          A simple example is two thermometers in the same room. Let \(Z\) be the true room
+          temperature, \(X\) be the first thermometer reading, and \(Y\) be the second thermometer
+          reading. The two readings are dependent overall because both are driven by the same room
+          temperature. But if we already know the true temperature \(Z\), then the remaining small
+          errors of the two thermometers can be treated as independent:
         </p>
         <p class="math-block">
           \[
