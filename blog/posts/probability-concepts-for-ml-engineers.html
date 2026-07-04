@@ -31,13 +31,13 @@
 
       <section class="lead-card">
         <p>
-          Probability is the language we use when a model sees incomplete evidence and still has to
-          make a decision.
+          Probability is the language we use when we do not know exactly what will happen, but we
+          still need to reason carefully.
         </p>
         <p>
           The goal of this tutorial is not to list formulas. The goal is to connect each concept to
-          the engineering questions that show up in training, evaluation, calibration, monitoring, and
-          deployment.
+          simple examples first, then connect them back to machine learning only after the idea is
+          clear.
         </p>
       </section>
 
@@ -45,19 +45,18 @@
         <h2>Reading Map</h2>
         <ol>
           <li>Represent uncertainty with random variables and distributions.</li>
-          <li>Use expectation, variance, and likelihood to train models.</li>
-          <li>Use Bayes' rule, entropy, and calibration to reason about confidence.</li>
-          <li>Turn probabilities into decisions under real costs and distribution shift.</li>
+          <li>Use expectation and variance to understand averages and spread.</li>
+          <li>Use dependence, Bayes' rule, and entropy to reason about information.</li>
+          <li>Turn probabilities into decisions when mistakes have different costs.</li>
         </ol>
       </nav>
 
       <section>
         <h2>1. Start With the Random Variables</h2>
         <p>
-          Before choosing a model, name the quantities that are uncertain. In supervised learning,
-          \(X\) might be the input features and \(Y\) the target. In a recommender system, \(Z\) might
-          be a hidden user intent. In deployment, \(A\) might be the action we take after the model
-          returns a score.
+          Start by naming what is uncertain. If you flip a coin, \(X\) might be heads or tails. If
+          you roll a die, \(X\) might be one of six numbers. If you measure tomorrow's temperature,
+          \(X\) might be a real number like \(23.4^\circ\)C.
         </p>
         <p>
           A random variable maps possible outcomes to values. A distribution tells us how probability
@@ -79,7 +78,7 @@
         </p>
         <div class="takeaway">
           <p>
-            <strong>Engineering read:</strong> discrete probability counts outcomes; continuous
+            <strong>Plain read:</strong> discrete probability counts outcomes; continuous
             probability measures regions. Mixing those up is a common source of confusion around
             likelihoods and densities.
           </p>
@@ -118,12 +117,13 @@
           </tbody>
         </table>
         <p>
-          In supervised learning, the target is usually \(p(y \mid x)\). In generative modeling, we
-          often care about \(p(x)\) or \(p(x,y)\), because we want to model the process that could
-          have produced the data.
+          For example, let \(X\) be the weather and \(Y\) be whether someone carries an umbrella. The
+          joint distribution describes weather and umbrella-carrying together. The marginal
+          distribution describes weather alone. The conditional distribution asks: if we know it is
+          raining, how likely is the umbrella?
         </p>
 
-        <h2>3. Expectations Are the Shape of Training</h2>
+        <h2>3. Expectations Are Long-Run Averages</h2>
         <p>
           Expectation is the average value under a distribution:
         </p>
@@ -145,8 +145,9 @@
           \]
         </p>
         <p>
-          This is exactly how we should think about loss. A training loss is usually an empirical
-          estimate of an expected loss over the data distribution.
+          For a fair die, the expected roll is the long-run average you would get after many rolls.
+          It does not mean you will ever roll \(3.5\). It means the average of many rolls settles near
+          \(3.5\).
         </p>
         <h3>Spread and Co-Movement</h3>
         <p class="math-block">
@@ -195,9 +196,8 @@
         </p>
         <div class="takeaway">
           <p>
-            <strong>Engineering read:</strong> mini-batch training is noisy because each batch is an
-            estimate of an expectation. Variance is not just a statistic; it is also an optimization
-            behavior.
+            <strong>Plain read:</strong> a small sample can give a noisy average. A larger sample
+            usually gives a more stable average. Variance tells you how much noise to expect.
           </p>
         </div>
 
@@ -288,33 +288,34 @@
           \]
         </p>
         <p>
-          This is the kind of assumption that makes graphical models, Naive Bayes, hidden Markov
-          models, and Bayesian networks useful. It lets us factor a large distribution into smaller
-          pieces.
+          This kind of assumption lets us simplify a problem. Once we know the room temperature, we
+          no longer need to explain one thermometer reading by looking at the other; both are just
+          noisy readings of the same underlying value.
         </p>
         <h3>The i.i.d. Assumption</h3>
         <p>
-          In machine learning, we often assume examples are independent and identically distributed:
-          i.i.d. Independent means one training example does not affect another. Identically
-          distributed means they are drawn from the same underlying distribution.
+          You will often see the phrase i.i.d.: independent and identically distributed. Independent
+          means one observation does not affect the next. Identically distributed means every
+          observation comes from the same rule.
         </p>
         <p>
-          This assumption is what allows a validation set to estimate production performance. But it
-          can fail in real systems. User sessions create dependence between examples. Duplicate data
-          leaks information across train and test. Time trends break the "same distribution" part.
-          Deployment feedback loops make future data depend on previous model decisions.
+          Repeated flips of the same fair coin are a good simple example. One flip does not control
+          the next, and each flip has the same chance of heads. The assumption breaks if the coin is
+          changed halfway through, or if the outcome of one trial changes how the next trial is done.
         </p>
         <div class="takeaway">
           <p>
-            <strong>Engineering read:</strong> independence is not a default truth; it is an
-            assumption. When it fails, metrics can look better than reality because the validation
-            data is not giving an honest independent test.
+            <strong>Plain read:</strong> independence is not automatic. Ask whether one observation
+            can influence another, and ask whether all observations are really coming from the same
+            situation.
           </p>
         </div>
 
         <h2>5. Bayes' Rule: Updating Belief With Evidence</h2>
         <p>
-          Bayes' rule is the cleanest expression of how prior belief and evidence combine:
+          Bayes' rule is the cleanest expression of how prior belief and new evidence combine. Imagine
+          a bag that contains mostly red balls or mostly blue balls. Before drawing, you have a prior
+          belief about which bag you have. After drawing a few red balls, you update that belief:
         </p>
         <p class="math-block">
           \[
@@ -353,8 +354,9 @@
           </tbody>
         </table>
         <p>
-          Maximum likelihood ignores the prior and chooses parameters that make the data most
-          probable:
+          Maximum likelihood chooses the explanation that makes the observations most plausible. If a
+          coin lands heads 80 times out of 100, maximum likelihood prefers a coin whose chance of
+          heads is near \(0.8\):
         </p>
         <p class="math-block">
           \[
@@ -362,7 +364,9 @@
           \]
         </p>
         <p>
-          Maximum a posteriori estimation includes the prior:
+          Maximum a posteriori estimation also includes what we believed before seeing the data. If
+          we strongly believed the coin was close to fair before seeing only a small number of flips,
+          the prior pulls the estimate back toward \(0.5\):
         </p>
         <p class="math-block">
           \[
@@ -370,14 +374,15 @@
           \]
         </p>
         <p>
-          This is why regularization often has a Bayesian interpretation. An \(L_2\) penalty behaves
-          like a Gaussian prior over weights. An \(L_1\) penalty behaves like a Laplace prior.
+          The point is simple: likelihood listens to the observations; the prior expresses what we
+          believed before the observations; the posterior combines both.
         </p>
 
         <h2>6. Likelihood and Cross-Entropy</h2>
         <p>
-          If data points are assumed independent given \(\theta\), the likelihood factors into a
-          product:
+          If observations are independent given \(\theta\), the likelihood factors into a product.
+          For coin flips, this means the probability of the whole sequence is the product of the
+          probability of each flip:
         </p>
         <p class="math-block">
           \[
@@ -385,7 +390,8 @@
           \]
         </p>
         <p>
-          Products of many probabilities become tiny, so we optimize log-likelihood instead:
+          Products of many probabilities become tiny, so we often use log-likelihood instead. The log
+          turns products into sums, which are easier to work with:
         </p>
         <p class="math-block">
           \[
@@ -393,7 +399,9 @@
           \]
         </p>
         <p>
-          Cross-entropy compares the true distribution \(p\) with the model distribution \(q\):
+          Cross-entropy compares a true distribution \(p\) with an estimated distribution \(q\). A
+          simple way to think about it is weather forecasting: if rain happens often but your forecast
+          keeps assigning it tiny probability, cross-entropy becomes large:
         </p>
         <p class="math-block">
           \[
@@ -402,8 +410,8 @@
         </p>
         <div class="takeaway">
           <p>
-            <strong>Engineering read:</strong> cross-entropy does not just reward being correct. It
-            rewards calibrated confidence and punishes confident mistakes.
+            <strong>Plain read:</strong> cross-entropy does not just ask whether you guessed the
+            right outcome. It also asks whether your confidence matched reality.
           </p>
         </div>
 
@@ -413,44 +421,44 @@
             <tr>
               <th>Distribution</th>
               <th>Use it when</th>
-              <th>ML example</th>
+              <th>Simple example</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>Bernoulli</td>
               <td>There is one binary outcome.</td>
-              <td>Click or no click, fraud or not fraud.</td>
+              <td>A coin flip: heads or tails.</td>
             </tr>
             <tr>
               <td>Categorical</td>
               <td>There is one label among \(K\) choices.</td>
-              <td>Multiclass classification or next-token prediction.</td>
+              <td>A die roll: one of six faces.</td>
             </tr>
             <tr>
               <td>Binomial</td>
               <td>You count successes across fixed trials.</td>
-              <td>Conversion counts in an experiment.</td>
+              <td>Number of heads in 20 coin flips.</td>
             </tr>
             <tr>
               <td>Poisson</td>
               <td>You count events over time or space.</td>
-              <td>Arrivals, defects, rare events.</td>
+              <td>Number of calls received in one hour.</td>
             </tr>
             <tr>
               <td>Gaussian</td>
-              <td>You model continuous symmetric noise.</td>
-              <td>Regression residuals or approximate posteriors.</td>
+              <td>Values vary continuously around a center.</td>
+              <td>Small measurement errors around a true length.</td>
             </tr>
             <tr>
               <td>Beta</td>
               <td>You need uncertainty over one probability.</td>
-              <td>Bayesian conversion-rate modeling.</td>
+              <td>Uncertainty about how biased a coin is.</td>
             </tr>
             <tr>
               <td>Dirichlet</td>
               <td>You need uncertainty over class probabilities.</td>
-              <td>Topic proportions or class-prior uncertainty.</td>
+              <td>Uncertainty over the mix of red, blue, and green balls in a bag.</td>
             </tr>
           </tbody>
         </table>
@@ -467,13 +475,14 @@
           \]
         </p>
         <p>
-          This pattern appears in bootstrapping, dropout, posterior approximation, simulation,
-          policy gradients, uncertainty estimation, and offline evaluation.
+          Suppose you want to know the average height in a city. Measuring everyone is too expensive,
+          so you measure a sample and average those measurements. The estimate is not exact, but it
+          often gets better as the sample becomes larger and more representative.
         </p>
         <div class="takeaway">
           <p>
-            <strong>Tradeoff:</strong> more samples usually reduce variance, but they cost compute.
-            Better sampling focuses effort where it reduces uncertainty the most.
+            <strong>Tradeoff:</strong> more samples usually reduce variance, but they take more time
+            and effort. A small but well-chosen sample can be better than a large biased one.
           </p>
         </div>
 
@@ -496,15 +505,16 @@
           \]
         </p>
         <p>
-          These ideas justify confidence intervals, error bars, and many diagnostics. The catch is
-          that dependence, heavy tails, selection bias, and distribution shift can weaken the comfort
-          they provide.
+          These ideas justify confidence intervals and error bars. The catch is that they work best
+          when samples are reasonably independent and come from the same situation. If you only ask
+          very tall people about average height, the average will still be biased no matter how many
+          people you ask.
         </p>
 
         <h2>10. Bias, Variance, and Irreducible Noise</h2>
         <p>
           Bias is systematic error. Variance is sensitivity to the sample. Irreducible noise is the
-          part of the target the features simply do not reveal.
+          part of the outcome that cannot be known from the information available.
         </p>
         <p class="math-block">
           \[
@@ -518,8 +528,10 @@
           \]
         </p>
         <p>
-          Regularization, early stopping, data augmentation, ensembling, and better features all
-          reshape this tradeoff. They do not remove the irreducible term.
+          Think about estimating a person's weight using only their height. A simple rule may be
+          biased because it misses many important factors. A rule built from a small sample may have
+          high variance because it changes a lot depending on which people were measured. Even with a
+          good rule, some uncertainty remains because height alone does not determine weight.
         </p>
 
         <h2>11. Entropy, KL, and Calibration</h2>
@@ -541,20 +553,20 @@
           \]
         </p>
         <p>
-          Calibration asks a more operational question: when a model says \(0.8\), is it right about
-          \(80\%\) of the time? Accuracy and calibration are different. A model can be accurate but
-          dangerously overconfident.
+          Calibration asks a simple confidence question. If a weather forecaster says there is an
+          \(80\%\) chance of rain on many different days, then it should rain on about \(80\%\) of
+          those days. If it rains only \(50\%\) of the time, the forecasts were overconfident.
         </p>
         <div class="takeaway">
           <p>
-            <strong>Engineering read:</strong> if probabilities drive decisions, inspect calibration,
-            not just accuracy.
+            <strong>Plain read:</strong> a probability should mean what it says. If someone says
+            \(80\%\), the event should happen about 8 times out of 10 across many similar cases.
           </p>
         </div>
 
         <h2>12. Decisions, Thresholds, and Shift</h2>
         <p>
-          Predictions become useful when they are connected to actions. Decision theory says choose
+          Probabilities become useful when they are connected to actions. Decision theory says choose
           the action with the lowest expected loss:
         </p>
         <p class="math-block">
@@ -563,32 +575,35 @@
           \]
         </p>
         <p>
-          That is why a threshold is not just a model setting. It is a cost decision. A false positive
-          and false negative usually do not cost the same.
+          Suppose the weather forecast says there is a \(40\%\) chance of rain. Should you carry an
+          umbrella? If carrying it is easy and getting wet is annoying, \(40\%\) may be enough. If the
+          umbrella is heavy and rain would not bother you much, maybe it is not. The same probability
+          can lead to different actions because the costs are different.
         </p>
         <p>
-          Finally, remember that production data may not match training data:
+          Finally, remember that the situation you learned from may not match the situation you face
+          later:
         </p>
         <p class="math-block">
           \[
-            p_{\mathrm{train}}(x,y)\neq p_{\mathrm{prod}}(x,y)
+            p_{\mathrm{past}}(x,y)\neq p_{\mathrm{future}}(x,y)
           \]
         </p>
         <p>
-          Monitor feature distributions, prediction distributions, labels when they arrive,
-          calibration, delayed outcomes, and downstream actions. Most real systems fail slowly before
-          they fail loudly.
+          If you estimate average commute time during summer, that estimate may not work during the
+          first week of school. If you study umbrella use in a dry month, it may not describe a rainy
+          month. This is distribution shift: the old pattern and the new pattern are not the same.
         </p>
 
         <h2>Practical Workflow</h2>
         <ol>
-          <li>Name the random variables: inputs, labels, latent factors, decisions, and costs.</li>
-          <li>State the target: \(p(y \mid x)\), \(p(x)\), \(p(x,y)\), a score, or an action.</li>
-          <li>Write down the assumptions: independence, noise model, priors, stationarity, and missingness.</li>
-          <li>Train with an objective that matches the probability you want the model to output.</li>
-          <li>Evaluate both prediction quality and uncertainty quality.</li>
-          <li>Stress-test imbalance, missing data, rare cases, and distribution shift.</li>
-          <li>Choose thresholds using the real loss function, not a default value.</li>
+          <li>Name the uncertain quantities.</li>
+          <li>Ask what you want to know: one variable, two variables together, or one variable after observing another.</li>
+          <li>Write down your assumptions: independence, same distribution, noise, and prior beliefs.</li>
+          <li>Estimate averages and probabilities from data, but remember samples are noisy.</li>
+          <li>Check whether your confidence matches reality.</li>
+          <li>Ask whether the future situation still matches the past situation.</li>
+          <li>Choose actions by comparing the cost of different mistakes.</li>
         </ol>
 
         <h2>Formula Sheet</h2>
@@ -641,12 +656,13 @@
 
         <h2>Closing Perspective</h2>
         <p>
-          Probability is not extra theory attached to machine learning. It is the grammar behind
-          models that learn from incomplete data and act under uncertainty.
+          Probability is not only a set of formulas. It is a way to reason when information is
+          incomplete.
         </p>
         <p>
-          The practical goal is simple: define the variables, understand the distribution, optimize
-          the right objective, validate uncertainty honestly, and make decisions with costs in view.
+          The practical goal is simple: define the uncertain quantities, understand how they are
+          distributed, update beliefs when new evidence arrives, and make decisions with costs in
+          view.
         </p>
       </section>
     </article>
