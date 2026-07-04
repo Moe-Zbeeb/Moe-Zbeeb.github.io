@@ -159,6 +159,40 @@
             \mathrm{Cov}(X,Y) = \mathbb{E}[(X-\mathbb{E}[X])(Y-\mathbb{E}[Y])]
           \]
         </p>
+        <h3>Variance Behavior</h3>
+        <p>
+          Variance is about distance from the mean. When most values stay close to the mean, variance
+          is small. When values spread far away, variance grows. Because the deviations are squared,
+          far-away points matter much more than nearby points.
+        </p>
+        <figure class="fullwidth">
+          <img src="diagrams/variance-behavior.png" alt="Two bell curves with the same mean: one narrow low-variance curve and one wider high-variance curve" />
+          <figcaption>
+            Both distributions have the same mean. The narrow curve has low variance because values
+            concentrate near the mean. The wide curve has high variance because probability mass
+            spreads farther into the tails.
+          </figcaption>
+        </figure>
+        <h3>Covariance Behavior</h3>
+        <p>
+          Covariance is about how two variables move relative to their own means. If \(X\) is above
+          its mean when \(Y\) is also above its mean, their product of deviations is positive. If one
+          is above its mean while the other is below, the product is negative. If there is no stable
+          linear movement, the positive and negative products mostly cancel.
+        </p>
+        <figure class="fullwidth">
+          <img src="diagrams/covariance-behavior.png" alt="Three scatter plots showing positive covariance, near-zero covariance, and negative covariance" />
+          <figcaption>
+            Positive covariance means the variables tend to move together. Negative covariance means
+            they tend to move in opposite directions. Near-zero covariance means there is no clear
+            linear co-movement, though nonlinear relationships may still exist.
+          </figcaption>
+        </figure>
+        <p>
+          The sign of covariance is easy to interpret; the magnitude is harder because it depends on
+          the units of \(X\) and \(Y\). Correlation fixes that by normalizing covariance into a
+          unitless value between \(-1\) and \(1\).
+        </p>
         <div class="takeaway">
           <p>
             <strong>Engineering read:</strong> mini-batch training is noisy because each batch is an
