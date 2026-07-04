@@ -203,8 +203,17 @@
 
         <h2>4. Independence Is an Assumption, Not a Decoration</h2>
         <p>
-          Two variables are independent when knowing one does not change the distribution of the
-          other:
+          Independence means that information about one variable does not change what we believe
+          about another. If \(X\) and \(Y\) are independent, then seeing \(X=x\) gives no useful
+          information about \(Y\). The conditional distribution stays the same:
+        </p>
+        <p class="math-block">
+          \[
+            p(y \mid x)=p(y)
+          \]
+        </p>
+        <p>
+          The same idea can be written through the joint distribution:
         </p>
         <p class="math-block">
           \[
@@ -212,7 +221,60 @@
           \]
         </p>
         <p>
-          Conditional independence says the relationship disappears after another variable is known:
+          Dependence is the opposite: knowing one variable changes the distribution of the other. If
+          users who search for "running shoes" are more likely to click athletic products, then query
+          text and clicked item are dependent. If a model's error rate changes by hospital, then
+          hospital identity and error are dependent. Dependence is a signal that variables share
+          information.
+        </p>
+        <table class="formula-table">
+          <thead>
+            <tr>
+              <th>Relationship</th>
+              <th>Meaning</th>
+              <th>Formula</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Independent</td>
+              <td>Knowing \(X\) does not change beliefs about \(Y\).</td>
+              <td>\(p(y \mid x)=p(y)\)</td>
+            </tr>
+            <tr>
+              <td>Dependent</td>
+              <td>Knowing \(X\) changes beliefs about \(Y\).</td>
+              <td>\(p(y \mid x)\neq p(y)\)</td>
+            </tr>
+            <tr>
+              <td>Conditionally independent</td>
+              <td>The dependence disappears after controlling for \(Z\).</td>
+              <td>\(p(x,y \mid z)=p(x \mid z)p(y \mid z)\)</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Independence Is Stronger Than Zero Correlation</h3>
+        <p>
+          Correlation and covariance only describe linear co-movement. Independence says there is no
+          relationship at all: no linear pattern, no curved pattern, no threshold pattern, no useful
+          information. So independent variables have zero covariance, but zero covariance does not
+          always imply independence.
+        </p>
+        <p>
+          For example, if \(X\) is symmetric around zero and \(Y=X^2\), then \(X\) and \(Y\) are
+          clearly dependent: knowing that \(|X|\) is large tells us \(Y\) is large. But the linear
+          covariance can be zero because positive and negative values of \(X\) cancel out.
+        </p>
+        <h3>Conditional Independence</h3>
+        <p>
+          Conditional independence is often more useful than plain independence. It means two
+          variables may look related overall, but once we know a third variable, the relationship is
+          explained away.
+        </p>
+        <p>
+          Suppose \(Z\) is user intent, \(X\) is query text, and \(Y\) is the clicked item. Query text
+          and clicked item are dependent overall. But if intent were fully known, the query and click
+          might be independent given intent:
         </p>
         <p class="math-block">
           \[
@@ -220,15 +282,27 @@
           \]
         </p>
         <p>
-          This assumption is what makes many models tractable. Naive Bayes, hidden Markov models,
-          Bayesian networks, and graphical models all become useful because they factor a large
-          distribution into smaller pieces.
+          This is the kind of assumption that makes graphical models, Naive Bayes, hidden Markov
+          models, and Bayesian networks useful. It lets us factor a large distribution into smaller
+          pieces.
+        </p>
+        <h3>The i.i.d. Assumption</h3>
+        <p>
+          In machine learning, we often assume examples are independent and identically distributed:
+          i.i.d. Independent means one training example does not affect another. Identically
+          distributed means they are drawn from the same underlying distribution.
+        </p>
+        <p>
+          This assumption is what allows a validation set to estimate production performance. But it
+          can fail in real systems. User sessions create dependence between examples. Duplicate data
+          leaks information across train and test. Time trends break the "same distribution" part.
+          Deployment feedback loops make future data depend on previous model decisions.
         </p>
         <div class="takeaway">
           <p>
-            <strong>Careful:</strong> variables can be marginally independent but conditionally
-            dependent, or marginally dependent but conditionally independent. Conditioning changes the
-            problem you are solving.
+            <strong>Engineering read:</strong> independence is not a default truth; it is an
+            assumption. When it fails, metrics can look better than reality because the validation
+            data is not giving an honest independent test.
           </p>
         </div>
 
