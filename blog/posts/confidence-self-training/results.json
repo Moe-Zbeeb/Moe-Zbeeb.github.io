@@ -1,0 +1,808 @@
+{
+  "title": "The confidence that never reached the optimizer",
+  "snapshot_date": "2026-09-13",
+  "units": {
+    "tables": "percent",
+    "trajectory_metrics": "fraction"
+  },
+  "protocol": {
+    "models": [
+      "Qwen2.5-Math-1.5B",
+      "Qwen2.5-Math-7B",
+      "Qwen2.5-7B",
+      "Qwen2.5-14B"
+    ],
+    "adaptation_pool": "30 AIME 2024 questions, answers and solutions removed",
+    "questions_per_update": 1,
+    "responses_per_update": 16,
+    "temperature": 0.5,
+    "response_token_cap": 3072,
+    "context_limit": 4096,
+    "updates": [
+      10,
+      20
+    ],
+    "learning_rates": [
+      1e-05,
+      1e-06
+    ],
+    "objective": "negative sum of response-token log probabilities weighted by detached exp(sum log probabilities) + 0.1, averaged over 16 responses globally",
+    "control_weight": 0.1,
+    "standard_evaluation": "greedy final-answer accuracy using frozen project prompts and scorers",
+    "trajectory_prompts": 64,
+    "trajectory_samples_per_prompt": 16,
+    "bootstrap": "pointwise percentile 95% prompt-bootstrap intervals; 2000 repetitions; seed 20270912"
+  },
+  "tables": [
+    {
+      "id": "math",
+      "caption": "Math-specialized models: MATH-500 accuracy (%)",
+      "columns": [
+        "Model / updates / seed",
+        "Original",
+        "Nominal RLSC",
+        "Uniform"
+      ],
+      "rows": [
+        [
+          "1.5B 10 2027",
+          "52.60",
+          "46.20",
+          "54.80"
+        ],
+        [
+          "1.5B 20 2027",
+          "51.80",
+          "43.80",
+          "53.40"
+        ],
+        [
+          "7B 10 2027",
+          "58.60",
+          "69.80",
+          "62.40"
+        ],
+        [
+          "7B 20 2027",
+          "58.00",
+          "66.60",
+          "75.00"
+        ],
+        [
+          "7B 10 2028",
+          "58.20",
+          "60.80",
+          "69.60"
+        ]
+      ],
+      "comparison_note": "Compare within each row. Each 20-update run starts from base. The original scores are the recorded baseline for each condition.",
+      "highlighted_cells_zero_based_including_header": [
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          2
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          5,
+          3
+        ]
+      ]
+    },
+    {
+      "id": "general",
+      "caption": "General models: MATH-500 accuracy after 10 updates (%)",
+      "columns": [
+        "Model / seed",
+        "Original",
+        "Nominal RLSC",
+        "Control"
+      ],
+      "rows": [
+        [
+          "7B / 2027",
+          "51.20",
+          "14.80",
+          "0.00"
+        ],
+        [
+          "7B / 2028",
+          "52.00",
+          "0.00",
+          "68.60"
+        ],
+        [
+          "7B / 2029",
+          "50.80",
+          "17.20",
+          "3.40"
+        ],
+        [
+          "14B / 2027",
+          "63.80",
+          "51.60",
+          "14.20"
+        ],
+        [
+          "14B / 2028",
+          "63.40",
+          "0.80",
+          "52.20"
+        ],
+        [
+          "14B / 2029",
+          "64.40",
+          "19.40",
+          "28.60"
+        ]
+      ],
+      "comparison_note": "Green includes the untouched model. Seeds vary adaptation-question selection/order and generation randomness.",
+      "highlighted_cells_zero_based_including_header": [
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          1
+        ],
+        [
+          4,
+          1
+        ],
+        [
+          5,
+          1
+        ],
+        [
+          6,
+          1
+        ]
+      ]
+    },
+    {
+      "id": "lr",
+      "caption": "General 14B: learning rate, sampling seed, and accuracy (%)",
+      "columns": [
+        "LR / seed",
+        "MATH base",
+        "MATH RLSC",
+        "MATH uniform",
+        "GSM RLSC",
+        "GSM uniform"
+      ],
+      "rows": [
+        [
+          "1e-5 / 2027",
+          "64.20",
+          "3.20",
+          "41.20",
+          "4.09",
+          "82.71"
+        ],
+        [
+          "1e-5 / 2028",
+          "64.00",
+          "1.60",
+          "Missing",
+          "Missing",
+          "Missing"
+        ],
+        [
+          "1e-6 / 2027",
+          "63.20",
+          "52.00",
+          "78.00",
+          "78.54",
+          "91.43"
+        ],
+        [
+          "1e-6 / 2028",
+          "64.60",
+          "61.80",
+          "58.60",
+          "91.36",
+          "90.60"
+        ]
+      ],
+      "comparison_note": "All settings target 20 updates with fixed data seed 2027. Green compares MATH including base, and GSM8K between trained arms. Original GSM8K: 89.39%. Missing cells are incomplete measurements.",
+      "highlighted_cells_zero_based_including_header": [
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          1
+        ],
+        [
+          4,
+          4
+        ]
+      ]
+    },
+    {
+      "id": "ranking",
+      "caption": "Choosing one of 16 answers on unchanged models: accuracy (%)",
+      "columns": [
+        "Selection rule",
+        "7B",
+        "14B"
+      ],
+      "rows": [
+        [
+          "Uniform random sample (expected)",
+          "47.86",
+          "60.19"
+        ],
+        [
+          "Highest summed log probability",
+          "55.40",
+          "61.00"
+        ],
+        [
+          "Highest mean-token log probability",
+          "49.40",
+          "65.60"
+        ],
+        [
+          "Shortest response",
+          "48.00",
+          "47.60"
+        ],
+        [
+          "Any correct among 16 (oracle)",
+          "85.40",
+          "90.60"
+        ]
+      ],
+      "comparison_note": "Green marks the highest value, the oracle upper bound. The oracle uses correctness labels and is not an available confidence selector. All rules compare the same candidate groups.",
+      "highlighted_cells_zero_based_including_header": [
+        [
+          5,
+          1
+        ],
+        [
+          5,
+          2
+        ]
+      ]
+    },
+    {
+      "id": "cohort",
+      "caption": "Fresh pass@16 at the original and update-20 checkpoints (%)",
+      "columns": [
+        "Prompt cohort",
+        "N",
+        "Fresh base",
+        "RLSC u20",
+        "Uniform u20"
+      ],
+      "rows": [
+        [
+          "All prompts",
+          "64",
+          "90.62",
+          "43.75",
+          "79.69"
+        ],
+        [
+          "Greedy wrong, sampling rescues",
+          "21",
+          "90.48",
+          "14.29",
+          "66.67"
+        ],
+        [
+          "Minority-correct",
+          "11",
+          "81.82",
+          "0.00",
+          "45.45"
+        ],
+        [
+          "First draw wrong, later rescue",
+          "23",
+          "91.30",
+          "30.43",
+          "65.22"
+        ]
+      ],
+      "comparison_note": "N is the number of prompts. Green compares fresh base with both trained arms. Minority-correct: historical greedy failure and 1\u20134 correct samples out of 16. Cohorts overlap.",
+      "highlighted_cells_zero_based_including_header": [
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          3,
+          2
+        ],
+        [
+          4,
+          2
+        ]
+      ]
+    }
+  ],
+  "trajectory": [
+    {
+      "arm": "base",
+      "update": 0,
+      "prompts": 64,
+      "metrics": {
+        "pass@1": {
+          "n": 64,
+          "mean": 0.5986328125,
+          "ci95": [
+            0.5068359375,
+            0.6845703125
+          ]
+        },
+        "pass@4": {
+          "n": 64,
+          "mean": 0.8171875,
+          "ci95": [
+            0.7314646291208792,
+            0.886461195054945
+          ]
+        },
+        "pass@8": {
+          "n": 64,
+          "mean": 0.8828683469308469,
+          "ci95": [
+            0.799980574980575,
+            0.9476252913752914
+          ]
+        },
+        "pass@16": {
+          "n": 64,
+          "mean": 0.90625,
+          "ci95": [
+            0.828125,
+            0.96875
+          ]
+        },
+        "greedy_accuracy": {
+          "n": 64,
+          "mean": 0.609375,
+          "ci95": [
+            0.484375,
+            0.71875
+          ]
+        }
+      }
+    },
+    {
+      "arm": "rlsc",
+      "update": 5,
+      "prompts": 64,
+      "metrics": {
+        "pass@1": {
+          "n": 64,
+          "mean": 0.359375,
+          "ci95": [
+            0.2919921875,
+            0.427734375
+          ]
+        },
+        "pass@4": {
+          "n": 64,
+          "mean": 0.6610233516483517,
+          "ci95": [
+            0.5674536401098901,
+            0.7493389423076923
+          ]
+        },
+        "pass@8": {
+          "n": 64,
+          "mean": 0.7686953671328671,
+          "ci95": [
+            0.6743747571872571,
+            0.8521306818181819
+          ]
+        },
+        "pass@16": {
+          "n": 64,
+          "mean": 0.84375,
+          "ci95": [
+            0.75,
+            0.921875
+          ]
+        },
+        "greedy_accuracy": {
+          "n": 64,
+          "mean": 0.421875,
+          "ci95": [
+            0.296875,
+            0.546875
+          ]
+        }
+      }
+    },
+    {
+      "arm": "rlsc",
+      "update": 10,
+      "prompts": 64,
+      "metrics": {
+        "pass@1": {
+          "n": 64,
+          "mean": 0.3017578125,
+          "ci95": [
+            0.2421875,
+            0.3603515625
+          ]
+        },
+        "pass@4": {
+          "n": 64,
+          "mean": 0.6112036401098901,
+          "ci95": [
+            0.5149381868131868,
+            0.7012276785714285
+          ]
+        },
+        "pass@8": {
+          "n": 64,
+          "mean": 0.7211599164724165,
+          "ci95": [
+            0.6236183954933955,
+            0.8087303321678322
+          ]
+        },
+        "pass@16": {
+          "n": 64,
+          "mean": 0.8125,
+          "ci95": [
+            0.703125,
+            0.90625
+          ]
+        },
+        "greedy_accuracy": {
+          "n": 64,
+          "mean": 0.296875,
+          "ci95": [
+            0.1875,
+            0.40625
+          ]
+        }
+      }
+    },
+    {
+      "arm": "rlsc",
+      "update": 15,
+      "prompts": 64,
+      "metrics": {
+        "pass@1": {
+          "n": 64,
+          "mean": 0.123046875,
+          "ci95": [
+            0.0888671875,
+            0.16015625
+          ]
+        },
+        "pass@4": {
+          "n": 64,
+          "mean": 0.34423076923076923,
+          "ci95": [
+            0.2691191620879121,
+            0.42112809065934065
+          ]
+        },
+        "pass@8": {
+          "n": 64,
+          "mean": 0.4997741841491842,
+          "ci95": [
+            0.4004152097902098,
+            0.5941615675990676
+          ]
+        },
+        "pass@16": {
+          "n": 64,
+          "mean": 0.640625,
+          "ci95": [
+            0.515625,
+            0.75
+          ]
+        },
+        "greedy_accuracy": {
+          "n": 64,
+          "mean": 0.265625,
+          "ci95": [
+            0.171875,
+            0.375
+          ]
+        }
+      }
+    },
+    {
+      "arm": "rlsc",
+      "update": 20,
+      "prompts": 64,
+      "metrics": {
+        "pass@1": {
+          "n": 64,
+          "mean": 0.044921875,
+          "ci95": [
+            0.0302734375,
+            0.060546875
+          ]
+        },
+        "pass@4": {
+          "n": 64,
+          "mean": 0.16171016483516484,
+          "ci95": [
+            0.1123798076923077,
+            0.21492960164835165
+          ]
+        },
+        "pass@8": {
+          "n": 64,
+          "mean": 0.28221153846153846,
+          "ci95": [
+            0.20208333333333334,
+            0.36790865384615384
+          ]
+        },
+        "pass@16": {
+          "n": 64,
+          "mean": 0.4375,
+          "ci95": [
+            0.3125,
+            0.5625
+          ]
+        },
+        "greedy_accuracy": {
+          "n": 64,
+          "mean": 0.0625,
+          "ci95": [
+            0.015625,
+            0.125
+          ]
+        }
+      }
+    },
+    {
+      "arm": "alpha_only",
+      "update": 5,
+      "prompts": 64,
+      "metrics": {
+        "pass@1": {
+          "n": 64,
+          "mean": 0.380859375,
+          "ci95": [
+            0.3056640625,
+            0.4580078125
+          ]
+        },
+        "pass@4": {
+          "n": 64,
+          "mean": 0.6911658653846154,
+          "ci95": [
+            0.5978794642857143,
+            0.7720037774725275
+          ]
+        },
+        "pass@8": {
+          "n": 64,
+          "mean": 0.7993395493395493,
+          "ci95": [
+            0.7058275058275059,
+            0.8794386169386169
+          ]
+        },
+        "pass@16": {
+          "n": 64,
+          "mean": 0.859375,
+          "ci95": [
+            0.765625,
+            0.9375
+          ]
+        },
+        "greedy_accuracy": {
+          "n": 64,
+          "mean": 0.421875,
+          "ci95": [
+            0.296875,
+            0.546875
+          ]
+        }
+      }
+    },
+    {
+      "arm": "alpha_only",
+      "update": 10,
+      "prompts": 64,
+      "metrics": {
+        "pass@1": {
+          "n": 64,
+          "mean": 0.49609375,
+          "ci95": [
+            0.3994140625,
+            0.5849609375
+          ]
+        },
+        "pass@4": {
+          "n": 64,
+          "mean": 0.7092548076923076,
+          "ci95": [
+            0.6026442307692308,
+            0.8013307005494505
+          ]
+        },
+        "pass@8": {
+          "n": 64,
+          "mean": 0.7717863733488733,
+          "ci95": [
+            0.6660766317016317,
+            0.8576061091686091
+          ]
+        },
+        "pass@16": {
+          "n": 64,
+          "mean": 0.8125,
+          "ci95": [
+            0.703125,
+            0.90625
+          ]
+        },
+        "greedy_accuracy": {
+          "n": 64,
+          "mean": 0.453125,
+          "ci95": [
+            0.328125,
+            0.578125
+          ]
+        }
+      }
+    },
+    {
+      "arm": "alpha_only",
+      "update": 15,
+      "prompts": 64,
+      "metrics": {
+        "pass@1": {
+          "n": 64,
+          "mean": 0.458984375,
+          "ci95": [
+            0.3671875,
+            0.5478515625
+          ]
+        },
+        "pass@4": {
+          "n": 64,
+          "mean": 0.6842376373626373,
+          "ci95": [
+            0.5795587225274725,
+            0.7760044642857142
+          ]
+        },
+        "pass@8": {
+          "n": 64,
+          "mean": 0.7604251651126651,
+          "ci95": [
+            0.6553491647241647,
+            0.8459365287490288
+          ]
+        },
+        "pass@16": {
+          "n": 64,
+          "mean": 0.8125,
+          "ci95": [
+            0.703125,
+            0.90625
+          ]
+        },
+        "greedy_accuracy": {
+          "n": 64,
+          "mean": 0.4375,
+          "ci95": [
+            0.3125,
+            0.5625
+          ]
+        }
+      }
+    },
+    {
+      "arm": "alpha_only",
+      "update": 20,
+      "prompts": 64,
+      "metrics": {
+        "pass@1": {
+          "n": 64,
+          "mean": 0.3984375,
+          "ci95": [
+            0.314453125,
+            0.4833984375
+          ]
+        },
+        "pass@4": {
+          "n": 64,
+          "mean": 0.6498540521978022,
+          "ci95": [
+            0.5481541895604396,
+            0.7402300824175825
+          ]
+        },
+        "pass@8": {
+          "n": 64,
+          "mean": 0.7400762432012432,
+          "ci95": [
+            0.6350135975135975,
+            0.8328865578865579
+          ]
+        },
+        "pass@16": {
+          "n": 64,
+          "mean": 0.796875,
+          "ci95": [
+            0.6875,
+            0.890625
+          ]
+        },
+        "greedy_accuracy": {
+          "n": 64,
+          "mean": 0.421875,
+          "ci95": [
+            0.296875,
+            0.546875
+          ]
+        }
+      }
+    }
+  ],
+  "applied_weight_audit": {
+    "model": "general Qwen2.5-14B",
+    "seed": 2027,
+    "updates": 20,
+    "responses": 320,
+    "underflowed_fp32": 277,
+    "largest_nonzero_confidence_approx": 8.75e-10,
+    "all_applied_weights": 0.10000000149011612,
+    "same_scalar_weights_as_control": true
+  },
+  "caveats": [
+    "This is a recorded study snapshot, not live scheduler state.",
+    "The audited trajectory pair had identical applied scalar weights; its curves cannot isolate active confidence weighting.",
+    "AIME24 overlaps adaptation.",
+    "Per-row recorded original baselines are preserved.",
+    "Cohorts overlap and use independent historical discovery samples.",
+    "Zero correct among 16 samples is not zero underlying success probability.",
+    "Truncation and the generation budget affect answer coverage.",
+    "Confidence selection uses unchanged models and does not establish a training benefit.",
+    "Bootstrap intervals do not quantify independent training-seed variation."
+  ]
+}

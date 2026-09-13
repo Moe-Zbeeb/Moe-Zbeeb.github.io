@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" prefix="og: http://ogp.me/ns#">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The confidence that never reached the optimizer | Mohammad Zbeeb</title>
+<meta name="description" content="What Qwen self-training experiments taught me about confidence, useful exploration, numerical precision, and the abstractions in Prime RL." />
+<meta name="author" content="Mohammad Zbeeb" />
+<meta property="og:title" content="The confidence that never reached the optimizer" />
+<meta property="og:description" content="What Qwen self-training experiments taught me about confidence, useful exploration, numerical precision, and the abstractions in Prime RL." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://moe-zbeeb.github.io/blog/posts/confidence-self-training.html" />
+<meta property="article:published_time" content="2026-09-13" />
+<meta name="twitter:card" content="summary" />
+<link rel="canonical" href="https://moe-zbeeb.github.io/blog/posts/confidence-self-training.html" />
+<link rel="stylesheet" href="/css/tufte.css" />
+<link rel="stylesheet" href="/css/site.css" />
+<link rel="stylesheet" href="confidence-self-training/post.css" />
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+<script defer src="confidence-self-training/calculator.js"></script>
+</head>
+<body>
+<header><nav class="group" aria-label="Main navigation"><a href="/">Mohammad Zbeeb</a><a href="/about/">About</a></nav></header>
+<main><article class="group research-post">
+<h1>The confidence that never reached the optimizer</h1>
+<p class="subtitle">What a Qwen self-training study taught me about confidence, useful exploration, and Prime RL.</p>
+<p class="post-meta"><time datetime="2026-09-13">September 13, 2026</time> &nbsp; / &nbsp; 18 minute read</p>
+<p class="opening">One of my first runs looked encouraging. After ten updates, Qwen2.5-Math-7B moved from 58.6% to 69.8% on MATH-500. The model had trained on its own generated solutions, under a rule intended to give more weight to solutions it considered likely.</p>
+<p>That is an attractive result. No correctness labels in the training loop. No separate reward model. The intended idea was simple: give the model a question, let it make several attempts, and reinforce the attempts it considered likely more strongly.</p>
+<p>But the more useful result came from asking a less exciting question: <strong>did confidence actually change the weights that reached the optimizer?</strong></p>
+<p>In a later, closely audited 14B training pair, the answer was no. All 320 responses in the nominal confidence arm received exactly the same scalar weight as the uniform control. There were different checkpoints and different evaluation curves, but no active confidence-weighting contrast in that pair.</p>
+<p>This post is about what I learned by following that discrepancy. There is a real answer-selection signal in model probabilities. There are unstable training results, and there is a measurable loss of useful sampled coverage. Keeping those observations separate turned out to be the central research task.</p>
+<nav class="article-map" aria-label="In this article"><p><a href="#learning-rule">The learning rule</a><a href="#numerical-surprise">The numerical surprise</a><a href="#training-results">Training results</a><a href="#selection">Choosing answers</a><a href="#exploration">Useful exploration</a><a href="#prime">Working with Prime</a><a href="#next">What I would test next</a></p></nav>
+
+<section id="learning-rule">
+<h2>What I asked the model to learn</h2>
+<p>The question was whether a language model could improve by fitting its own solutions, with more weight on solutions it considered likely. I used Qwen2.5-Math at 1.5B and 7B, then general Qwen2.5 at 7B and 14B. This Qwen study had no SFT stage.</p>
+<p>At each update, I selected one unlabeled question from a pool of 30 AIME 2024 problems. The current model generated 16 solutions at temperature 0.5. The trainer scored those exact response tokens, applied one update, and refreshed the inference weights before the next question.</p>
+<p>Confidence here is a quantity computed from token probabilities. I did not ask the model to write a confidence percentage. I also did not discard answers below a threshold: every valid response contributed.</p>
+<p>In the equations below, \(\pi_\theta\) denotes the temperature-0.5 policy. For response \(i\), I summed the response-token log probabilities:</p>
+<div class="math-block">\[s_i = \sum_{t=1}^{T_i}\log \pi_\theta(y_{i,t}\mid x,y_{i,&lt;t}).\]</div>
+<p>Exponentiating that sum gives the product of the conditional token probabilities:</p>
+<div class="math-block">\[c_i = \exp(s_i) = \prod_{t=1}^{T_i}\pi_\theta(y_{i,t}\mid x,y_{i,&lt;t}).\]</div>
+<p>That is the probability of the generated token sequence. It is not the probability that the mathematical answer is correct. A predictable mistake can have high probability, and a long correct derivation can have very low sequence probability.</p>
+<p>I compared the untouched model with two independently trained copies. The nominal RLSC arm used \(w_i=\operatorname{stopgrad}(c_i)+0.1\). The uniform self-training control used \(w_i=0.1\). Both minimized:</p>
+<div class="math-block">\[\mathcal L = -\frac{1}{16}\sum_{i=1}^{16}w_i s_i.\]</div>
+<p>I sum within a response and average across the 16 responses globally. Prompt and padding tokens are masked. The confidence is detached, so gradients flow through the final log probability rather than through the weight. This gives a REINFORCE-style score-function update.</p>
+<p>The word <em>nominal</em> will matter throughout this post. It identifies the configured RLSC arm without assuming that confidence produced a meaningful numerical change in its weights.</p>
+<details><summary>A few implementation details that change the experiment</summary>
+<p>The pinned Prime trainer scales logits by the rollout temperature before computing log probabilities, so the objective uses the temperature-0.5 policy. I recompute confidence in the current trainer forward pass. Saved inference probabilities are diagnostic information.</p>
+<p>I require a complete group from one policy version. Empty, failed, incomplete, or mixed-policy groups are rejected. Responses that reach the generation cap are retained and flagged. Their score describes the generated prefix, which may not contain a complete solution. Outside an initial smoke test, the cap is 3,072 generated tokens in a 4,096-token context.</p>
+<p>The main learning rate is 1e-5, with later tests at 1e-6. Runs use AdamW with weight decay 0.01 and last 10 or 20 updates. Each 20-update run starts again from base. Optimization uses FP32 with CPU optimizer-state offload, while vLLM inference uses BF16.</p>
+<p>There is a subtlety in the constant-weight control. Under exact on-policy sampling over a normalized trajectory distribution, \(\mathbb E_{y\sim\pi_\theta}[\nabla_\theta\log\pi_\theta(y\mid x)]=0\). A constant reward therefore has zero expected score-function gradient. A finite group of 16 samples need not have zero gradient, and AdamW, weight decay, and departures from the ideal sampling assumptions can still move the model. Calling this arm uniform self-training describes the implemented finite-sample update.</p>
+</details>
+</section>
+
+<section id="numerical-surprise">
+<h2>The confidence term can disappear twice</h2>
+<p>The sum of log probabilities was implemented as intended. The problem came after the sum.</p>
+<p>Imagine an answer with 200 tokens, each assigned probability 0.9. This is a deliberately simple example, not a measured response. Its sequence probability is \(0.9^{200}\), approximately \(7.06\times10^{-10}\). That is a very small addition to 0.1.</p>
+<p>Two different numerical effects matter. First, exponentiation can underflow and produce zero. Second, confidence can remain nonzero but still be too small to change the stored FP32 value when added to 0.1. Avoiding underflow alone does not fix the second problem.</p>
+<div class="calculator" aria-labelledby="calculator-title">
+<h3 id="calculator-title">Try the scale of a sequence probability</h3>
+<p>Assume every token has the same probability. Change the length or token probability and watch the weight. This illustrates FP32 rounding rather than replaying a GPU kernel.</p>
+<label for="token-probability">Per-token probability: <output id="probability-value" for="token-probability">0.90</output></label>
+<input id="token-probability" type="range" min="0.50" max="0.99" step="0.01" value="0.90" />
+<label for="response-length">Response length: <output id="length-value" for="response-length">200</output> tokens</label>
+<input id="response-length" type="range" min="1" max="3072" step="1" value="200" />
+<dl><dt>Sum of log probabilities</dt><dd id="log-score">−21.072</dd><dt>Sequence probability (FP64)</dt><dd id="sequence-score">7.0551e-10</dd><dt>Confidence rounded to FP32</dt><dd id="fp32-confidence">7.0551e-10</dd><dt>FP32 weight: confidence + 0.1</dt><dd id="fp32-weight">0.1000000015</dd><dt>Change from FP32 control</dt><dd id="weight-change">0</dd></dl>
+<p id="confidence-status" class="status" aria-live="polite">Confidence is nonzero, but adding it does not change the FP32 weight.</p>
+<noscript><p>The example above is static because JavaScript is disabled. The 200-token example already shows why a nonzero probability can disappear when added to the constant.</p></noscript>
+</div>
+<p>The audit of the 20-update general-14B seed-2027 pair made this concrete. Of 320 sequence probabilities, 277 underflowed in FP32. The largest nonzero value was about \(8.75\times10^{-10}\). Every applied nominal RLSC weight was exactly <code>0.10000000149011612</code>, matching the control. Trainer telemetry and independent replay agreed.</p>
+<div class="finding"><p><strong>A treatment label is not evidence that the treatment reached the optimizer.</strong> Different sampled solutions can still produce different gradients and final models. With identical scalar weights, their difference cannot identify an active confidence-weighting effect.</p></div>
+<p>This limits how I interpret the experiment. It does not establish that every confidence-based learning rule fails. It establishes that the intended contrast was numerically absent in this audited pair, and often negligible in the wider saved audit.</p>
+</section>
+
+<section id="training-results">
+<h2>The early improvement did not become a reliable pattern</h2>
+<p>I evaluated the models using greedy final-answer accuracy. MATH-500 was the primary held-out comparison, with transfer checks on GSM8K and other math or STEM benchmarks. AIME24 overlaps the adaptation pool, so it is not evidence of held-out transfer here.</p>
+<p>The first table keeps the five Math-family settings together. Each row uses its own recorded baseline. Green and bold mark the highest comparable evaluation in every results table, including ties.</p>
+<div class="table-wrap" role="region" aria-label="Math-specialized models: MATH-500 accuracy (%)" tabindex="0"><table id="math-results"><caption>Math-specialized models: MATH-500 accuracy (%)</caption><thead><tr><th scope="col">Model / updates / seed</th><th scope="col">Original</th><th scope="col">Nominal RLSC</th><th scope="col">Uniform</th></tr></thead><tbody><tr><th scope="row">1.5B 10 2027</th><td>52.60</td><td>46.20</td><td class="best"><strong>54.80</strong></td></tr><tr><th scope="row">1.5B 20 2027</th><td>51.80</td><td>43.80</td><td class="best"><strong>53.40</strong></td></tr><tr><th scope="row">7B 10 2027</th><td>58.60</td><td class="best"><strong>69.80</strong></td><td>62.40</td></tr><tr><th scope="row">7B 20 2027</th><td>58.00</td><td>66.60</td><td class="best"><strong>75.00</strong></td></tr><tr><th scope="row">7B 10 2028</th><td>58.20</td><td>60.80</td><td class="best"><strong>69.60</strong></td></tr></tbody></table></div><p class="table-note">Compare within each row. Each 20-update run starts from base. The original scores are the recorded baseline for each condition.</p>
+<p>Uniform self-training wins four of the five rows. The exception is the encouraging 7B, ten-update, seed-2027 run. With twenty updates, uniform reaches 75.0% while nominal RLSC reaches 66.6%. The second ten-update seed also favors uniform. At 1.5B, nominal RLSC finishes below base in both settings.</p>
+<p>There are real improvements over the recorded base evaluations in this table. But the initial relative advantage does not survive the duration and seed comparisons. The early positive RLSC run also had constant applied weights, so its gain cannot establish confidence as the mechanism.</p>
+<h3>Would general models or a larger model make this more stable?</h3>
+<p>I next tested general Qwen2.5 at 7B and 14B, with three seeds and ten updates per arm.</p>
+<div class="table-wrap" role="region" aria-label="General models: MATH-500 accuracy after 10 updates (%)" tabindex="0"><table id="general-results"><caption>General models: MATH-500 accuracy after 10 updates (%)</caption><thead><tr><th scope="col">Model / seed</th><th scope="col">Original</th><th scope="col">Nominal RLSC</th><th scope="col">Control</th></tr></thead><tbody><tr><th scope="row">7B / 2027</th><td class="best"><strong>51.20</strong></td><td>14.80</td><td>0.00</td></tr><tr><th scope="row">7B / 2028</th><td>52.00</td><td>0.00</td><td class="best"><strong>68.60</strong></td></tr><tr><th scope="row">7B / 2029</th><td class="best"><strong>50.80</strong></td><td>17.20</td><td>3.40</td></tr><tr><th scope="row">14B / 2027</th><td class="best"><strong>63.80</strong></td><td>51.60</td><td>14.20</td></tr><tr><th scope="row">14B / 2028</th><td class="best"><strong>63.40</strong></td><td>0.80</td><td>52.20</td></tr><tr><th scope="row">14B / 2029</th><td class="best"><strong>64.40</strong></td><td>19.40</td><td>28.60</td></tr></tbody></table></div><p class="table-note">Green includes the untouched model. Seeds vary adaptation-question selection/order and generation randomness.</p>
+<p>The original model wins five of six rows. Nominal RLSC is below its own original in all six. The exception to the broader degradation is the 7B seed-2028 uniform control, which reaches 68.6% from a 52.0% baseline.</p>
+<p>Looking only at the two trained arms would be misleading. At 14B with seed 2027, nominal RLSC beats uniform by a large margin: 51.6% versus 14.2%. Yet both are worse than the original 63.8%. A win against a degraded control is not enough to claim self-improvement.</p>
+<p>These initial seeds change the chosen questions and their order as well as generation randomness. They are useful stability checks, but they do not isolate sampling noise alone.</p>
+<h3>A smaller learning rate helped some runs</h3>
+<p>For the later 14B study, I fixed the twenty adaptation questions and their order with data seed 2027. I varied the sampling seed and compared learning rates of 1e-5 and 1e-6.</p>
+<div class="table-wrap" role="region" aria-label="General 14B: learning rate, sampling seed, and accuracy (%)" tabindex="0"><table id="lr-results"><caption>General 14B: learning rate, sampling seed, and accuracy (%)</caption><thead><tr><th scope="col">LR / seed</th><th scope="col">MATH base</th><th scope="col">MATH RLSC</th><th scope="col">MATH uniform</th><th scope="col">GSM RLSC</th><th scope="col">GSM uniform</th></tr></thead><tbody><tr><th scope="row">1e-5 / 2027</th><td class="best"><strong>64.20</strong></td><td>3.20</td><td>41.20</td><td>4.09</td><td class="best"><strong>82.71</strong></td></tr><tr><th scope="row">1e-5 / 2028</th><td class="best"><strong>64.00</strong></td><td>1.60</td><td>Missing</td><td>Missing</td><td>Missing</td></tr><tr><th scope="row">1e-6 / 2027</th><td>63.20</td><td>52.00</td><td class="best"><strong>78.00</strong></td><td>78.54</td><td class="best"><strong>91.43</strong></td></tr><tr><th scope="row">1e-6 / 2028</th><td class="best"><strong>64.60</strong></td><td>61.80</td><td>58.60</td><td class="best"><strong>91.36</strong></td><td>90.60</td></tr></tbody></table></div><p class="table-note">All settings target 20 updates with fixed data seed 2027. Green compares MATH including base, and GSM8K between trained arms. Original GSM8K: 89.39%. Missing cells are incomplete measurements.</p>
+<p>The clearest comparison is seed 2027. Lowering the rate moves nominal RLSC from 3.2% to 52.0% on MATH-500, and uniform from 41.2% to 78.0%. The latter also reaches 91.43% on GSM8K, above the original 89.39%.</p>
+<p>At the lower rate with seed 2028, nominal RLSC has a smaller advantage over uniform, but both remain below their MATH baseline. I see learning-rate sensitivity and some capability preservation. I do not see a consistent confidence advantage or enough seeds to claim an optimum. The low-rate confidence contrast also remained tiny.</p>
+<p>The missing cells are intentional. The high-rate seed-2028 control was interrupted after five updates. Missing results are not zeros, and that incomplete pair cannot support a final comparison.</p>
+</section>
+
+<section id="selection">
+<h2>Confidence did help with a simpler decision</h2>
+<p>There is another way to use a model's probabilities: generate several answers and choose one. No weight update is required. I tested this on the untouched general 7B and 14B models, using the same 16 sampled answers for each selection rule on each of the 500 MATH-500 questions.</p>
+<p>This isolates a useful question: <em>does confidence tell me which of the answers already in front of me is more likely to be correct?</em></p>
+<div class="table-wrap" role="region" aria-label="Choosing one of 16 answers on unchanged models: accuracy (%)" tabindex="0"><table id="ranking-results"><caption>Choosing one of 16 answers on unchanged models: accuracy (%)</caption><thead><tr><th scope="col">Selection rule</th><th scope="col">7B</th><th scope="col">14B</th></tr></thead><tbody><tr><th scope="row">Uniform random sample (expected)</th><td>47.86</td><td>60.19</td></tr><tr><th scope="row">Highest summed log probability</th><td>55.40</td><td>61.00</td></tr><tr><th scope="row">Highest mean-token log probability</th><td>49.40</td><td>65.60</td></tr><tr><th scope="row">Shortest response</th><td>48.00</td><td>47.60</td></tr><tr><th scope="row">Any correct among 16 (oracle)</th><td class="best"><strong>85.40</strong></td><td class="best"><strong>90.60</strong></td></tr></tbody></table></div><p class="table-note">Green marks the highest value, the oracle upper bound. The oracle uses correctness labels and is not an available confidence selector. All rules compare the same candidate groups.</p>
+<p><strong>Uniform random selection</strong> is the baseline. If eight of a question's sixteen candidates are correct, choosing uniformly has a 50% chance of success on that question. I average that fraction across questions.</p>
+<p><strong>Summed log probability</strong> chooses the answer with the largest sum of token log probabilities. A score of −10 beats −20. This is the same ranking as whole-sequence probability, so there is no need to exponentiate just to rank. Additional tokens add nonpositive terms, creating a tendency toward shorter answers.</p>
+<p><strong>Mean-token log probability</strong> divides that sum by response length. It measures average token predictability. An answer with total score −20 over ten tokens has mean −2. An answer with total score −30 over thirty tokens has mean −1. Summed scoring chooses the first, while mean scoring chooses the second.</p>
+<p><strong>Shortest response</strong> ignores probabilities and picks the fewest tokens. It checks how far a simple length preference can go. <strong>The oracle</strong> counts a question as solved whenever any of the sixteen candidates is correct. It uses correctness labels and gives an upper bound for selection over that fixed candidate set.</p>
+<p>The strongest usable rule changes with model size. At 7B, summed scoring improves expected random accuracy by 7.54 percentage points. At 14B, mean-token scoring improves it by 5.41 points. The paired 95% question-bootstrap intervals are 4.71–10.53 and 2.32–8.24 points, respectively. The other confidence rule for each model has a gain interval overlapping zero.</p>
+<div class="finding"><p>There is useful ranking information in the probabilities. That observation does not imply that repeatedly increasing the probability of selected or highly weighted answers improves the model.</p></div>
+<p>Selection compares a fixed set of candidates. Training changes the distribution that will generate the next set. The second problem introduces feedback, which is exactly where existing mistakes, termination behavior, and loss scale can become important.</p>
+</section>
+
+<section id="exploration">
+<h2>Was the exploration that disappeared actually useful?</h2>
+<p>A natural concern with reinforcing likely outputs is that rare correct solutions become harder to find. I first looked at entropy, mean log probability, diversity, and response length across nine checkpoints on 64 held-out prompts.</p>
+<p>Full-vocabulary entropy measures uncertainty over the next-token distribution. Mean token log probability describes the tokens actually sampled. Neither directly counts correct solutions.</p>
+<p>The story was less tidy than “confidence up, entropy down, diversity down.” In the nominal RLSC trajectory, entropy fell, rose at intermediate updates, and fell again. Average response length grew from about 427 to 2,824 tokens. Some diversity measures increased even as distinct extracted answers decreased.</p>
+<p>That made the next test necessary. A model can produce varied text without finding more correct answers. I wanted to measure useful sampling coverage directly.</p>
+<h3>Why I estimate pass@1 using sixteen answers</h3>
+<p>Pass@1 asks for the success rate of one sampled answer. The sixteen samples estimate that probability. If \(c_q\) of sixteen answers are correct for question \(q\), the estimate for that question is \(c_q/16\). Across 64 questions:</p>
+<div class="math-block">\[\widehat{\mathrm{pass@1}}=\frac{1}{64}\sum_{q=1}^{64}\frac{c_q}{16}.\]</div>
+<p>Pass@16 asks whether the sixteen attempts contain at least one correct answer. If four of sixteen samples are correct, that question contributes 25% to sampled pass@1 and 100% to observed pass@16. These measure different things. Neither is a confidence-based selector.</p>
+<p>I used fresh samples at the original checkpoint and at updates 5, 10, 15, and 20 from each arm. Every checkpoint received sixteen stochastic answers and one greedy answer for each prompt: 9,792 generated answers in this trajectory study. The greedy score is separate from sampled pass@1.</p>
+<figure><a href="confidence-self-training/passk-trajectories.svg" aria-label="Open the trajectory figure at full size"><img src="confidence-self-training/passk-trajectories.svg" alt="Two charts across training updates: sampled pass at 1 falls from 59.86 percent to 4.49 percent for nominal RLSC and 39.84 percent for uniform. Pass at 16 falls from 90.62 percent to 43.75 percent and 79.69 percent, respectively." width="800" height="920" loading="lazy" /></a><figcaption><a href="confidence-self-training/passk-trajectories.svg">Open the full-size figure.</a> Both single-sample accuracy and coverage decline in this one general-14B seed-2027 pair. The two arms had identical applied scalar weights. Shaded bands are pointwise 95% prompt-bootstrap intervals conditional on this training pair, not uncertainty across training seeds. These curves describe the saved checkpoints, not an identified causal effect of active confidence weighting.</figcaption></figure>
+<p>The original checkpoint has 59.86% sampled pass@1 and 90.62% pass@16. At update twenty, nominal RLSC reaches 4.49% and 43.75%. Uniform reaches 39.84% and 79.69%.</p>
+<p>The hypothesized pattern was better pass@1 with worse pass@K: a model exploiting its preferred answers more successfully while losing alternative correct solutions. That is not what this pair shows. Both measures deteriorate. A smaller pass@K-minus-pass@1 gap would also be insufficient by itself, because the gap can shrink simply when pass@1 improves and pass@K stays fixed.</p>
+<h3>The prompts that needed a second chance</h3>
+<p>I then focused on prompts where sampling had historically rescued the original model. I fixed these groups using independent historical samples, and evaluated them using fresh samples. This avoids defining the group and measuring its fresh baseline on the same lucky draws.</p>
+<div class="table-wrap" role="region" aria-label="Fresh pass@16 at the original and update-20 checkpoints (%)" tabindex="0"><table id="cohort-results"><caption>Fresh pass@16 at the original and update-20 checkpoints (%)</caption><thead><tr><th scope="col">Prompt cohort</th><th scope="col">N</th><th scope="col">Fresh base</th><th scope="col">RLSC u20</th><th scope="col">Uniform u20</th></tr></thead><tbody><tr><th scope="row">All prompts</th><td>64</td><td class="best"><strong>90.62</strong></td><td>43.75</td><td>79.69</td></tr><tr><th scope="row">Greedy wrong, sampling rescues</th><td>21</td><td class="best"><strong>90.48</strong></td><td>14.29</td><td>66.67</td></tr><tr><th scope="row">Minority-correct</th><td>11</td><td class="best"><strong>81.82</strong></td><td>0.00</td><td>45.45</td></tr><tr><th scope="row">First draw wrong, later rescue</th><td>23</td><td class="best"><strong>91.30</strong></td><td>30.43</td><td>65.22</td></tr></tbody></table></div><p class="table-note">N is the number of prompts. Green compares fresh base with both trained arms. Minority-correct: historical greedy failure and 1–4 correct samples out of 16. Cohorts overlap.</p>
+<p>The fresh base has the highest coverage in every row. Uniform exceeds nominal RLSC in every row. For the eleven minority-correct prompts, the original recovers nine, uniform recovers five, and nominal RLSC recovers none within sixteen fresh attempts.</p>
+<p>That is a loss of useful observed coverage. It deserves attention, but the interpretation has limits. These cohorts overlap, the minority group is small, and zero observed successes is not zero underlying probability. “Minority” refers to the frequency of correct historical samples, not necessarily their model likelihood.</p>
+<p>Termination is also part of the result. Nominal RLSC truncation rises from 2.34% at base to 71.78% at update twenty, compared with 7.13% for uniform. A model that runs out of tokens before reaching an answer loses measured coverage. I cannot conclude from this that all corresponding reasoning paths have been erased.</p>
+<p>Most importantly, this is the pair with identical applied scalar weights. The diagnostic reveals deterioration under the implemented training and evaluation setup. It does not isolate confidence weighting as the cause.</p>
+</section>
+
+<section id="prime">
+<h2>What I liked about Prime's abstractions</h2>
+<p>I used <a href="https://github.com/PrimeIntellect-ai/prime-rl">Prime RL</a> because I wanted to spend time on the learning rule and the experiment. The useful part of the framework was the separation between a task, its trajectories, the algorithm, and the machinery that executes training and inference.</p>
+<p>The <strong>task and renderer</strong> define what the model sees and how that interaction becomes tokens. <strong>Verifiers' trajectory interfaces</strong> provide a structure for what comes back. The <strong>algorithm and loss</strong> define how those trajectories become a learning signal. The <strong>trainer, inference service, and orchestrator</strong> move the experiment through generation and updates.</p>
+<p>For this project, that meant an unlabeled AIME task, a plain renderer, sixteen vLLM solutions, a custom group-validation step, and a custom weighted loss. Prime supplied distributed optimization, trajectory transport, checkpointing, policy-version coordination, metrics, and inference weight refresh.</p>
+<p>I could reason about each research decision in a specific place. The question format belonged in the task. The definition of sequence confidence belonged in the loss. Whether a group came from one policy version belonged in the coordination checks. This made the implementation easier to understand and audit.</p>
+<p>The abstraction level also left the underlying behavior accessible. I could inspect how the trainer handled temperature, token masks, sequence boundaries, and reduction across GPUs. Those details are part of the algorithm: dividing by response tokens instead of responses, for example, changes what is optimized.</p>
+<p>The integration still required substantial work. I added a custom task, renderer, algorithm, and loss, with guarded changes to eight upstream files in an isolated copy of a pinned Prime revision. I enforced complete on-policy groups, the global denominator of sixteen responses, finite-gradient checks, and protection against silent context truncation.</p>
+<p>Independent benchmarks, statistical diagnostics, and the applied-weight audit were project additions. Prime did not automatically answer the research questions. It supplied enough reusable execution infrastructure and access to the right artifacts for me to build those checks.</p>
+<p>That is what I found valuable about the abstractions: I could reuse a substantial training system while still following a mathematical choice down to the tokens, probabilities, and gradients it affected.</p>
+</section>
+
+<section id="engineering">
+<h2>The engineering lessons became research lessons</h2>
+<p>Running this across shared GPUs made the difference between “the process exited” and “the experiment is complete” very concrete. Training, model export, inference startup, answer generation, grading, and aggregation are separate stages. A successful predecessor does not establish that the final comparison exists.</p>
+<p>I kept frozen sources and configurations per run, pinned model and dataset revisions, saved intermediate checkpoints, and retained raw answers with their evaluation summaries. Recovery jobs preserved completed answers instead of restarting an entire benchmark. A retry remained a retry of the same scientific condition rather than becoming a new seed in the results.</p>
+<p>Before longer runs, CPU tests checked masks, reductions, objective semantics, and the absence of answer labels. GPU smoke tests checked generation, updates, export and reload. Hardware and communication tests were separate from the claim that the training algorithm was correct.</p>
+<p>The most useful instrumentation recorded the applied weight itself, the sequence score, FP32 and FP64 confidence, response length, and policy provenance. If I had kept only aggregate reward and benchmark accuracy, the nominal RLSC label would have hidden the numerical issue.</p>
+<p>I would now run that audit before scheduling a large matrix. Representative long, short, complete, and capped responses should demonstrate a meaningful applied contrast before the experiment is described as testing confidence weighting.</p>
+</section>
+
+<section id="next">
+<h2>What I would test next</h2>
+<p>I would begin with a separately specified weighting rule whose effect is visible at the optimizer. Mean-log-probability weighting, normalization in log space, and a different smoothing scale are possible directions. They change the method, and I have not established their performance in this study.</p>
+<p>Then I would hold adaptation questions and their order fixed across sampling seeds, retain the untouched model and uniform control, and explicitly track response length and termination. Evaluation would include final-answer accuracy, pass@K, answer validity, and the minority-correct cohorts. More training seeds would be necessary to separate a stable effect from the trajectory of one run.</p>
+<p>I would also keep the selection experiment separate. Confidence can be useful for choosing an answer even when the particular training rule is unstable or numerically inactive. That positive result is worth keeping, without stretching it into a claim about self-improvement.</p>
+<p>I started by asking whether a model could learn from its own confidence. I came away with a more precise version of the question: <strong>which definition of confidence, at which numerical scale, changes the update in a way that preserves useful answers?</strong></p>
+<p>That question now has an implementation I can inspect, controls I can compare, and diagnostics that measure more than whether a job finished.</p>
+</section>
+
+<section id="sources">
+<h2>Scope, data, and references</h2>
+<p>This post analyzes the completed results in my September 13, 2026 snapshot. The completed evidence includes five Math-family settings, six general-model ten-update pairs, three of four learning-rate pairs, answer ranking, the applied-weight audit, and the nine-checkpoint trajectory diagnostics. The final seed-2029 14B RLSC MMLU-STEM result, original 14B OlympiadBench/Minerva/MMLU-STEM baselines, and the interrupted high-rate seed-2028 control comparison remain outside the completed evidence reported here.</p>
+<p>Scores use the project's frozen prompts and final-answer grading. Some recovery evaluations used different GPU and tensor-parallel configurations, which can change numerical generation behavior even when model, prompt, and scorer identities are fixed. They are not claims of exact agreement with every benchmark's official harness. The general-model seed studies and the one-pair trajectory diagnostic are limited evidence, and the tables preserve each recorded baseline instead of pooling them.</p>
+<p>The <a href="confidence-self-training/results.json">aggregate results and protocol metadata</a> behind the tables and figure are available with this post. The figure can also be downloaded as <a href="confidence-self-training/passk-trajectories.png">PNG</a>. These files contain aggregate measurements, not raw model responses or model weights.</p>
+<ul class="references">
+<li>The initial idea came from <a href="https://arxiv.org/abs/2506.06395">Confidence Is All You Need: Few-Shot RL Fine-Tuning of Language Models</a>. This project independently reconstructs and studies an implementation with explicit additional design choices. It is not the authors' implementation or a claim to reproduce all of their reported protocols.</li>
+<li><a href="https://github.com/PrimeIntellect-ai/prime-rl/tree/ab5de8fff44b2c4a5c85e24b6e6e3f7d57eee7b1">Pinned Prime RL source</a> and <a href="https://github.com/PrimeIntellect-ai/verifiers/tree/b2e4e8157783b2c0dffc7821044c87f29f1c3ccf">pinned Verifiers source</a>.</li>
+<li>The intermediate pass@K estimates follow the combinatorial estimator in <a href="https://github.com/openai/human-eval/blob/master/human_eval/evaluation.py">HumanEval's evaluation implementation</a>. For sixteen samples with c correct answers, the estimate is \(1-\binom{16-c}{K}/\binom{16}{K}\), with the usual value of one when fewer than K samples are incorrect.</li>
+</ul>
+</section>
+</article></main>
+<footer><hr class="slender" /><div class="credits"><a href="/blog/">All posts</a><a href="https://github.com/Moe-Zbeeb">GitHub</a><a href="https://scholar.google.com/citations?user=JJg7iTMAAAAJ&amp;hl=en">Scholar</a></div></footer>
+</body></html>
