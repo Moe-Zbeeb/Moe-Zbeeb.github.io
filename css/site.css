@@ -7,15 +7,6 @@
   --paper-soft: #faf9ef;
 }
 
-.about-portrait {
-  display: block;
-  width: 240px;
-  max-width: 100%;
-  height: auto;
-  margin-bottom: 1.8rem;
-  border-radius: 6px;
-}
-
 /* ---- Navigation ------------------------------------------------------- */
 nav.group {
   width: 87.5%;
