@@ -14,36 +14,61 @@
     <meta property="profile:first_name" content="Mohammad" />
     <meta property="profile:last_name" content="Zbeeb" />
 
-    <link rel="stylesheet" href="/css/tufte.css" />
-    <link rel="stylesheet" href="/css/site.css" />
+    <link rel="stylesheet" href="/css/profile.css?v=20261006-polish" />
+    <script src="/js/profile.js" defer></script>
     <link rel="canonical" href="/about/" />
   </head>
 
   <body>
-    <header>
-      <nav class="group">
-        <a href="/">Mohammad Zbeeb</a>
-        <a class="active" href="/about/">About</a>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+      <nav class="main-nav page-width" aria-label="Main navigation">
+        <a class="site-name" href="/">Mohammad Zbeeb</a>
+        <div class="nav-links">
+          <a href="/">Home</a>
+          <a href="/blog/#research">Publications</a>
+          <a href="/blog/#writing">Research Notes</a>
+          <a href="/about/" aria-current="page">About</a>
+        </div>
       </nav>
     </header>
-
-    <article class="group">
-      <h1>About</h1>
-      <p>I am Mohammad Zbeeb and this is my blog.</p>
-      <p>I graduated from the American University of Beirut with a degree in computer and communication engineering. My work focuses on large language models, reasoning transfer, model merging, and Arabic NLP.</p>
-      <p>Previously, I worked as a research assistant with the Image and Video Understanding Lab at KAUST and with Edgebot's post-training team. I have also co-instructed courses at AUB on machine learning and AI in medicine.</p>
-      <p>I recently joined a small team of very smart people to work on something new in research. We are currently in stealth mode.</p>
-      <p>Find me via <a href="mailto:mbz02@mail.aub.edu">email</a>, or on <a href="https://www.linkedin.com/in/mohamad-zbib-16b604265/" target="_blank" rel="noopener noreferrer">LinkedIn</a>, <a href="https://github.com/Moe-Zbeeb" target="_blank" rel="noopener noreferrer">GitHub</a>, and <a href="https://scholar.google.com/citations?user=JJg7iTMAAAAJ&hl=en" target="_blank" rel="noopener noreferrer">Google Scholar</a>.</p>
-    </article>
-
-    <footer>
-      <hr class="slender" />
-      <div class="credits">
-        <a href="https://github.com/Moe-Zbeeb">GitHub</a>
-        <a href="https://www.linkedin.com/in/mohamad-zbib-16b604265/">LinkedIn</a>
-        <a href="https://scholar.google.com/citations?user=JJg7iTMAAAAJ&hl=en">Scholar</a>
-        <a href="mailto:mbz02@mail.aub.edu">Email</a>
+    <main class="profile-layout about-layout page-width" id="main-content">
+      <div class="profile-main">
+        <section aria-labelledby="about-heading">
+          <h1 id="about-heading">About</h1>
+          <div class="biography">
+            <img class="profile-photo" src="/assets/images/mohammad-zbeeb.webp" alt="Mohammad Zbeeb" width="1254" height="1254" fetchpriority="high" />
+            <div class="bio-copy">
+              <p>I graduated from the American University of Beirut with a degree in computer and communication engineering. My work focuses on large language models, reasoning transfer, and model merging.</p>
+              <p>Previously, I worked as a research assistant with the Image and Video Understanding Lab at KAUST and with Edgebot's post-training team. I have also co-instructed courses at AUB on machine learning and AI in medicine.</p>
+              <p>I recently joined a small team of very smart people to work on something new in research. We are currently in stealth mode.</p>
+              <p>This is where I write up what I am learning. Read my <a href="/blog/#writing">research notes</a>.</p>
+            </div>
+          </div>
+        </section>
       </div>
-    </footer>
+        <aside class="profile-sidebar" aria-label="Research interests and contact">
+          <section aria-labelledby="interests-heading">
+            <h2 id="interests-heading">Research Interests</h2>
+            <ul class="interest-list">
+              <li>Large language models</li>
+              <li>Reasoning transfer</li>
+              <li>Model merging</li>
+            </ul>
+          </section>
+          <section class="contact-section" id="contact" aria-labelledby="contact-heading">
+            <h2 id="contact-heading">Contact</h2>
+            <h3>Email</h3>
+            <a href="mailto:mbz02@mail.aub.edu">mbz02@mail.aub.edu</a>
+            <h3>Other Links</h3>
+            <ul class="social-links">
+              <li><a href="https://github.com/Moe-Zbeeb">GitHub</a></li>
+              <li><a href="https://www.linkedin.com/in/mohamad-zbib-16b604265/">LinkedIn</a></li>
+              <li><a href="https://scholar.google.com/citations?user=JJg7iTMAAAAJ&amp;hl=en">Google Scholar</a></li>
+            </ul>
+          </section>
+        </aside>
+    </main>
+    <footer class="site-footer page-width">Mohammad Zbeeb</footer>
   </body>
 </html>

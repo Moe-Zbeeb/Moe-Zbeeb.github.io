@@ -1,10 +1,10 @@
 /* siboehm-style chrome layered on top of tufte.css */
 
 :root {
-  --accent: #a00000;
-  --muted: #5a5a52;
-  --paper-line: #e3e0d0;
-  --paper-soft: #faf9ef;
+  --accent: #005bd6;
+  --muted: #667085;
+  --paper-line: #e5eaf0;
+  --paper-soft: #f8fafc;
 }
 
 /* ---- Navigation ------------------------------------------------------- */
@@ -71,7 +71,7 @@ ul.content-listing .post-summary {
 }
 hr.invisible {
   border: none;
-  border-top: 1px solid #e3e0d0;
+  border-top: 1px solid #e5eaf0;
   background: none;
   margin: 2.6rem 0 1.4rem;
 }
@@ -89,10 +89,10 @@ ul.content-listing > li:first-child hr.invisible {
   margin: 2rem 0 2.5rem;
 }
 .note-card {
-  border: 1px solid #e3e0d0;
+  border: 1px solid #e5eaf0;
   border-radius: 6px;
   padding: 1rem;
-  background: #fffff8;
+  background: #fff;
   box-sizing: border-box;
   min-width: 0;
 }
@@ -158,7 +158,7 @@ footer {
 }
 footer hr.slender {
   border: none;
-  border-top: 1px solid #e3e0d0;
+  border-top: 1px solid #e5eaf0;
   margin: 3rem 0 1rem;
 }
 footer .credits {
@@ -226,7 +226,7 @@ footer .credits a:hover {
 }
 .tutorial-article .takeaway {
   border-left: 3px solid var(--paper-line);
-  background: #fffef6;
+  background: #f8fafc;
   padding: 0.75rem 0.95rem;
   margin: 1rem 0 1.4rem;
 }
@@ -270,4 +270,133 @@ footer .credits a:hover {
   .tutorial-article table {
     width: 100%;
   }
+}
+
+.tutorial-article {
+  width: min(78%, 1100px);
+  padding-top: 3.5rem;
+}
+.tutorial-article > h1 {
+  max-width: 22ch;
+  font-size: 3.1rem;
+  line-height: 1.08;
+  margin-bottom: 1rem;
+}
+.tutorial-article > .subtitle {
+  max-width: 68ch;
+  margin: 0 0 1.1rem;
+  font-size: 1.55rem;
+  line-height: 1.35;
+  font-style: normal;
+  color: #343a40;
+}
+.tutorial-article section > p,
+.tutorial-article section > ol,
+.tutorial-article .lead-card,
+.tutorial-article .article-map,
+.tutorial-article .takeaway {
+  max-width: 74ch;
+}
+.tutorial-article p,
+.tutorial-article li,
+.tutorial-article td,
+.tutorial-article th {
+  text-align: left;
+}
+.tutorial-article h2 {
+  max-width: 34ch;
+  margin-top: 3.2rem;
+  margin-bottom: 0.7rem;
+  line-height: 1.18;
+}
+.tutorial-article h3 {
+  max-width: 42ch;
+  margin-top: 2rem;
+  line-height: 1.25;
+}
+.tutorial-article .lead-card,
+.tutorial-article .article-map,
+.tutorial-article .takeaway {
+  width: 100%;
+}
+.tutorial-article .math-block {
+  width: 100%;
+  max-width: 74ch;
+  margin: 1.5rem 0;
+  padding: 0.9rem 0.75rem;
+  border-top: 1px solid var(--paper-line);
+  border-bottom: 1px solid var(--paper-line);
+  background: #fff;
+  text-align: center;
+}
+.tutorial-article table {
+  width: 100%;
+  max-width: 100%;
+  margin: 1.25rem 0 2rem;
+  font-size: 1.15rem;
+}
+.tutorial-article th,
+.tutorial-article td {
+  padding: 0.65rem 0.7rem;
+}
+.tutorial-article figure.fullwidth {
+  width: 100%;
+  max-width: 100%;
+  margin: 2rem 0 2.4rem;
+}
+.tutorial-article figure.fullwidth figcaption {
+  max-width: 74ch;
+  line-height: 1.45;
+}
+@media (max-width: 760px) {
+  .tutorial-article {
+    width: 92%;
+    padding-top: 2.5rem;
+  }
+  .tutorial-article > h1 {
+    font-size: 3.4rem;
+    line-height: 1.08;
+  }
+  .tutorial-article > .subtitle {
+    font-size: 1.7rem;
+    line-height: 1.45;
+  }
+  .tutorial-article h2 {
+    font-size: 2.6rem;
+    line-height: 1.18;
+  }
+  .tutorial-article h3 {
+    font-size: 2rem;
+    line-height: 1.25;
+  }
+  .tutorial-article p,
+  .tutorial-article ol,
+  .tutorial-article ul,
+  .tutorial-article li {
+    font-size: 1.7rem;
+    line-height: 2.5rem;
+  }
+  .tutorial-article .takeaway p {
+    font-size: 1.6rem;
+    line-height: 2.35rem;
+  }
+  .tutorial-article table {
+    display: block;
+    overflow-x: auto;
+    font-size: 1.45rem;
+    line-height: 2rem;
+  }
+  .tutorial-article figure.fullwidth figcaption {
+    font-size: 1.35rem;
+    line-height: 1.5;
+  }
+  .tutorial-article mjx-container[display="true"] {
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+}
+
+figure img[src^="diagrams/"] {
+  filter: brightness(1.03);
 }
