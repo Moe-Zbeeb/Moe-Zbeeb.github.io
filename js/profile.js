@@ -1,7 +1,9 @@
 const sectionLinks = document.querySelectorAll('.section-nav a');
 
 function updateSectionNavigation() {
-  const activeSection = window.location.hash || '#bio';
+  const target = document.getElementById(window.location.hash.slice(1) || 'bio');
+  const section = target?.closest('section[id]');
+  const activeSection = section ? `#${section.id}` : '#bio';
 
   for (const link of sectionLinks) {
     if (link.hash === activeSection) {

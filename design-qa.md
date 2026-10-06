@@ -183,3 +183,37 @@ final result: passed
 Removed the topic filter row above the publication list at the user’s request, together with its unused status text, topic attributes, styles, and JavaScript. All six publications remain visible. The section navigation and keyboard summary disclosures still work, including visible focus styling. Browser inspection confirms zero topic controls and six visible records. JavaScript syntax and whitespace checks pass. Evidence: /Users/mohammadzbeeb/.codex/visualizations/2026/10/06/moe-no-publication-labels/local.jpg.
 
 final result: passed
+
+
+## October 6, 2026 — closer reference styling
+
+Source visual truth: https://frank-zy-dou.github.io/index.html and its Research Notes page at https://frank-zy-dou.github.io/blog.html.
+
+Evidence directory: `/Users/mohammadzbeeb/.codex/visualizations/2026/10/06/moe-reference-fidelity/`. Source captures: `reference-home.jpg`, `reference-research.jpg`, `reference-writing.jpg`. Revised implementation: `local-home.jpg`, `local-research.jpg`, `local-writing.jpg`.
+
+Viewport: 1280 × 720 CSS px, device pixel ratio 1. Both source and implementation content screenshots are 1265 × 712 px; browser scrollbar/chrome exclusion is identical. No density rescaling was used. States: home at the top, research anchor with summaries collapsed, notes archive heading and featured entry. Reference and implementation carry their respective authors' content.
+
+Full-view evidence: `comparison-home.jpg`, `comparison-research.jpg`, and `comparison-writing.jpg`, each placing source and implementation together at 2530 × 712 px. Focused evidence: `comparison-paper-detail.jpg`, a pair of 832 × 490 crops from the full research captures, to inspect titles, authors, venues, figures, and resource links at readable resolution.
+
+Comparison history:
+
+- [P1] Research used the full page width, large modern typography, and a sidebar restricted to the biography row. The reference maintains an 832 px content column beside a 308 px sidebar with a 30 px gutter. Baseline evidence: `comparison-before-research.jpg`. Fixed the column tracks and research placement. Post-fix evidence: `comparison-home.jpg` and `comparison-research.jpg`.
+- [P2] The header was 60 px high, portrait 224 px wide, publication figures 280 × 180 px, titles 20 px, and resources rounded buttons. Matched the compact 40 px header, 200 × 210 portrait, 195 × 120 publication figures, Helvetica Neue 13/18 px paper text, blue bold titles, italic venues, and inline resources. Post-fix evidence: `comparison-paper-detail.jpg`.
+- [P2] During implementation, the new sidebar figure inherited its HTML height and stretched vertically. Applied `height: auto`; the final home capture confirms the original figure's aspect ratio.
+- [P2] At 320 px, the Research Notes navigation label wrapped and made the fixed header overlap the section bar. Applied a narrower navigation font and padding at that breakpoint. Rechecked: header 82 px, section navigation top 82 px, document width 305 px within the 320 px viewport.
+
+Required fidelity surfaces:
+
+- Typography: Home and publications match the reference's Helvetica Neue stack, 13 px text, 18 px line height, 30 px centered profile heading, and 24 px section headings. Notes use bold Georgia titles with a 980 px archive, matching the reference's serif treatment. Centered note headings remain intentional under the user's earlier request.
+- Spacing/layout: Header, portrait, main/sidebar tracks, publication gutter, compact row rhythm, flat figure borders, and subtle figure shadows follow the captured reference. White notes keep their centered reading layout.
+- Colors/tokens: White page, #333 text, #0088cc links, #151515 header, #f5f5f5 sidebar, and light separators match the reference palette. Publication rows stay white and topic filters remain removed at the user's request.
+- Image quality: Preserved the supplied portrait and actual figures from the user's papers. Publication images use object-fit contain; the sidebar figure retains its original proportions. Notes retain their original white figures. Foreign author images, logos, and quotes were not copied into the user's content.
+- Copy/content: All six papers, summaries, publication venues, five articles, and profile facts remain. Both requested venues still read EACL 2026. Existing affiliation names now link to their official pages. The sidebar uses the user's actual Reasoning Vectors figure and interests.
+
+Primary checks: All six summaries opened and closed through keyboard input; six papers visible and zero topic filter controls. Bio, Research, Writing, and contact anchors navigate through the existing sections. Five article routes render white at 390 px without horizontal overflow or broken images. About renders correctly at desktop width. Confidence article footer returns to the notes archive. Mobile evidence: `local-mobile-home.jpg`, `local-mobile-research.jpg`, `local-mobile-writing.jpg`, and `local-mobile-article.jpg`. Checked 95 internal references across seven pages; no missing files. JavaScript syntax and git diff whitespace checks passed. Browser error logs were empty.
+
+Acceptable differences: The user's shorter biography, different papers, supplied portrait, research diagram, and absence of unprovided news/awards/quotes change content heights. Topic filter labels and yellow row highlights remain absent as explicitly requested. Notes headings remain centered. The existing About route is retained.
+
+Findings: No remaining actionable P0/P1/P2 differences.
+
+final result: passed
