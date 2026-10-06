@@ -603,16 +603,6 @@ h2 {
   text-align: center;
 }
 
-.interest-list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.interest-list li {
-  margin-bottom: 8px;
-}
-
 .contact-section {
   margin-top: 24px;
   padding-top: 20px;

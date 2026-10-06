@@ -1,0 +1,12 @@
+Generated with the built-in Image Gen tool on October 6, 2026.
+Original: research-interests.png. Web asset: research-interests.webp.
+
+Use case: infographic-diagram.
+Asset type: a tall research interests illustration for a personal academic website sidebar, displayed at about 268 pixels wide.
+Primary request: a refined scientific visual overview of three research interests, in the restrained style of a classic white academic portfolio with stacked illustrated panels.
+Composition: portrait approximately 1:1.8 aspect ratio, three equally sized vertically stacked panels, generous white spacing, subtle thin light gray rounded outlines. Each panel has one large clearly legible black sans-serif title at the top and a polished diagram beneath. Pure white canvas and panel backgrounds.
+Panel 1 exact title: "Large language models". Show an elegant isometric layered neural network: small interconnected nodes and translucent stacked attention-like matrices, softly colored blue and lavender, suggesting a language model. Balanced, precise scientific illustration.
+Panel 2 exact title: "Reasoning transfer". Show two compatible small isometric neural network structures, a blue source and lavender target, joined by a peach vector arrow carrying a learned direction. Visualize capability transfer in a clean geometric schematic.
+Panel 3 exact title: "Model merging". Show two separate small pastel blue and lavender model structures converging through thin arrows into one integrated multicolor model, a simple readable merge schematic.
+Style: publication-quality vector-like scientific artwork with delicate 3D depth, crisp outlines, subtle shading, pastel blue, lavender, muted peach and mint accents, plenty of white. Sophisticated and quiet. Titles remain readable when reduced to sidebar width. Minimal text: only these three exact titles. No overarching title or caption inside the image because the webpage supplies those.
+Avoid: dark backgrounds, yellow canvas, cartoon mascots, robot characters, people, photographs, logos, watermarks, tiny labels, numbered steps, unrelated geometry, Arabic NLP, unsupported scientific claims. No website screenshot or browser chrome.

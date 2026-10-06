@@ -63,6 +63,14 @@ No further polish is required for handoff. Verification used the Codex in-app br
 
 final result: passed
 
+## October 6, 2026 — research interests visual
+
+Replaced the sidebar's single-paper figure on Home and About with an original three-panel illustration of large language models, reasoning transfer, and model merging. The white canvas, pastel scientific diagrams, stacked outlined panels, centered heading, and caption follow the supplied reference's research interests visual. Generated with the built-in Image Gen tool; retained the original PNG and served a compressed WebP. The image links to the publications section and has descriptive alternative text. Removed the redundant sidebar list and unused list styles.
+
+Inspected all three labels and diagrams. Browser checks confirm a loaded image at 268 × 450.56 px on desktop, its original aspect ratio, and no horizontal overflow at 390 px or 320 px. The narrowest image remains 244 px wide. Checked Home and About, and activated the graphic's link to the research anchor. Evidence directory: /Users/mohammadzbeeb/.codex/visualizations/2026/10/06/moe-research-interests/; captures: local-home.jpg, local-about.jpg, local-mobile-about.jpg, local-mobile-about-full.jpg.
+
+final result: passed
+
 # Publication section verification — October 6, 2026
 
 Source visual truth: [Frank Dou's research section](https://frank-zy-dou.github.io/#research), captured in `/Users/mohammadzbeeb/.codex/visualizations/2026/10/06/moe-publications/reference-research.jpg`.
