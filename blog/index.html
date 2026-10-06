@@ -12,8 +12,8 @@
     <meta property="og:description" content="Research publications and notes on machine learning, large language models, and interpretability." />
     <meta property="og:type" content="website" />
 
-    <link rel="stylesheet" href="/css/profile.css?v=20261006-polish" />
-    <script src="/js/profile.js" defer></script>
+    <link rel="stylesheet" href="/css/profile.css?v=20261006-no-filters" />
+    <script src="/js/profile.js?v=20261006-no-filters" defer></script>
     <link rel="canonical" href="/blog/" />
   </head>
 
@@ -56,17 +56,8 @@
               <a href="https://scholar.google.com/citations?user=JJg7iTMAAAAJ&amp;hl=en">View Google Scholar</a>
             </div>
             <p class="publication-note">* Equal contribution. ‡ Equal advising authors.</p>
-            <div class="publication-filters" role="group" aria-label="Filter publications by topic" hidden>
-              <button type="button" data-publication-filter="all" aria-pressed="true">All</button>
-              <button type="button" data-publication-filter="reasoning" aria-pressed="false">Reasoning &amp; merging</button>
-              <button type="button" data-publication-filter="inference" aria-pressed="false">Efficient inference</button>
-              <button type="button" data-publication-filter="alignment" aria-pressed="false">Alignment</button>
-              <button type="button" data-publication-filter="models" aria-pressed="false">Models &amp; evaluation</button>
-              <button type="button" data-publication-filter="synthesis" aria-pressed="false">Data synthesis</button>
-            </div>
-            <p class="visually-hidden" id="publication-status" role="status" aria-live="polite">Showing all 6 publications.</p>
             <ul class="publication-list">
-              <li class="publication-item" id="arabic-safety" data-topics="alignment">
+              <li class="publication-item" id="arabic-safety">
                 <a class="publication-image" href="https://arxiv.org/pdf/2608.29378" aria-label="Read Arabic Safety Alignment as Selective Refusal: An Empirical Study of SFT, DPO, and Guard Calibration">
                   <img src="/assets/images/publications/arabic-safety.webp" alt="Benign versus harmful-prompt refusal operating points for five base models on AraSafe" width="723" height="551" loading="lazy" />
                 </a>
@@ -84,7 +75,7 @@
                   </div>
                 </div>
               </li>
-              <li class="publication-item" id="taps" data-topics="inference">
+              <li class="publication-item" id="taps">
                 <a class="publication-image" href="https://arxiv.org/pdf/2603.27027" aria-label="Read TAPS: Task Aware Proposal Distributions for Speculative Sampling">
                   <img src="/assets/images/publications/taps.webp" alt="Two specialized draft models feed a confidence router that selects a draft for verification" width="951" height="700" loading="lazy" />
                 </a>
@@ -104,7 +95,7 @@
                   </div>
                 </div>
               </li>
-              <li class="publication-item" id="aralingbench" data-topics="models">
+              <li class="publication-item" id="aralingbench">
                 <a class="publication-image" href="https://aclanthology.org/2026.abjadnlp-1.45.pdf" aria-label="Read AraLingBench: A Human-Annotated Benchmark for Evaluating Arabic Linguistic Capabilities of Large Language Models">
                   <img src="/assets/images/publications/aralingbench.webp" alt="Five expert-written AraLingBench sample questions covering Arabic linguistic skills" width="1000" height="453" loading="lazy" />
                 </a>
@@ -123,7 +114,7 @@
                   </div>
                 </div>
               </li>
-              <li class="publication-item" id="hala" data-topics="models reasoning">
+              <li class="publication-item" id="hala">
                 <a class="publication-image" href="https://aclanthology.org/2026.abjadnlp-1.32.pdf" aria-label="Read Hala Technical Report: Building Arabic-Centric Instruction &amp; Translation Models at Scale">
                   <img src="/assets/images/publications/hala.webp" alt="HALA pipeline from an FP8 translation teacher to a lightweight translator and instruction-tuned models" width="1000" height="453" loading="lazy" />
                 </a>
@@ -142,7 +133,7 @@
                   </div>
                 </div>
               </li>
-              <li class="publication-item" id="reasoning-vectors" data-topics="reasoning">
+              <li class="publication-item" id="reasoning-vectors">
                 <a class="publication-image" href="https://arxiv.org/pdf/2509.01363" aria-label="Read Reasoning Vectors: Transferring Chain-of-Thought Capabilities via Task Arithmetic">
                   <img src="/assets/images/publications/reasoning-vectors.webp" alt="Reasoning vector extracted between SFT and GRPO checkpoints and added to a compatible language model" width="1000" height="453" loading="lazy" />
                 </a>
@@ -160,7 +151,7 @@
                   </div>
                 </div>
               </li>
-              <li class="publication-item" id="data-synthesis" data-topics="synthesis">
+              <li class="publication-item" id="data-synthesis">
                 <a class="publication-image" href="https://arxiv.org/pdf/2411.01929" aria-label="Read Exploring the Landscape for Generative Sequence Models for Specialized Data Synthesis">
                   <img src="/assets/images/publications/data-synthesis.webp" alt="Learned symbol embeddings used to represent structured data as sequences" width="710" height="700" loading="lazy" />
                 </a>

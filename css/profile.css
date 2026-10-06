@@ -238,36 +238,6 @@ h1 {
   font-size: 13px;
 }
 
-.publication-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.publication-filters button {
-  padding: 8px 14px;
-  border: 1px solid #e3e8ef;
-  border-radius: 7px;
-  color: #475467;
-  background: #f8fafc;
-  font: inherit;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.publication-filters button:hover {
-  border-color: #b6c5d7;
-  background: #edf2f8;
-}
-
-.publication-filters button[aria-pressed="true"] {
-  color: #fff;
-  border-color: #203b5b;
-  background: #203b5b;
-}
-
-.publication-filters button:focus-visible,
 .publication-summary summary:focus-visible {
   outline: 2px solid var(--profile-link);
   outline-offset: 4px;
@@ -796,10 +766,6 @@ h2 {
 
   .research-heading-row {
     align-items: flex-start;
-  }
-
-  .publication-filters button {
-    min-height: 36px;
   }
 
   .publication-actions {

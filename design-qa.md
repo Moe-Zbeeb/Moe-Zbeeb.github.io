@@ -176,3 +176,10 @@ Home document width equals viewport width at 320, 390, 768, and 1100 CSS pixels.
 Evidence directory: /Users/mohammadzbeeb/.codex/visualizations/2026/10/06/moe-final-polish/.
 
 final result: passed
+
+
+# Remove publication topic labels — October 6, 2026
+
+Removed the topic filter row above the publication list at the user’s request, together with its unused status text, topic attributes, styles, and JavaScript. All six publications remain visible. The section navigation and keyboard summary disclosures still work, including visible focus styling. Browser inspection confirms zero topic controls and six visible records. JavaScript syntax and whitespace checks pass. Evidence: /Users/mohammadzbeeb/.codex/visualizations/2026/10/06/moe-no-publication-labels/local.jpg.
+
+final result: passed
