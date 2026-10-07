@@ -12,20 +12,23 @@
     <meta property="og:description" content="Research publications and notes on machine learning, large language models, and interpretability." />
     <meta property="og:type" content="website" />
 
-    <link rel="stylesheet" href="/css/profile.css?v=20261006-reference" />
-    <script src="/js/profile.js?v=20261006-reference" defer></script>
+    <link rel="stylesheet" href="/css/profile.css?v=20261007-notes" />
+    <script src="/js/profile.js?v=20261007-notes" defer></script>
     <link rel="canonical" href="/blog/" />
-  </head>
+      <link rel="stylesheet" href="/css/navigation.css?v=20261007-notes" />
+    <script src="/js/navigation.js?v=20261007-notes" defer></script>
+</head>
 
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
     <header class="site-header">
       <nav class="main-nav page-width" aria-label="Main navigation">
         <a class="site-name" href="/">Mohammad Zbeeb</a>
-        <div class="nav-links">
+        <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-controls="nav-main" aria-expanded="false"><span class="menu-icon" aria-hidden="true"></span></button>
+        <div class="nav-links" id="nav-main">
           <a href="/" aria-current="page">Home</a>
           <a href="/blog/#research">Publications</a>
-          <a href="/blog/#writing">Research Notes</a>
+          <a href="/blog.html">Research Notes</a>
           <a href="/about/">About</a>
         </div>
       </nav>
@@ -34,7 +37,6 @@
       <nav class="section-nav" aria-label="Section navigation">
         <a href="#bio" aria-current="location">Bio</a>
         <a href="#research">Research</a>
-        <a href="#writing">Writing</a>
         <a href="#contact">Contact</a>
       </nav>
       <main class="profile-layout home-layout" id="main-content">
@@ -169,67 +171,6 @@
                     </details>
                   </div>
                 </div>
-              </li>
-            </ul>
-          </section>
-          <section class="writing-section notes-section" id="writing" aria-labelledby="writing-heading">
-            <header class="notes-heading">
-              <p class="notes-kicker">Machine learning · Language models · Interpretability</p>
-              <h2 id="writing-heading">Research Notes</h2>
-              <p class="notes-intro">Essays, tutorials, and experimental notes on machine learning and language models.</p>
-            </header>
-            <article class="featured-note">
-              <a class="note-visual" href="/blog/posts/confidence-self-training.html" aria-label="Read Confidence is not all you need">
-                <img src="/assets/images/notes/confidence.svg" alt="Training checkpoint accuracy comparing nominal confidence-weighted learning and an equal-weight control" width="957" height="1100" loading="lazy" />
-              </a>
-              <div class="note-copy">
-                <p class="post-meta"><span class="post-category">Self-training</span><span>Featured note</span></p>
-                <h3><a href="/blog/posts/confidence-self-training.html">Confidence is not all you need</a></h3>
-                <p class="post-summary">Does confidence actually cause self-improvement? What equal-weight controls, numerical audits, and useful exploration reveal about Confidence Is All You Need.</p>
-                <p class="post-topics">Confidence weighting · Experimental controls · Exploration</p>
-                <a class="note-read-link" href="/blog/posts/confidence-self-training.html">Read this note</a>
-              </div>
-            </article>
-            <div class="notes-list-heading">
-              <h3>2026</h3>
-              <p>Tutorials &amp; experimental notes</p>
-            </div>
-            <ul class="post-list">
-              <li>
-                <a class="note-visual" href="/blog/posts/probability-concepts-for-ml-engineers.html" aria-label="Read Probability for Machine Learning: A Working Tutorial">
-                  <img src="/assets/images/notes/probability.webp" alt="Positive, near-zero, and negative covariance illustrated with paired observations" width="1100" height="391" loading="lazy" />
-                </a>
-                <p class="post-meta"><span class="post-category">Probability</span><time datetime="2026-07-14">Updated July 14, 2026</time></p>
-                <h3><a href="/blog/posts/probability-concepts-for-ml-engineers.html">Probability for Machine Learning: A Working Tutorial</a></h3>
-                <p class="post-summary">A rigorous guide to distributions, dependence, estimation, Bayesian updating, information, predictive uncertainty, calibration, distribution shift, and decisions.</p>
-                <p class="post-topics">Distributions · Bayesian inference · Uncertainty</p>
-              </li>
-              <li>
-                <a class="note-visual" href="/blog/posts/deep-learning-specialization-notes.html" aria-label="Read Deep Learning Specialization Notes">
-                  <img src="/assets/images/notes/deep-learning.webp" alt="Layered neural network diagram from the annotated Neural Networks and Deep Learning notes" width="503" height="293" loading="lazy" />
-                </a>
-                <p class="post-meta"><span class="post-category">Deep learning</span><time datetime="2026-06-21">June 21, 2026</time></p>
-                <h3><a href="/blog/posts/deep-learning-specialization-notes.html">Deep Learning Specialization Notes</a></h3>
-                <p class="post-summary">Annotated PDFs for neural networks, improving deep neural networks, structuring machine learning projects, convolutional neural networks, and sequence models. Each file opens directly in the browser.</p>
-                <p class="post-topics">Neural networks · Training · Annotated PDFs</p>
-              </li>
-              <li>
-                <a class="note-visual" href="/blog/posts/unsafe-directions.html" aria-label="Read Do Language Models Share Unsafe Directions in Activation Space?">
-                  <img src="/assets/images/notes/unsafe-directions.webp" alt="Cosine similarity heatmaps of aligned safety vectors for small and large language models" width="1100" height="490" loading="lazy" />
-                </a>
-                <p class="post-meta"><span class="post-category">Interpretability</span><time datetime="2026-03-15">March 15, 2026</time></p>
-                <h3><a href="/blog/posts/unsafe-directions.html">Do Language Models Share Unsafe Directions in Activation Space?</a></h3>
-                <p class="post-summary">Testing whether a single safety axis emerges across models once their activations are aligned into a shared space. Per-model safety vectors are extracted, aligned, and combined into a dominant “universal” safety direction that separates safe from unsafe activations.</p>
-                <p class="post-topics">Activation spaces · Model alignment · Safety vectors</p>
-              </li>
-              <li>
-                <a class="note-visual" href="/blog/posts/info-theory.html" aria-label="Read What we borrowed in ML from info theory?">
-                  <img src="/assets/images/notes/information-theory.webp" alt="Binary entropy curve showing maximum uncertainty for a fair coin" width="1100" height="794" loading="lazy" />
-                </a>
-                <p class="post-meta"><span class="post-category">Information theory</span><time datetime="2026-02-10">February 10, 2026</time></p>
-                <h3><a href="/blog/posts/info-theory.html">What we borrowed in ML from info theory?</a></h3>
-                <p class="post-summary">A walk through entropy, cross-entropy, KL divergence, and mutual information — the information-theoretic ideas that quietly underpin modern machine learning, with visual explanations for each one.</p>
-                <p class="post-topics">Entropy · KL divergence · Mutual information</p>
               </li>
             </ul>
           </section>

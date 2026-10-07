@@ -225,3 +225,32 @@ Acceptable differences: The user's shorter biography, different papers, supplied
 Findings: No remaining actionable P0/P1/P2 differences.
 
 final result: passed
+
+
+## October 7, 2026 — separate Research Notes archive
+
+Source visual truth: https://frank-zy-dou.github.io/blog.html and its To Scale or Not to Scale article. Captured the archive on desktop and mobile, its lower rows, citation disclosure, footer region, mobile navigation, and an article before implementation. Adapted the presentation to the user's existing content.
+
+Evidence directory: /Users/mohammadzbeeb/.codex/visualizations/2026/10/07/moe-notes-template/. Full-view comparisons: comparison-desktop.jpg, comparison-mobile.jpg, comparison-menu.jpg, comparison-article.jpg. Focused typography comparison: comparison-heading-detail.jpg, two 970 × 260 crops from the full desktop captures arranged vertically. Source files: source-desktop.jpg, source-lower.jpg, source-citation.jpg, source-bottom.jpg, source-mobile-top.jpg, source-mobile-menu.jpg, source-article.jpg, source-mobile-article.jpg. Implementation files: local-desktop.jpg, local-citation.jpg, local-mobile.jpg, local-mobile-menu.jpg, local-article.jpg, local-mobile-article.jpg, local-narrow.jpg, local-home.jpg.
+
+Desktop CSS viewport: 1280 × 720, device pixel ratio 1. Both desktop screenshots: 1265 × 712. Mobile CSS viewport: 390 × 844, device pixel ratio 1. Both mobile screenshots: 375 × 812. Captures have identical browser scrollbar and chrome exclusions; no density rescaling. Compared archive top with citations collapsed, menu expanded, and article top. Source and implementation retain their respective authors' content.
+
+Required fidelity surfaces:
+
+- Fonts/typography: The same locally served Linux Libertine and Linux Biolinum families, 44 px archive title, 25 px card titles, 17 px summaries, 12 px metadata, and 38 px article headings. Mobile archive title 36 px and article title 32 px. Header uses Helvetica Neue with no inherited uppercase or letter spacing. Open-font notices and license terms are stored with the assets.
+- Spacing/layout: Separate 980 px notes archive, 36 px two-column gutter, thin row separators, left-aligned title and summaries, baseline-aligned year/description, and a 740 px article column. Mobile cards stack into one column. The header is fixed at 40 px on desktop and becomes a 48 px normal-flow collapsed menu below 980 px, matching the source behavior.
+- Colors/tokens: White canvas and figure backgrounds, #252525 body text, #243949 titles, #68727b metadata, #80534b hover/focus accents, dark header, flat outlined covers, and subtle gray separators.
+- Image quality: All five existing note illustrations are preserved and displayed in equal 16:9 frames with object-fit contain, keeping plots complete. No foreign article covers or personal imagery were copied. The menu uses the source's Font Awesome icon family rather than a handcrafted approximation.
+- Copy/content: All five notes, original summaries, topics, article bodies, figures, equations, tables, PDF resources, publication records, and biography remain. The Confidence note retains a year-only date because an exact publication date was not established. Citations identify the user and the actual article URLs. Home contains no notes archive or featured entry.
+
+Intentional differences: Every card has equal weight, overriding the source's larger first entry under the user's explicit request for no featured note. The user's About navigation remains. Their shorter introduction, different subjects and images change wrapping and heights. No read/like counters were added because the repository has no engagement service; no counts or remote service configuration were fabricated.
+
+Comparison history: Initial browser checks revealed inherited Tufte uppercase/letter-spacing styles on the article brand. Explicitly reset the brand and link font, casing, spacing, and float in the shared navigation stylesheet. Post-fix evidence: local-article.jpg and comparison-article.jpg. The final side-by-side comparisons show no remaining actionable P0/P1/P2 drift within the requested scope.
+
+Primary interactions: Home's Research Notes link opens /blog.html. Article titles and covers open the existing article routes. All five articles provide a footer link back to the archive. Native citation disclosures open and close through keyboard input. Mobile navigation opens, closes, and responds to Escape from its links. Old /blog/#writing bookmarks redirect to /blog.html. All six publication records remain on Home. All five article pages passed 390 px width checks with no document overflow or broken completed images; the archive also passed 320 px checks. Browser error logs were empty. Checked 142 internal file references; none missing. JavaScript syntax and git whitespace checks passed.
+
+Findings: No remaining actionable P0/P1/P2 issues. No open requirements or residual test gaps within the archive/navigation scope.
+
+Implementation checklist: separate archive complete; uniform cards complete; homepage section removed; navigation and legacy bookmarks complete; article presentation and return links complete; responsive and visual checks complete.
+
+final result: passed

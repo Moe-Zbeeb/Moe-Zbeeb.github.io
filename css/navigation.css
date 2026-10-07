@@ -1,0 +1,160 @@
+@font-face {
+  font-family: 'FontAwesome';
+  src: url('/assets/fonts/fontawesome-webfont.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+.site-header,
+body.note-page > .site-header {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 10;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  background: #151515;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 25%);
+}
+
+.site-header .main-nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0;
+  width: calc(100% - 64px);
+  max-width: 1170px;
+  min-height: 40px;
+  margin: 0 auto;
+  padding: 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  line-height: 20px;
+}
+
+.site-header .site-name {
+  margin: 0 20px 0 0;
+  padding: 0;
+  color: #aaa;
+  font-size: 20px;
+  font-weight: 700;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  letter-spacing: 0;
+  text-transform: none;
+  float: none;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.site-header .nav-links {
+  display: flex;
+  align-items: center;
+  width: auto;
+  margin: 0;
+}
+
+.site-header .nav-links a {
+  display: block;
+  margin: 0;
+  padding: 10px;
+  color: #aaa;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  float: none;
+  text-transform: none;
+  letter-spacing: 0;
+  line-height: 20px;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.site-header .nav-links a:hover,
+.site-header .nav-links a[aria-current="page"] {
+  color: #fff;
+  background: #080808;
+}
+
+.site-header a:focus-visible,
+.site-header button:focus-visible {
+  outline: 2px solid #0088cc;
+  outline-offset: 2px;
+}
+
+.nav-toggle {
+  display: none;
+  width: 36px;
+  height: 28px;
+  padding: 3px 7px;
+  border: 1px solid #444;
+  border-radius: 4px;
+  color: #fff;
+  background: #080808;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.menu-icon {
+  font-family: 'FontAwesome';
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+}
+
+.menu-icon::before {
+  content: '\f0c9';
+}
+
+@media (max-width: 979px) {
+  body,
+  body.note-page {
+    padding-top: 0;
+  }
+
+  .site-header,
+  body.note-page > .site-header {
+    position: relative;
+  }
+
+  .site-header .main-nav {
+    justify-content: space-between;
+    width: calc(100% - 20px);
+    min-height: 48px;
+    padding: 8px 0;
+  }
+
+  .site-header .site-name {
+    width: auto;
+    margin: 0;
+    font-size: 20px;
+    line-height: 28px;
+  }
+
+  .nav-toggle {
+    display: block;
+  }
+
+  .site-header .nav-links {
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    padding-top: 8px;
+  }
+
+  .site-header .nav-links.is-open {
+    display: flex;
+  }
+
+  .site-header .nav-links a {
+    padding: 7px 10px;
+  }
+
+  .section-nav {
+    top: 0;
+  }
+
+  html {
+    scroll-padding-top: 64px;
+  }
+}

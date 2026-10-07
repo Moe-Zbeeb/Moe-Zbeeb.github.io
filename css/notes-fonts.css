@@ -1,0 +1,48 @@
+@font-face {
+    font-family: "Linux Libertine";
+    src: url("/assets/fonts/libertine/LinLibertine_R.woff2") format("woff2");
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Linux Libertine";
+    src: url("/assets/fonts/libertine/LinLibertine_RI.woff2") format("woff2");
+    font-style: italic;
+    font-weight: 400;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Linux Libertine";
+    src: url("/assets/fonts/libertine/LinLibertine_RB.woff2") format("woff2");
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Linux Libertine";
+    src: url("/assets/fonts/libertine/LinLibertine_RBI.woff2") format("woff2");
+    font-style: italic;
+    font-weight: 700;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Linux Biolinum";
+    src: url("/assets/fonts/libertine/LinBiolinum_R.woff2") format("woff2");
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Linux Biolinum";
+    src: url("/assets/fonts/libertine/LinBiolinum_RB.woff2") format("woff2");
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+}
+

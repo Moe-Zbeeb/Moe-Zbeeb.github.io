@@ -1,3 +1,5 @@
+@import url("/css/notes-fonts.css");
+
 html {
   font-size: 16px;
   scroll-padding-top: 64px;
@@ -9,62 +11,9 @@ body.note-page {
   margin: 0;
   padding: 40px 0 0;
   background: #fff;
-  color: #333;
-  font-family: Georgia, 'Times New Roman', serif;
+  color: #252525;
+  font-family: "Linux Libertine", Georgia, serif;
   font-size: 18px;
-}
-
-body.note-page > header {
-  position: fixed;
-  inset: 0 0 auto;
-  z-index: 10;
-  box-shadow: 0 1px 3px rgb(0 0 0 / 25%);
-  width: 100%;
-  max-width: none;
-  margin: 0;
-  background: #151515;
-}
-
-.note-page > header nav.group {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0 20px;
-  width: calc(100% - 64px);
-  max-width: 1170px;
-  margin: 0 auto;
-  min-height: 40px;
-  padding: 0;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  line-height: 1.4;
-}
-
-.note-page > header nav.group a {
-  float: none;
-  margin: 0;
-  padding: 10px;
-  color: #aaa;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0;
-  text-transform: none;
-}
-
-.note-page > header nav.group::after {
-  content: none;
-}
-
-.note-page > header nav.group > a {
-  padding: 0;
-  color: #aaa;
-  font-size: 20px;
-  font-weight: 700;
-}
-
-.note-nav-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0;
 }
 
 .note-page > main {
@@ -75,63 +24,64 @@ body.note-page > header {
 
 .note-page article.group {
   width: calc(100% - 48px);
-  max-width: 760px;
+  max-width: 740px;
   margin: 0 auto;
-  padding: 64px 0 36px;
+  padding: 60px 0 36px;
 }
 
 .note-page article > .note-eyebrow {
-  margin: 0 0 20px;
-  color: #667085;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 11px;
-  line-height: 1.5;
-  letter-spacing: 0.13em;
-  text-align: center;
+  margin: 0 0 18px;
+  color: #555;
+  font-family: "Linux Biolinum", "Helvetica Neue", sans-serif;
+  font-size: 12px;
+  line-height: 1.6;
+  letter-spacing: 0.06em;
+  text-align: left;
   text-transform: uppercase;
 }
 
 .note-page article > h1 {
-  max-width: 25ch;
-  margin: 0 auto 22px;
+  max-width: none;
+  margin: 0 0 18px;
   color: #333;
-  font-size: clamp(34px, 4vw, 46px);
-  font-weight: 700;
-  line-height: 1.15;
-  letter-spacing: -0.035em;
-  text-align: center;
+  font-size: 38px;
+  font-family: "Linux Biolinum", "Helvetica Neue", sans-serif;
+  font-weight: 400;
+  line-height: 1.16;
+  letter-spacing: 0;
+  text-align: left;
   text-wrap: balance;
 }
 
 .note-page article > .subtitle {
   max-width: 58ch;
-  margin: 0 auto 36px;
+  margin: 0 0 24px;
   color: #667085;
-  font-size: 20px;
-  font-style: normal;
+  font-size: 21px;
+  font-style: italic;
   line-height: 1.6;
-  text-align: center;
+  text-align: left;
   text-wrap: balance;
 }
 
 .note-page article > .post-meta {
-  margin: -16px auto 36px;
+  margin: 0 0 28px;
   color: #667085;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 12px;
   font-style: normal;
-  text-align: center;
+  text-align: left;
 }
 
 .note-page article p,
 .note-page article li {
   font-size: 18px;
-  line-height: 1.8;
+  line-height: 1.62;
   text-align: left;
 }
 
 .note-page article p {
-  margin: 0 0 24px;
+  margin: 0 0 10px;
 }
 
 .note-page article ol,
@@ -142,10 +92,11 @@ body.note-page > header {
 
 .note-page article h2 {
   max-width: none;
-  margin: 48px 0 20px;
+  margin: 30px 0 12px;
   color: #333;
-  font-size: 29px;
-  font-weight: 400;
+  font-family: "Linux Biolinum", "Helvetica Neue", sans-serif;
+  font-size: 23px;
+  font-weight: 700;
   line-height: 1.3;
   text-wrap: balance;
 }
@@ -154,7 +105,9 @@ body.note-page > header {
   max-width: none;
   margin: 32px 0 16px;
   color: #333;
-  font-size: 22px;
+  font-family: "Linux Biolinum", "Helvetica Neue", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
   font-style: normal;
   line-height: 1.4;
 }
@@ -179,7 +132,7 @@ body.note-page > header {
 .note-page article .takeaway p {
   margin: 0;
   font-size: 17px;
-  line-height: 1.8;
+  line-height: 1.62;
 }
 
 .note-page article .lead-card p + p {
@@ -282,7 +235,7 @@ body.note-page > header {
 
 body.note-page > footer {
   width: calc(100% - 48px);
-  max-width: 760px;
+  max-width: 740px;
   margin: 0 auto;
   padding: 0;
 }
@@ -318,29 +271,6 @@ body.note-page > footer {
 
   body.note-page {
     padding-top: 82px;
-  }
-
-  .note-page > header nav.group {
-    min-height: 82px;
-    padding-top: 10px;
-    gap: 6px 0;
-  }
-
-  .note-page > header nav.group > a {
-    width: 100%;
-    font-size: 18px;
-    line-height: 22px;
-  }
-
-  .note-page > header nav.group .note-nav-links a {
-    padding-inline: 8px;
-    font-size: 12px;
-    line-height: 20px;
-    white-space: nowrap;
-  }
-
-  .note-nav-links {
-    gap: 0;
   }
 
   .note-page article.group {
@@ -382,13 +312,6 @@ body.note-page > footer {
   }
 }
 
-.note-nav-links a:hover,
-.note-nav-links a[aria-current] {
-  color: #fff;
-  background: #080808;
-  text-decoration: none;
-}
-
 .note-skip-link {
   position: fixed;
   top: -80px;
@@ -405,18 +328,9 @@ body.note-page > footer {
 }
 
 @media (max-width: 600px) {
-  .note-page > header nav.group {
-    width: calc(100% - 36px);
-  }
-
-  .note-nav-links {
-    gap: 0;
-  }
-}
-
 @media (max-width: 360px) {
-  .note-page > header nav.group .note-nav-links a {
-    padding-inline: 6px;
-    font-size: 11px;
+@media (max-width: 767px) {
+  .note-page article > h1 {
+    font-size: 32px;
   }
 }

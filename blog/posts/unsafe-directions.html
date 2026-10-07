@@ -10,17 +10,20 @@
     <link rel="stylesheet" href="/css/site.css?v=20261006-white" />
     <link rel="canonical" href="/blog/posts/unsafe-directions.html" />
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <link rel="stylesheet" href="/css/notes.css?v=20261006-reference" />
+  <link rel="stylesheet" href="/css/notes.css?v=20261007-notes" />
+    <link rel="stylesheet" href="/css/navigation.css?v=20261007-notes" />
+    <script src="/js/navigation.js?v=20261007-notes" defer></script>
 </head>
   <body class="note-page">
     <a class="note-skip-link" href="#note-content">Skip to content</a>
-    <header>
-      <nav class="group" aria-label="Main navigation">
-        <a href="/">Mohammad Zbeeb</a>
-        <div class="note-nav-links">
+    <header class="site-header">
+      <nav class="main-nav page-width" aria-label="Main navigation">
+        <a class="site-name" href="/">Mohammad Zbeeb</a>
+        <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-controls="nav-main" aria-expanded="false"><span class="menu-icon" aria-hidden="true"></span></button>
+        <div class="nav-links" id="nav-main">
           <a href="/">Home</a>
           <a href="/blog/#research">Publications</a>
-          <a href="/blog/#writing" aria-current="true">Research Notes</a>
+          <a href="/blog.html" aria-current="page">Research Notes</a>
           <a href="/about/">About</a>
         </div>
       </nav>
@@ -184,6 +187,7 @@
     <footer>
       <hr class="slender" />
       <div class="credits">
+        <a href="/blog.html">All research notes</a>
         <a href="https://github.com/Moe-Zbeeb">GitHub</a>
         <a href="https://www.linkedin.com/in/mohamad-zbib-16b604265/">LinkedIn</a>
         <a href="https://scholar.google.com/citations?user=JJg7iTMAAAAJ&hl=en">Scholar</a>
