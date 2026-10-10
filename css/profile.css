@@ -387,58 +387,58 @@ h2 {
   line-height: 27px;
 }
 
-.profile-sidebar > section:first-child > h2 {
-  text-align: center;
-}
-
-.research-overview {
-  margin: 0 0 18px;
-}
-
-.research-overview a,
-.research-overview img {
-  display: block;
-  width: 100%;
-}
-
-.research-overview img {
-  height: auto;
-  border: 1px solid #ddd;
-  background: #fff;
-}
-
-.research-overview figcaption {
-  margin-top: 8px;
-  color: #555;
-  font-size: 12px;
-  line-height: 18px;
-  text-align: center;
-}
-
-.contact-section {
-  margin-top: 24px;
-  padding-top: 20px;
-  border-top: 1px solid #ddd;
-}
-
-.contact-section h3 {
-  margin: 16px 0 2px;
-  color: #555;
-  font-size: 11px;
-  line-height: 18px;
-  font-weight: 400;
-  text-transform: uppercase;
-}
-
-.contact-section a {
-  overflow-wrap: anywhere;
-}
-
-.social-links {
+.career-list {
   margin: 0;
   padding: 0;
   list-style: none;
-  line-height: 24px;
+}
+
+.career-item {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  padding-block: 16px;
+}
+
+.career-item + .career-item {
+  border-top: 1px solid #ddd;
+}
+
+.career-item:first-child {
+  padding-top: 4px;
+}
+
+.career-item:last-child {
+  padding-bottom: 0;
+}
+
+.career-logo {
+  display: block;
+  width: 48px;
+  height: 48px;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+  background: #fff;
+  object-fit: contain;
+}
+
+.career-copy {
+  min-width: 0;
+}
+
+.career-copy h3 {
+  margin: 0 0 4px;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.career-copy p {
+  margin: 0;
+}
+
+.career-copy a {
+  color: #555;
 }
 
 .site-footer {
@@ -479,23 +479,6 @@ h2 {
   .home-layout .research-section {
     grid-row: 3;
     margin-top: 28px;
-  }
-
-  .profile-sidebar {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-  }
-
-  .research-overview {
-    max-width: 268px;
-  }
-
-  .contact-section {
-    margin-top: 0;
-    padding: 0 0 0 24px;
-    border-top: 0;
-    border-left: 1px solid #ddd;
   }
 }
 
@@ -586,17 +569,6 @@ h2 {
   .publication-actions > a,
   .publication-summary summary {
     padding-block: 6px;
-  }
-
-  .profile-sidebar {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 24px;
-  }
-
-  .contact-section {
-    padding: 20px 0 0;
-    border-top: 1px solid #ddd;
-    border-left: 0;
   }
 }
 
