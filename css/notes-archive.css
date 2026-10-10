@@ -1,284 +1,88 @@
-@import url("/css/notes-fonts.css");
-
 .research-notes {
-    --notes-serif: "Linux Libertine", "Linux Libertine O", Georgia, serif;
-    --notes-sans: "Linux Biolinum", "Linux Biolinum O", "Helvetica Neue", sans-serif;
     color: #252525;
 }
 
-.research-notes p {
-    font-family: var(--notes-serif);
-}
-
-.research-notes .notes-index {
-    box-sizing: border-box;
-    float: none;
+.notes-index {
     width: calc(100% - 40px);
-    max-width: 980px;
-    margin: 16px auto 0;
-    font-family: var(--notes-serif);
-    font-kerning: normal;
-    font-variant-ligatures: common-ligatures;
+    max-width: 860px;
+    margin: 96px auto 0;
 }
 
-.notes-header {
-    padding: 48px 0 34px;
-    border-bottom: 1px solid #383838;
-}
-
-.research-notes .notes-eyebrow,
-.research-notes .post-kicker {
-    margin: 0 0 18px;
-    color: #555;
-    font-family: var(--notes-sans);
-    font-size: 12px;
-    font-weight: 400;
-    line-height: 1.6;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-}
-
-.notes-header h1 {
+.notes-index h1 {
+    margin: 0 0 32px;
     padding: 0;
     border: 0;
     text-align: left;
-    margin: 0 0 18px;
-    font-family: var(--notes-sans);
-    font-size: 44px;
-    font-weight: 700;
-    line-height: 1.12;
-    letter-spacing: 0;
+    font-size: 40px;
+    line-height: 1.2;
 }
 
-.notes-intro {
-    max-width: 650px;
+.notes-list {
     margin: 0;
-    color: #5b636b;
+    padding: 0;
+    list-style: none;
     font-size: 18px;
     line-height: 1.6;
 }
 
-.notes-archive-heading {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 20px;
-    padding: 26px 0 4px;
-}
-
-.notes-archive-heading h2 {
-    margin: 0;
-    font-family: var(--notes-sans);
-    font-size: 25px;
-    font-weight: 700;
-    line-height: 1.4;
-}
-
-.notes-archive-heading p {
-    margin: 0;
-    color: #68727b;
-    font-family: var(--notes-sans);
-    font-size: 13px;
-}
-
-.notes-list {
+.notes-list li {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: 36px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
+    grid-template-columns: 120px minmax(0, 1fr);
+    gap: 24px;
+    padding: 5px 0;
 }
 
-.notes-list > li {
-    padding: 30px 0;
-    border-bottom: 1px solid #dfe3e7;
+.notes-list time {
+    color: #666;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
 }
 
-.note-entry {
-    display: flex;
-    flex-direction: column;
-    gap: 22px;
-}
-
-.note-cover {
-    display: block;
-    width: 100%;
-    box-sizing: border-box;
-    overflow: hidden;
-    border: 1px solid #e0e4e8;
-    background: #fff;
-}
-
-.note-cover img {
-    display: block;
-    width: 100%;
-    height: auto;
-    aspect-ratio: 16 / 9;
-    padding: 14px;
-    object-fit: contain;
-}
-
-.research-notes .note-meta {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 6px 16px;
-    margin: 0 0 8px;
-    color: #68727b;
-    font-family: var(--notes-sans);
-    font-size: 12px;
-    line-height: 1.5;
-}
-
-.note-meta > span {
-    color: #555;
+.notes-list a {
+    color: #252525;
     font-weight: 700;
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
 }
 
-.note-entry h3 {
-    margin: 0 0 10px;
-    font-family: var(--notes-sans);
-    font-size: 25px;
-    font-weight: 700;
-    line-height: 1.22;
-    letter-spacing: 0;
-}
-
-.note-entry h3 a {
-    color: #243949;
-    text-decoration: none;
-}
-
-.note-entry h3 a:hover {
-    color: #80534b;
-    text-decoration: underline;
-    text-underline-offset: 4px;
-}
-
-.research-notes a:focus-visible {
-    outline: 2px solid #80534b;
-    outline-offset: 4px;
-}
-
-.note-summary {
-    margin: 0 0 12px;
-    color: #535d65;
-    font-size: 17px;
-    line-height: 1.55;
-}
-
-.note-topics {
-    display: block;
-    color: #68727b;
-    font-family: var(--notes-sans);
-    font-size: 12px;
-    line-height: 1.6;
-}
-
-.note-content {
-    min-width: 0;
-}
-
-.note-citation {
-    margin-top: 14px;
-    color: #68727b;
-    font-size: 14px;
-    line-height: 1.6;
-}
-
-.note-citation summary {
-    font-family: var(--notes-sans);
-    width: fit-content;
-    padding: 4px 0;
-    cursor: pointer;
-}
-
-.note-citation summary span {
-    margin-left: 8px;
-    color: #80534b;
-    font-size: 10px;
-    letter-spacing: 0.04em;
-}
-
-.note-citation summary:focus-visible {
-    outline: 2px solid #80534b;
-    outline-offset: 4px;
-}
-
-.note-citation p {
-    margin: 10px 0;
-    font-size: 14px;
-    line-height: 1.7;
-    overflow-wrap: anywhere;
-}
-
-.note-citation pre {
-    padding: 14px;
-    border: 1px solid #e1e5e8;
-    border-radius: 0;
-    background: #f7f8f9;
-    color: #46515b;
-    font-size: 11px;
-    line-height: 1.7;
-    white-space: pre-wrap;
-    overflow-wrap: anywhere;
-    word-break: normal;
+.notes-list a:hover {
+    color: #005580;
+    text-underline-offset: 3px;
 }
 
 .notes-footer {
-    max-width: 980px;
     width: calc(100% - 40px);
-    margin: 40px auto 0;
+    max-width: 860px;
+    margin: 80px auto 0;
     padding: 24px 0;
     color: #68727b;
     text-align: center;
-    font-family: var(--notes-sans);
     font-size: 12px;
     line-height: 1.6;
 }
 
-.research-notes .notes-footer p {
+.notes-footer p {
     margin: 0 0 8px;
-    font-family: var(--notes-sans);
 }
 
 @media (max-width: 767px) {
-    .notes-header {
-        padding: 28px 0;
+    .notes-index {
+        margin-top: 48px;
     }
 
-    .notes-header h1 {
-        font-size: 36px;
-    }
-
-    .research-notes .notes-eyebrow {
-        font-size: 11px;
-    }
-
-    .notes-intro {
-        font-size: 17px;
+    .notes-index h1 {
+        font-size: 32px;
     }
 
     .notes-list {
-        grid-template-columns: minmax(0, 1fr);
+        font-size: 16px;
     }
 
-    .note-entry {
-        gap: 18px;
+    .notes-list li {
+        grid-template-columns: 96px minmax(0, 1fr);
+        gap: 16px;
+        padding: 8px 0;
     }
 
-    .notes-list > li {
-        padding: 24px 0;
-    }
-
-    .notes-archive-heading {
-        gap: 12px;
-    }
-
-    .notes-archive-heading p {
-        text-align: right;
+    .notes-footer {
+        margin-top: 48px;
     }
 }
