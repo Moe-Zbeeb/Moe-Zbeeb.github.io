@@ -1,0 +1,299 @@
+:root {
+  color-scheme: light;
+  --link-color: #1772d0;
+  --link-hover: #a64b00;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-padding-top: 24px;
+}
+
+body {
+  margin: 8px;
+  color: #000;
+  background: #fff;
+  font-family: "Lato", Verdana, Helvetica, sans-serif;
+  font-size: 14px;
+  line-height: 1.25;
+}
+
+a {
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+a:hover,
+a:focus {
+  color: var(--link-hover);
+}
+
+a:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--link-color);
+  outline-offset: 4px;
+}
+
+p {
+  margin: 0 0 14px;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 400;
+}
+
+h1 {
+  margin: 0 0 14px;
+  font-size: 32px;
+  line-height: 1.2;
+  text-align: center;
+}
+
+h2 {
+  margin: 0 0 14px;
+  font-size: 22px;
+  line-height: 1.25;
+}
+
+.cv-page {
+  width: 100%;
+  max-width: 800px;
+  margin-inline: auto;
+}
+
+.profile-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 250px;
+  align-items: center;
+  gap: 40px;
+  padding: 20px;
+}
+
+.intro-copy {
+  min-width: 0;
+}
+
+.profile-email {
+  margin-bottom: 14px;
+  font-family: monospace;
+  font-size: 13px;
+  text-align: center;
+}
+
+.profile-email a {
+  color: inherit;
+}
+
+.profile-photo {
+  display: block;
+  width: 250px;
+  max-width: 100%;
+  height: auto;
+  border-radius: 15px;
+}
+
+.profile-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 7px;
+  margin-top: 16px;
+  text-align: center;
+}
+
+.profile-links a {
+  white-space: nowrap;
+}
+
+.profile-sections {
+  padding: 20px;
+}
+
+.bio-interests {
+  margin-bottom: 32px;
+}
+
+.experience-section {
+  margin-bottom: 36px;
+}
+
+.experience-section p:last-child {
+  margin-bottom: 0;
+}
+
+.publication-note {
+  margin-bottom: 20px;
+  font-size: 12px;
+}
+
+.publication-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.publication-item {
+  margin-bottom: 24px;
+}
+
+.publication-item:last-child {
+  margin-bottom: 0;
+}
+
+.publication-copy h3 {
+  margin: 0;
+  font-size: inherit;
+  font-weight: 700;
+  line-height: inherit;
+}
+
+.publication-authors,
+.publication-venue {
+  margin: 0;
+}
+
+.publication-authors sup {
+  font-size: 10px;
+}
+
+.publication-venue {
+  font-style: italic;
+}
+
+.publication-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 10px;
+  margin-top: 5px;
+}
+
+.publication-actions > a:not(:first-child)::before,
+.publication-summary summary::before {
+  content: "/";
+  margin-right: 10px;
+  color: #000;
+}
+
+.publication-summary {
+  max-width: 100%;
+}
+
+.publication-summary[open] {
+  flex-basis: 100%;
+  margin-top: 8px;
+}
+
+.publication-summary[open] summary::before {
+  content: none;
+}
+
+.publication-summary summary {
+  width: fit-content;
+  color: var(--link-color);
+  cursor: pointer;
+  list-style: none;
+}
+
+.publication-summary summary::-webkit-details-marker {
+  display: none;
+}
+
+.publication-summary summary:hover {
+  color: var(--link-hover);
+}
+
+.publication-summary p {
+  margin: 8px 0 0;
+  line-height: 1.5;
+}
+
+.site-footer {
+  padding: 12px 20px 20px;
+  color: #666;
+  font-size: 12px;
+  text-align: right;
+}
+
+.skip-link {
+  position: fixed;
+  top: -80px;
+  left: 20px;
+  z-index: 1;
+  padding: 10px 16px;
+  background: #fff;
+}
+
+.skip-link:focus {
+  top: 8px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 680px) {
+  .profile-intro {
+    grid-template-columns: minmax(0, 1fr) 190px;
+    gap: 24px;
+  }
+
+  .profile-photo {
+    width: 190px;
+  }
+}
+
+@media (max-width: 560px) {
+  body {
+    line-height: 1.5;
+  }
+
+  .profile-intro {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+    padding: 24px 16px 16px;
+  }
+
+  .profile-photo {
+    width: 220px;
+    margin-inline: auto;
+  }
+
+  h1 {
+    font-size: 30px;
+  }
+
+  .profile-links {
+    gap: 8px;
+  }
+
+  .profile-sections {
+    padding: 16px;
+  }
+
+  .publication-copy {
+    overflow-wrap: anywhere;
+  }
+
+  .publication-item {
+    margin-bottom: 28px;
+  }
+
+  .publication-actions > a,
+  .publication-summary summary {
+    padding-block: 4px;
+  }
+}

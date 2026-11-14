@@ -6,212 +6,152 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Mohammad Zbeeb</title>
-    <meta name="description" content="Mohammad Zbeeb — research publications and notes on machine learning, large language models, and interpretability." />
+    <meta name="description" content="Mohammad Zbeeb — research on language model reasoning, post-training, model merging, and efficient inference." />
 
     <meta property="og:title" content="Mohammad Zbeeb" />
-    <meta property="og:description" content="Research publications and notes on machine learning, large language models, and interpretability." />
+    <meta property="og:description" content="Research on language model reasoning, post-training, model merging, and efficient inference." />
     <meta property="og:type" content="website" />
 
-    <link rel="stylesheet" href="/css/profile.css?v=20261010-career" />
-    <script src="/js/profile.js?v=20261007-notes" defer></script>
+    <link rel="stylesheet" href="/css/cv.css?v=20261114" />
     <link rel="canonical" href="/blog/" />
-      <link rel="stylesheet" href="/css/navigation.css?v=20261007-notes" />
-    <script src="/js/navigation.js?v=20261007-notes" defer></script>
-</head>
+    <script src="/js/profile.js?v=20261114" defer></script>
+  </head>
 
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
-    <header class="site-header">
-      <nav class="main-nav page-width" aria-label="Main navigation">
-        <a class="site-name" href="/">Mohammad Zbeeb</a>
-        <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-controls="nav-main" aria-expanded="false"><span class="menu-icon" aria-hidden="true"></span></button>
-        <div class="nav-links" id="nav-main">
-          <a href="/" aria-current="page">Home</a>
-          <a href="/blog/#research">Publications</a>
-          <a href="/blog.html">Research Notes</a>
-          <a href="/about/">About</a>
+    <main class="cv-page" id="main-content">
+      <section class="profile-intro" id="bio" aria-labelledby="bio-heading">
+        <div class="intro-copy">
+          <h1 id="bio-heading">Mohammad Zbeeb</h1>
+          <p class="profile-email"><a href="mailto:mbz02@mail.aub.edu">mbz02@mail.aub.edu</a></p>
+          <div class="bio-copy">
+            <p>I study how <strong>large language models learn to reason</strong> and how those capabilities can be transferred between models. My work spans post-training, model merging, speculative decoding, and model evaluation and alignment.</p>
+            <p>I am currently working with a small research team in stealth. Previously, I worked with the <a href="https://ivul.kaust.edu.sa/">Image and Video Understanding Lab at KAUST</a> and <a href="https://www.alphalab.ai/">Edgebot</a>'s post-training team.</p>
+            <p>I graduated from the <a href="https://www.aub.edu.lb/">American University of Beirut</a> with a degree in computer and communication engineering, and have co-instructed courses there on machine learning and AI in medicine.</p>
+          </div>
+          <nav class="profile-links" aria-label="Profile links">
+            <a href="https://github.com/Moe-Zbeeb">GitHub</a>
+            <span aria-hidden="true">/</span>
+            <a href="https://scholar.google.com/citations?user=JJg7iTMAAAAJ&amp;hl=en">Google Scholar</a>
+            <span aria-hidden="true">/</span>
+            <a href="https://www.linkedin.com/in/mohamad-zbib-16b604265/">LinkedIn</a>
+            <span aria-hidden="true">/</span>
+            <a href="/blog.html">Research Notes</a>
+          </nav>
         </div>
-      </nav>
-    </header>
-    <div class="page-width">
-      <nav class="section-nav" aria-label="Section navigation">
-        <a href="#bio" aria-current="location">Bio</a>
-        <a href="#research">Research</a>
-        <a href="#experience">Experience</a>
-      </nav>
-      <main class="profile-layout home-layout" id="main-content">
-        <div class="profile-main">
-          <section id="bio" aria-labelledby="bio-heading">
-            <h1 id="bio-heading">Mohammad Zbeeb</h1>
-            <div class="biography">
-              <img class="profile-photo" src="/assets/images/mohammad-zbeeb.webp" alt="Mohammad Zbeeb" width="1254" height="1254" fetchpriority="high" />
-              <div class="bio-copy">
-              <p>I graduated from the <a href="https://www.aub.edu.lb/">American University of Beirut</a> with a degree in computer and communication engineering. My work focuses on <strong>large language models, reasoning transfer, and model merging</strong>.</p>
-              <p>Previously, I worked as a research assistant with the <a href="https://ivul.kaust.edu.sa/">Image and Video Understanding Lab at KAUST</a> and with <a href="https://www.alphalab.ai/?_gl=1*1i9r32y*_gcl_au*MTM1NDA5MzQyMy4xNzg3MzI5ODE4">Edgebot</a>'s post-training team. I have also co-instructed courses at AUB on machine learning and AI in medicine.</p>
-              <p>I recently joined a small team of very smart people to work on something new in research. We are currently in stealth mode.</p>
+        <img class="profile-photo" src="/assets/images/mohammad-zbeeb.webp" alt="Mohammad Zbeeb" width="1254" height="1254" fetchpriority="high" />
+      </section>
+      <div class="profile-sections">
+        <p class="bio-interests"><strong>Research interests.</strong> I am particularly interested in how training data, initialization, and supervision shape reasoning and generalization. My current interests include reinforcement learning, knowledge distillation, and more efficient training and inference.</p>
+        <section class="experience-section" id="experience" aria-labelledby="experience-heading">
+          <h2 id="experience-heading">Experience</h2>
+          <p><strong>Research Engineer</strong>, <a href="https://www.alphalab.ai/">Edgebot</a> — post-training team.</p>
+          <p><strong>Visiting Researcher</strong>, <a href="https://ivul.kaust.edu.sa/">KAUST</a> — Image and Video Understanding Lab.</p>
+          <p><strong>Research Staff and Co-instructor</strong>, <a href="https://www.aub.edu.lb/">American University of Beirut</a> — courses in machine learning and AI in medicine.</p>
+          <p><strong>ML Engineer</strong>, <a href="https://www.chimerasec.com/">Chimera Cybersecurity</a>.</p>
+        </section>
+        <section class="research-section" id="research" aria-labelledby="research-heading">
+          <h2 id="research-heading">Publications</h2>
+          <p class="publication-note">* Equal contribution. ‡ Equal advising authors.</p>
+          <ul class="publication-list">
+            <li class="publication-item" id="arabic-safety">
+              <div class="publication-copy">
+                <h3><a href="https://arxiv.org/abs/2608.29378">Arabic Safety Alignment as Selective Refusal: An Empirical Study of SFT, DPO, and Guard Calibration</a></h3>
+                <p class="publication-authors"><strong>Mohamad Zbib</strong>, Ammar Mohanna</p>
+                <p class="publication-venue">EMNLP · Oral</p>
+                <div class="publication-actions" aria-label="Resources for Arabic Safety Alignment as Selective Refusal: An Empirical Study of SFT, DPO, and Guard Calibration">
+                  <a href="https://arxiv.org/pdf/2608.29378">paper</a>
+                  <a href="https://arabicnlp2026.sigarab.org/accepted-papers">conference</a>
+                  <details class="publication-summary">
+                    <summary>summary<span class="visually-hidden"> of Arabic Safety Alignment as Selective Refusal: An Empirical Study of SFT, DPO, and Guard Calibration</span></summary>
+                    <p>We study selective refusal across five Arabic-capable language models and 130 runs, measuring refusals on benign and harmful prompts separately. Refusal-only SFT tends toward blanket refusal; selected mixtures of helpful and refusal examples recover a better trade-off. DPO and inference guards have model-dependent effects, and transfer to Arabizi remains partial. The study supports choosing and validating operating points for each model and deployment objective. Refusal rates alone do not establish response safety.</p>
+                  </details>
+                </div>
               </div>
-            </div>
-            <p class="bio-interests"><strong>Research Interests:</strong> I am interested in how large language models learn to reason, how those capabilities can be transferred between models, and how to make training and inference more efficient. My work spans post-training, model merging, speculative decoding, and model evaluation and alignment. My current interests include reinforcement learning, knowledge distillation, and the learning dynamics of reasoning models, especially how training data, initialization, and supervision influence reasoning and generalization.</p>
-          </section>
-          <section class="research-section" id="research" aria-labelledby="research-heading">
-            <div class="research-heading-row">
-              <h2 id="research-heading">Research Publications</h2>
-              <a href="https://scholar.google.com/citations?user=JJg7iTMAAAAJ&amp;hl=en">View Google Scholar</a>
-            </div>
-            <p class="publication-note">* Equal contribution. ‡ Equal advising authors.</p>
-            <ul class="publication-list">
-              <li class="publication-item" id="arabic-safety">
-                <a class="publication-image" href="https://arxiv.org/pdf/2608.29378" aria-label="Read Arabic Safety Alignment as Selective Refusal: An Empirical Study of SFT, DPO, and Guard Calibration">
-                  <img src="/assets/images/publications/arabic-safety.webp" alt="Benign versus harmful-prompt refusal operating points for five base models on AraSafe" width="723" height="551" loading="lazy" />
-                </a>
-                <div class="publication-copy">
-                  <h3><a href="https://arxiv.org/abs/2608.29378">Arabic Safety Alignment as Selective Refusal: An Empirical Study of SFT, DPO, and Guard Calibration</a></h3>
-                  <p class="publication-authors"><strong>Mohamad Zbib</strong>, Ammar Mohanna</p>
-                  <p class="publication-venue">EMNLP · Oral</p>
-                  <div class="publication-actions" aria-label="Resources for Arabic Safety Alignment as Selective Refusal: An Empirical Study of SFT, DPO, and Guard Calibration">
-                    <a href="https://arxiv.org/pdf/2608.29378">paper</a>
-                    <a href="https://arabicnlp2026.sigarab.org/accepted-papers">conference</a>
-                    <details class="publication-summary">
-                      <summary>summary<span class="visually-hidden"> of Arabic Safety Alignment as Selective Refusal: An Empirical Study of SFT, DPO, and Guard Calibration</span></summary>
-                      <p>We study selective refusal across five Arabic-capable language models and 130 runs, measuring refusals on benign and harmful prompts separately. Refusal-only SFT tends toward blanket refusal; selected mixtures of helpful and refusal examples recover a better trade-off. DPO and inference guards have model-dependent effects, and transfer to Arabizi remains partial. The study supports choosing and validating operating points for each model and deployment objective. Refusal rates alone do not establish response safety.</p>
-                    </details>
-                  </div>
+            </li>
+            <li class="publication-item" id="taps">
+              <div class="publication-copy">
+                <h3><a href="https://arxiv.org/abs/2603.27027">TAPS: Task Aware Proposal Distributions for Speculative Sampling</a></h3>
+                <p class="publication-authors"><strong>Mohamad Zbib</strong>, Mohamad Bazzi, Ammar Mohanna, Hasan Abed Al Kader Hammoud<sup>‡</sup>, Bernard Ghanem<sup>‡</sup></p>
+                <p class="publication-venue">SPIGM Workshop at ICML 2026</p>
+                <div class="publication-actions" aria-label="Resources for TAPS: Task Aware Proposal Distributions for Speculative Sampling">
+                  <a href="https://arxiv.org/pdf/2603.27027">paper</a>
+                  <a href="https://github.com/Moe-Zbeeb/TAPS">code</a>
+                  <a href="https://huggingface.co/collections/zbeeb/taps">models</a>
+                  <a href="https://huggingface.co/datasets/zbeeb/TAPS-Datasets">data</a>
+                  <details class="publication-summary">
+                    <summary>summary<span class="visually-hidden"> of TAPS: Task Aware Proposal Distributions for Speculative Sampling</span></summary>
+                    <p>We investigate how draft training data shapes speculative decoding with HASS and EAGLE-2 drafters. MathInstruct and ShareGPT produce specialists for different workloads, while mixed-data training broadens coverage without consistently benefiting from a larger mixture. Combining specialists at inference time through confidence routing or merged-tree verification outperforms checkpoint averaging. We evaluate accepted draft tokens per verifier call on conversational and reasoning benchmarks; the study does not establish an end-to-end latency improvement.</p>
+                  </details>
                 </div>
-              </li>
-              <li class="publication-item" id="taps">
-                <a class="publication-image" href="https://arxiv.org/pdf/2603.27027" aria-label="Read TAPS: Task Aware Proposal Distributions for Speculative Sampling">
-                  <img src="/assets/images/publications/taps.webp" alt="Two specialized draft models feed a confidence router that selects a draft for verification" width="951" height="700" loading="lazy" />
-                </a>
-                <div class="publication-copy">
-                  <h3><a href="https://arxiv.org/abs/2603.27027">TAPS: Task Aware Proposal Distributions for Speculative Sampling</a></h3>
-                  <p class="publication-authors"><strong>Mohamad Zbib</strong>, Mohamad Bazzi, Ammar Mohanna, Hasan Abed Al Kader Hammoud<sup>‡</sup>, Bernard Ghanem<sup>‡</sup></p>
-                  <p class="publication-venue">SPIGM Workshop at ICML 2026</p>
-                  <div class="publication-actions" aria-label="Resources for TAPS: Task Aware Proposal Distributions for Speculative Sampling">
-                    <a href="https://arxiv.org/pdf/2603.27027">paper</a>
-                    <a href="https://github.com/Moe-Zbeeb/TAPS">code</a>
-                    <a href="https://huggingface.co/collections/zbeeb/taps">models</a>
-                    <a href="https://huggingface.co/datasets/zbeeb/TAPS-Datasets">data</a>
-                    <details class="publication-summary">
-                      <summary>summary<span class="visually-hidden"> of TAPS: Task Aware Proposal Distributions for Speculative Sampling</span></summary>
-                      <p>We investigate how draft training data shapes speculative decoding with HASS and EAGLE-2 drafters. MathInstruct and ShareGPT produce specialists for different workloads, while mixed-data training broadens coverage without consistently benefiting from a larger mixture. Combining specialists at inference time through confidence routing or merged-tree verification outperforms checkpoint averaging. We evaluate accepted draft tokens per verifier call on conversational and reasoning benchmarks; the study does not establish an end-to-end latency improvement.</p>
-                    </details>
-                  </div>
+              </div>
+            </li>
+            <li class="publication-item" id="aralingbench">
+              <div class="publication-copy">
+                <h3><a href="https://aclanthology.org/2026.abjadnlp-1.45/">AraLingBench: A Human-Annotated Benchmark for Evaluating Arabic Linguistic Capabilities of Large Language Models</a></h3>
+                <p class="publication-authors"><strong>Mohamad Zbib</strong><sup>*</sup>, Hasan Abed Al Kader Hammoud<sup>*</sup>, Sina Mukalled, Nadine Rizk, Fatima Karnib, Issam Lakkis, Ammar Mohanna, Bernard Ghanem</p>
+                <p class="publication-venue">EACL 2026 · Oral</p>
+                <div class="publication-actions" aria-label="Resources for AraLingBench: A Human-Annotated Benchmark for Evaluating Arabic Linguistic Capabilities of Large Language Models">
+                  <a href="https://aclanthology.org/2026.abjadnlp-1.45.pdf">paper</a>
+                  <a href="https://github.com/hammoudhasan/AraLingBench">code</a>
+                  <a href="https://huggingface.co/datasets/hammh0a/AraLingBench">data</a>
+                  <details class="publication-summary">
+                    <summary>summary<span class="visually-hidden"> of AraLingBench: A Human-Annotated Benchmark for Evaluating Arabic Linguistic Capabilities of Large Language Models</span></summary>
+                    <p>AraLingBench contains 150 expert-authored multiple-choice questions, evenly covering grammar, morphology, spelling, reading comprehension, and syntax. Evaluation of 35 Arabic and bilingual models reveals uneven linguistic competence: spelling and reading comprehension are generally stronger than syntax and morphology. General benchmark scores and human difficulty labels do not fully describe these gaps. The benchmark provides a compact diagnostic of structural language skills, with its small size and multiple-choice format limiting the conclusions that can be drawn.</p>
+                  </details>
                 </div>
-              </li>
-              <li class="publication-item" id="aralingbench">
-                <a class="publication-image" href="https://aclanthology.org/2026.abjadnlp-1.45.pdf" aria-label="Read AraLingBench: A Human-Annotated Benchmark for Evaluating Arabic Linguistic Capabilities of Large Language Models">
-                  <img src="/assets/images/publications/aralingbench.webp" alt="Five expert-written AraLingBench sample questions covering Arabic linguistic skills" width="1000" height="453" loading="lazy" />
-                </a>
-                <div class="publication-copy">
-                  <h3><a href="https://aclanthology.org/2026.abjadnlp-1.45/">AraLingBench: A Human-Annotated Benchmark for Evaluating Arabic Linguistic Capabilities of Large Language Models</a></h3>
-                  <p class="publication-authors"><strong>Mohamad Zbib</strong><sup>*</sup>, Hasan Abed Al Kader Hammoud<sup>*</sup>, Sina Mukalled, Nadine Rizk, Fatima Karnib, Issam Lakkis, Ammar Mohanna, Bernard Ghanem</p>
-                  <p class="publication-venue">EACL 2026 · Oral</p>
-                  <div class="publication-actions" aria-label="Resources for AraLingBench: A Human-Annotated Benchmark for Evaluating Arabic Linguistic Capabilities of Large Language Models">
-                    <a href="https://aclanthology.org/2026.abjadnlp-1.45.pdf">paper</a>
-                    <a href="https://github.com/hammoudhasan/AraLingBench">code</a>
-                    <a href="https://huggingface.co/datasets/hammh0a/AraLingBench">data</a>
-                    <details class="publication-summary">
-                      <summary>summary<span class="visually-hidden"> of AraLingBench: A Human-Annotated Benchmark for Evaluating Arabic Linguistic Capabilities of Large Language Models</span></summary>
-                      <p>AraLingBench contains 150 expert-authored multiple-choice questions, evenly covering grammar, morphology, spelling, reading comprehension, and syntax. Evaluation of 35 Arabic and bilingual models reveals uneven linguistic competence: spelling and reading comprehension are generally stronger than syntax and morphology. General benchmark scores and human difficulty labels do not fully describe these gaps. The benchmark provides a compact diagnostic of structural language skills, with its small size and multiple-choice format limiting the conclusions that can be drawn.</p>
-                    </details>
-                  </div>
+              </div>
+            </li>
+            <li class="publication-item" id="hala">
+              <div class="publication-copy">
+                <h3><a href="https://aclanthology.org/2026.abjadnlp-1.32/">Hala Technical Report: Building Arabic-Centric Instruction &amp; Translation Models at Scale</a></h3>
+                <p class="publication-authors">Hasan Abed Al Kader Hammoud<sup>*</sup>, <strong>Mohamad Zbib</strong><sup>*</sup>, Bernard Ghanem</p>
+                <p class="publication-venue">EACL 2026</p>
+                <div class="publication-actions" aria-label="Resources for Hala Technical Report: Building Arabic-Centric Instruction &amp; Translation Models at Scale">
+                  <a href="https://aclanthology.org/2026.abjadnlp-1.32.pdf">paper</a>
+                  <a href="https://github.com/hammoudhasan/Hala">project</a>
+                  <a href="https://huggingface.co/collections/hammh0a/hala">models &amp; data</a>
+                  <details class="publication-summary">
+                    <summary>summary<span class="visually-hidden"> of Hala Technical Report: Building Arabic-Centric Instruction &amp; Translation Models at Scale</span></summary>
+                    <p>HALA builds Arabic-centric instruction and translation models through a translate-and-tune pipeline. An FP8 teacher creates bilingual supervision for a lightweight LFM2-1.2B translator, which translates English instruction datasets into a corpus of roughly 4.5 million samples. Fine-tuning and spherical interpolation with base checkpoints produce models at 350M, 700M, 1.2B, and 9B parameters. Evaluation across six Arabic benchmarks shows improvements in average scores over their corresponding base models. The released collection includes models and datasets.</p>
+                  </details>
                 </div>
-              </li>
-              <li class="publication-item" id="hala">
-                <a class="publication-image" href="https://aclanthology.org/2026.abjadnlp-1.32.pdf" aria-label="Read Hala Technical Report: Building Arabic-Centric Instruction &amp; Translation Models at Scale">
-                  <img src="/assets/images/publications/hala.webp" alt="HALA pipeline from an FP8 translation teacher to a lightweight translator and instruction-tuned models" width="1000" height="453" loading="lazy" />
-                </a>
-                <div class="publication-copy">
-                  <h3><a href="https://aclanthology.org/2026.abjadnlp-1.32/">Hala Technical Report: Building Arabic-Centric Instruction &amp; Translation Models at Scale</a></h3>
-                  <p class="publication-authors">Hasan Abed Al Kader Hammoud<sup>*</sup>, <strong>Mohamad Zbib</strong><sup>*</sup>, Bernard Ghanem</p>
-                  <p class="publication-venue">EACL 2026</p>
-                  <div class="publication-actions" aria-label="Resources for Hala Technical Report: Building Arabic-Centric Instruction &amp; Translation Models at Scale">
-                    <a href="https://aclanthology.org/2026.abjadnlp-1.32.pdf">paper</a>
-                    <a href="https://github.com/hammoudhasan/Hala">project</a>
-                    <a href="https://huggingface.co/collections/hammh0a/hala">models &amp; data</a>
-                    <details class="publication-summary">
-                      <summary>summary<span class="visually-hidden"> of Hala Technical Report: Building Arabic-Centric Instruction &amp; Translation Models at Scale</span></summary>
-                      <p>HALA builds Arabic-centric instruction and translation models through a translate-and-tune pipeline. An FP8 teacher creates bilingual supervision for a lightweight LFM2-1.2B translator, which translates English instruction datasets into a corpus of roughly 4.5 million samples. Fine-tuning and spherical interpolation with base checkpoints produce models at 350M, 700M, 1.2B, and 9B parameters. Evaluation across six Arabic benchmarks shows improvements in average scores over their corresponding base models. The released collection includes models and datasets.</p>
-                    </details>
-                  </div>
+              </div>
+            </li>
+            <li class="publication-item" id="reasoning-vectors">
+              <div class="publication-copy">
+                <h3><a href="https://arxiv.org/abs/2509.01363">Reasoning Vectors: Transferring Chain-of-Thought Capabilities via Task Arithmetic</a></h3>
+                <p class="publication-authors"><strong>Mohammad Zbeeb</strong>, Hasan Abed Al Kader Hammoud, Bernard Ghanem</p>
+                <p class="publication-venue">arXiv preprint · 2025</p>
+                <div class="publication-actions" aria-label="Resources for Reasoning Vectors: Transferring Chain-of-Thought Capabilities via Task Arithmetic">
+                  <a href="https://arxiv.org/pdf/2509.01363">paper</a>
+                  <a href="https://huggingface.co/collections/zbeeb/reasoning-vectors">models</a>
+                  <details class="publication-summary">
+                    <summary>summary<span class="visually-hidden"> of Reasoning Vectors: Transferring Chain-of-Thought Capabilities via Task Arithmetic</span></summary>
+                    <p>We extract a reasoning vector by subtracting an SFT checkpoint from a compatible GRPO-trained checkpoint and transfer it to instruction-tuned models through parameter addition. Experiments with Qwen2.5 at 1.5B and 7B show gains across mathematical reasoning and code generation, with further gains from step-by-step prompting. Subtraction, scaling, and perturbation experiments probe the effect of the vector. Transfer requires compatible architectures, tokenizers, and initializations; single-run results leave statistical significance to further evaluation.</p>
+                  </details>
                 </div>
-              </li>
-              <li class="publication-item" id="reasoning-vectors">
-                <a class="publication-image" href="https://arxiv.org/pdf/2509.01363" aria-label="Read Reasoning Vectors: Transferring Chain-of-Thought Capabilities via Task Arithmetic">
-                  <img src="/assets/images/publications/reasoning-vectors.webp" alt="Reasoning vector extracted between SFT and GRPO checkpoints and added to a compatible language model" width="1000" height="453" loading="lazy" />
-                </a>
-                <div class="publication-copy">
-                  <h3><a href="https://arxiv.org/abs/2509.01363">Reasoning Vectors: Transferring Chain-of-Thought Capabilities via Task Arithmetic</a></h3>
-                  <p class="publication-authors"><strong>Mohammad Zbeeb</strong>, Hasan Abed Al Kader Hammoud, Bernard Ghanem</p>
-                  <p class="publication-venue">arXiv preprint · 2025</p>
-                  <div class="publication-actions" aria-label="Resources for Reasoning Vectors: Transferring Chain-of-Thought Capabilities via Task Arithmetic">
-                    <a href="https://arxiv.org/pdf/2509.01363">paper</a>
-                    <a href="https://huggingface.co/collections/zbeeb/reasoning-vectors">models</a>
-                    <details class="publication-summary">
-                      <summary>summary<span class="visually-hidden"> of Reasoning Vectors: Transferring Chain-of-Thought Capabilities via Task Arithmetic</span></summary>
-                      <p>We extract a reasoning vector by subtracting an SFT checkpoint from a compatible GRPO-trained checkpoint and transfer it to instruction-tuned models through parameter addition. Experiments with Qwen2.5 at 1.5B and 7B show gains across mathematical reasoning and code generation, with further gains from step-by-step prompting. Subtraction, scaling, and perturbation experiments probe the effect of the vector. Transfer requires compatible architectures, tokenizers, and initializations; single-run results leave statistical significance to further evaluation.</p>
-                    </details>
-                  </div>
+              </div>
+            </li>
+            <li class="publication-item" id="data-synthesis">
+              <div class="publication-copy">
+                <h3><a href="https://arxiv.org/abs/2411.01929">Exploring the Landscape for Generative Sequence Models for Specialized Data Synthesis</a></h3>
+                <p class="publication-authors"><strong>Mohammad Zbeeb</strong>, Mohammad Ghorayeb, Mariam Salman</p>
+                <p class="publication-venue">Journal of Data Analytics and Engineering Decision Making · 2024</p>
+                <div class="publication-actions" aria-label="Resources for Exploring the Landscape for Generative Sequence Models for Specialized Data Synthesis">
+                  <a href="https://arxiv.org/pdf/2411.01929">paper</a>
+                  <a href="https://github.com/Moe-Zbeeb/Exploring-the-landscape-for-generative-models-for-specialized-data-generation">code</a>
+                  <details class="publication-summary">
+                    <summary>summary<span class="visually-hidden"> of Exploring the Landscape for Generative Sequence Models for Specialized Data Synthesis</span></summary>
+                    <p>We encode numerical network-traffic features as symbolic sequences and treat structured data synthesis as next-symbol prediction. The study compares a WaveNet-inspired model, a recurrent neural network, and a Transformer decoder. A one-class SVM measures how often generated samples fall within the learned real-data distribution; the RNN achieves the highest reported inlier rate, 87.9%. The paper also surveys synthetic-data applications, privacy techniques, and evaluation approaches. Inlier rates are a diagnostic rather than a complete measure of downstream utility or privacy.</p>
+                  </details>
                 </div>
-              </li>
-              <li class="publication-item" id="data-synthesis">
-                <a class="publication-image" href="https://arxiv.org/pdf/2411.01929" aria-label="Read Exploring the Landscape for Generative Sequence Models for Specialized Data Synthesis">
-                  <img src="/assets/images/publications/data-synthesis.webp" alt="Learned symbol embeddings used to represent structured data as sequences" width="710" height="700" loading="lazy" />
-                </a>
-                <div class="publication-copy">
-                  <h3><a href="https://arxiv.org/abs/2411.01929">Exploring the Landscape for Generative Sequence Models for Specialized Data Synthesis</a></h3>
-                  <p class="publication-authors"><strong>Mohammad Zbeeb</strong>, Mohammad Ghorayeb, Mariam Salman</p>
-                  <p class="publication-venue">Journal of Data Analytics and Engineering Decision Making · 2024</p>
-                  <div class="publication-actions" aria-label="Resources for Exploring the Landscape for Generative Sequence Models for Specialized Data Synthesis">
-                    <a href="https://arxiv.org/pdf/2411.01929">paper</a>
-                    <a href="https://github.com/Moe-Zbeeb/Exploring-the-landscape-for-generative-models-for-specialized-data-generation">code</a>
-                    <details class="publication-summary">
-                      <summary>summary<span class="visually-hidden"> of Exploring the Landscape for Generative Sequence Models for Specialized Data Synthesis</span></summary>
-                      <p>We encode numerical network-traffic features as symbolic sequences and treat structured data synthesis as next-symbol prediction. The study compares a WaveNet-inspired model, a recurrent neural network, and a Transformer decoder. A one-class SVM measures how often generated samples fall within the learned real-data distribution; the RNN achieves the highest reported inlier rate, 87.9%. The paper also surveys synthetic-data applications, privacy techniques, and evaluation approaches. Inlier rates are a diagnostic rather than a complete measure of downstream utility or privacy.</p>
-                    </details>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </section>
-        </div>
-        <aside class="profile-sidebar" aria-label="Career experience">
-          <section id="experience" aria-labelledby="experience-heading">
-            <h2 id="experience-heading">Experience</h2>
-            <ul class="career-list">
-              <li class="career-item">
-                <img class="career-logo" src="/assets/images/organizations/edgebot.jpg" alt="" width="48" height="48" />
-                <div class="career-copy">
-                  <h3>Research Engineer</h3>
-                  <p><a href="https://www.alphalab.ai/?_gl=1*1i9r32y*_gcl_au*MTM1NDA5MzQyMy4xNzg3MzI5ODE4">Edgebot</a></p>
-                </div>
-              </li>
-              <li class="career-item">
-                <img class="career-logo" src="/assets/images/organizations/kaust.jpg" alt="" width="48" height="48" />
-                <div class="career-copy">
-                  <h3>Visiting Researcher</h3>
-                  <p><a href="https://ivul.kaust.edu.sa/">KAUST</a></p>
-                </div>
-              </li>
-              <li class="career-item">
-                <img class="career-logo" src="/assets/images/organizations/aub.jpg" alt="" width="48" height="48" />
-                <div class="career-copy">
-                  <h3>Research Staff and Co-instructor</h3>
-                  <p><a href="https://www.aub.edu.lb/">American University of Beirut</a></p>
-                </div>
-              </li>
-              <li class="career-item">
-                <img class="career-logo" src="/assets/images/organizations/chimera.jpg" alt="" width="48" height="48" />
-                <div class="career-copy">
-                  <h3>ML Engineer</h3>
-                  <p><a href="https://www.chimerasec.com/">Chimera Cybersecurity</a></p>
-                </div>
-              </li>
-            </ul>
-          </section>
-        </aside>
-      </main>
-    </div>
-    <footer class="site-footer page-width">Mohammad Zbeeb</footer>
+              </div>
+            </li>
+          </ul>
+        </section>
+      </div>
+      <footer class="site-footer">Mohammad Zbeeb</footer>
+    </main>
   </body>
 </html>
