@@ -10,36 +10,21 @@
     <meta property="og:title" content="Probability for Machine Learning: A Working Tutorial" />
     <meta property="og:description" content="A practical reference on distributions, dependence, estimation, information, uncertainty, calibration, shift, and decision-making." />
     <meta property="og:type" content="article" />
-    <link rel="stylesheet" href="/css/tufte.css?v=20261006-white" />
-    <link rel="stylesheet" href="/css/site.css?v=20261006-white" />
     <link rel="canonical" href="/blog/posts/probability-concepts-for-ml-engineers.html" />
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-  <link rel="stylesheet" href="/css/notes.css?v=20261007-notes" />
-    <link rel="stylesheet" href="/css/navigation.css?v=20261007-notes" />
-    <script src="/js/navigation.js?v=20261007-notes" defer></script>
-</head>
+    <link rel="stylesheet" href="/css/cv.css?v=20261114" />
+    <link rel="stylesheet" href="/css/notes.css?v=20261122" />
+  </head>
 
-  <body class="note-page">
-    <a class="note-skip-link" href="#note-content">Skip to content</a>
-    <header class="site-header">
-      <nav class="main-nav page-width" aria-label="Main navigation">
-        <a class="site-name" href="/">Mohammad Zbeeb</a>
-        <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-controls="nav-main" aria-expanded="false"><span class="menu-icon" aria-hidden="true"></span></button>
-        <div class="nav-links" id="nav-main">
-          <a href="/">Home</a>
-          <a href="/blog/#research">Publications</a>
-          <a href="/blog.html" aria-current="page">Research Notes</a>
-        </div>
-      </nav>
-    </header>
+  <body>
+    <a class="skip-link" href="#note-content">Skip to content</a>
+    <main class="cv-page notes-page">
+      <p class="notes-back"><a href="/blog.html"><span aria-hidden="true">← </span>Research Notes</a></p>
+      <article class="note-article" id="note-content" tabindex="-1">
+        <h1>Probability for Machine Learning: A Working Tutorial</h1>
+        <p>The concepts, equations, and research habits needed to reason clearly under uncertainty.</p>
+        <p class="post-meta">Mohamad Zbib | Updated July 14, 2026</p>
 
-    <article class="group tutorial-article" id="note-content">
-      <p class="note-eyebrow">Research Notes · Probability · Working tutorial</p>
-<h1>Probability for Machine Learning: A Working Tutorial</h1>
-      <p class="subtitle">The concepts, equations, and research habits needed to reason clearly under uncertainty.</p>
-      <p class="post-meta">Mohamad Zbib | Updated July 14, 2026</p>
-
-      <section class="lead-card">
         <p>
           Probability is a language for incomplete information. It lets us describe possible outcomes,
           learn from finite data, compare models, and choose actions without pretending uncertainty has
@@ -50,958 +35,945 @@
           measurements. Each idea is then translated into the form used in machine learning research.
           The formulas matter, but the assumptions behind them matter more.
         </p>
-      </section>
 
-      <nav class="article-map" aria-label="Article map">
-        <h2>Reading Map</h2>
-        <ol>
-          <li>Build distributions from events, random variables, and probability rules.</li>
-          <li>Use expectation, variance, covariance, and sampling to summarize uncertainty.</li>
-          <li>Use dependence, Bayes' rule, likelihood, and information to learn from evidence.</li>
-          <li>Separate data noise from model uncertainty and evaluate probabilistic predictions.</li>
-          <li>Turn probabilities into decisions while accounting for costs and distribution shift.</li>
-        </ol>
-      </nav>
+        <section aria-labelledby="reading-map">
+          <h2 id="reading-map">Reading Map</h2>
+          <ol>
+            <li>Build distributions from events, random variables, and probability rules.</li>
+            <li>Use expectation, variance, covariance, and sampling to summarize uncertainty.</li>
+            <li>Use dependence, Bayes' rule, likelihood, and information to learn from evidence.</li>
+            <li>Separate data noise from model uncertainty and evaluate probabilistic predictions.</li>
+            <li>Turn probabilities into decisions while accounting for costs and distribution shift.</li>
+          </ol>
+        </section>
 
-      <section>
-        <h2>1. Probability Is a Measure, Not a Guess</h2>
-        <p>
-          Begin with a sample space \(\Omega\): the set of outcomes that could occur. An event is a
-          subset of those outcomes. For a six-sided die, \(\Omega=\{1,2,3,4,5,6\}\), while "the roll
-          is even" is the event \(\{2,4,6\}\).
-        </p>
-        <p>
-          A probability measure assigns a number to each event. It follows three rules: probabilities
-          are never negative, the whole sample space has probability one, and probabilities add for
-          events that cannot happen together.
-        </p>
-        <p class="math-block">
-          \[
-            \begin{aligned}
-              \mathbb{P}(A)&amp;\geq 0, \\
-              \mathbb{P}(\Omega)&amp;=1, \\
-              \mathbb{P}(A\cup B)&amp;=\mathbb{P}(A)+\mathbb{P}(B)
-            \end{aligned}
-          \]
-        </p>
-        <p>
-          The complement rule follows immediately: \(\mathbb{P}(A^c)=1-\mathbb{P}(A)\). If a die
-          has probability \(1/6\) of showing six, it has probability \(5/6\) of not showing six.
-        </p>
-        <p>
-          The law of total probability breaks a difficult question into simpler cases. If events
-          \(B_1,\ldots,B_k\) cover all possibilities without overlap, then
-        </p>
-        <p class="math-block">
-          \[
-            \mathbb{P}(A)=\sum_{j=1}^{k}\mathbb{P}(A\mid B_j)\mathbb{P}(B_j).
-          \]
-        </p>
-        <div class="takeaway">
+        <section>
+          <h2>1. Probability Is a Measure, Not a Guess</h2>
+          <p>
+            Begin with a sample space \(\Omega\): the set of outcomes that could occur. An event is a
+            subset of those outcomes. For a six-sided die, \(\Omega=\{1,2,3,4,5,6\}\), while "the roll
+            is even" is the event \(\{2,4,6\}\).
+          </p>
+          <p>
+            A probability measure assigns a number to each event. It follows three rules: probabilities
+            are never negative, the whole sample space has probability one, and probabilities add for
+            events that cannot happen together.
+          </p>
+          <p>
+            \[
+              \begin{aligned}
+                \mathbb{P}(A)&amp;\geq 0, \\
+                \mathbb{P}(\Omega)&amp;=1, \\
+                \mathbb{P}(A\cup B)&amp;=\mathbb{P}(A)+\mathbb{P}(B)
+              \end{aligned}
+            \]
+          </p>
+          <p>
+            The complement rule follows immediately: \(\mathbb{P}(A^c)=1-\mathbb{P}(A)\). If a die
+            has probability \(1/6\) of showing six, it has probability \(5/6\) of not showing six.
+          </p>
+          <p>
+            The law of total probability breaks a difficult question into simpler cases. If events
+            \(B_1,\ldots,B_k\) cover all possibilities without overlap, then
+          </p>
+          <p>
+            \[
+              \mathbb{P}(A)=\sum_{j=1}^{k}\mathbb{P}(A\mid B_j)\mathbb{P}(B_j).
+            \]
+          </p>
           <p>
             <strong>Research habit:</strong> ask what outcomes are possible, what event is being
             assigned probability, and what cases were averaged together. A number is not meaningful
             until those choices are clear.
           </p>
-        </div>
 
-        <h2>2. Start With the Random Variables</h2>
-        <p>
-          Start by naming what is uncertain. If you flip a coin, \(X\) might be heads or tails. If
-          you roll a die, \(X\) might be one of six numbers. If you measure tomorrow's temperature,
-          \(X\) might be a real number like \(23.4^\circ\)C.
-        </p>
-        <p>
-          A random variable maps possible outcomes to values. A distribution tells us how probability
-          is spread over those values.
-        </p>
-        <p class="math-block">
-          \[
-            p_X(x) = \mathbb{P}(X = x)
-          \]
-        </p>
-        <p>
-          For continuous values, a density is not a probability by itself. Probabilities come from
-          areas under the curve:
-        </p>
-        <p class="math-block">
-          \[
-            \mathbb{P}(a \leq X \leq b) = \int_a^b f_X(x)\,dx
-          \]
-        </p>
-        <p>
-          A cumulative distribution function gives the probability that a variable is at or below a
-          threshold:
-        </p>
-        <p class="math-block">
-          \[
-            F_X(t)=\mathbb{P}(X\leq t).
-          \]
-        </p>
-        <p>
-          CDFs make quantiles precise. The median is a value with half the probability below it, and
-          the \(95\)th percentile is a threshold below which roughly \(95\%\) of outcomes fall. This
-          matters whenever a model reports prediction intervals or tail risk rather than only a mean.
-        </p>
-        <div class="takeaway">
+          <h2>2. Start With the Random Variables</h2>
+          <p>
+            Start by naming what is uncertain. If you flip a coin, \(X\) might be heads or tails. If
+            you roll a die, \(X\) might be one of six numbers. If you measure tomorrow's temperature,
+            \(X\) might be a real number like \(23.4^\circ\)C.
+          </p>
+          <p>
+            A random variable maps possible outcomes to values. A distribution tells us how probability
+            is spread over those values.
+          </p>
+          <p>
+            \[
+              p_X(x) = \mathbb{P}(X = x)
+            \]
+          </p>
+          <p>
+            For continuous values, a density is not a probability by itself. Probabilities come from
+            areas under the curve:
+          </p>
+          <p>
+            \[
+              \mathbb{P}(a \leq X \leq b) = \int_a^b f_X(x)\,dx
+            \]
+          </p>
+          <p>
+            A cumulative distribution function gives the probability that a variable is at or below a
+            threshold:
+          </p>
+          <p>
+            \[
+              F_X(t)=\mathbb{P}(X\leq t).
+            \]
+          </p>
+          <p>
+            CDFs make quantiles precise. The median is a value with half the probability below it, and
+            the \(95\)th percentile is a threshold below which roughly \(95\%\) of outcomes fall. This
+            matters whenever a model reports prediction intervals or tail risk rather than only a mean.
+          </p>
           <p>
             <strong>Plain read:</strong> discrete probability counts outcomes; continuous
             probability measures regions. Mixing those up is a common source of confusion around
             likelihoods and densities.
           </p>
-        </div>
 
-        <h2>3. Learn the Three Distribution Views</h2>
-        <p>
-          The joint distribution \(p(x,y)\) describes variables together. The marginal distribution
-          removes variables we are not asking about. The conditional distribution focuses on what is
-          plausible after some evidence is known.
-        </p>
-        <table class="formula-table">
-          <thead>
-            <tr>
-              <th>View</th>
-              <th>Question</th>
-              <th>Formula</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Joint</td>
-              <td>How do \(X\) and \(Y\) behave together?</td>
-              <td>\(p(x,y)\)</td>
-            </tr>
-            <tr>
-              <td>Marginal</td>
-              <td>What does \(X\) look like after removing \(Y\)?</td>
-              <td>\(p(x)=\sum_y p(x,y)\)</td>
-            </tr>
-            <tr>
-              <td>Conditional</td>
-              <td>What does \(Y\) look like once \(X\) is known?</td>
-              <td>\(p(y \mid x)=p(x,y)/p(x)\)</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>
-          For example, let \(X\) be the weather and \(Y\) be whether someone carries an umbrella. The
-          joint distribution describes weather and umbrella-carrying together. The marginal
-          distribution describes weather alone. The conditional distribution asks: if we know it is
-          raining, how likely is the umbrella?
-        </p>
-        <p>
-          The product rule rebuilds a joint distribution from a conditional distribution and a
-          marginal distribution:
-        </p>
-        <p class="math-block">
-          \[
-            p(x,y)=p(y\mid x)p(x)=p(x\mid y)p(y).
-          \]
-        </p>
-        <p>
-          Applying the product rule repeatedly gives the chain rule. For three variables,
-          \(p(x,y,z)=p(z\mid x,y)p(y\mid x)p(x)\). Autoregressive models use this same identity to
-          turn one high-dimensional distribution into a sequence of conditional predictions.
-        </p>
+          <h2>3. Learn the Three Distribution Views</h2>
+          <p>
+            The joint distribution \(p(x,y)\) describes variables together. The marginal distribution
+            removes variables we are not asking about. The conditional distribution focuses on what is
+            plausible after some evidence is known.
+          </p>
+          <div class="table-wrap" role="region" aria-label="Joint, marginal, and conditional distributions" tabindex="0">
+            <table>
+              <thead>
+                <tr>
+                  <th>View</th>
+                  <th>Question</th>
+                  <th>Formula</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Joint</td>
+                  <td>How do \(X\) and \(Y\) behave together?</td>
+                  <td>\(p(x,y)\)</td>
+                </tr>
+                <tr>
+                  <td>Marginal</td>
+                  <td>What does \(X\) look like after removing \(Y\)?</td>
+                  <td>\(p(x)=\sum_y p(x,y)\)</td>
+                </tr>
+                <tr>
+                  <td>Conditional</td>
+                  <td>What does \(Y\) look like once \(X\) is known?</td>
+                  <td>\(p(y \mid x)=p(x,y)/p(x)\)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            For example, let \(X\) be the weather and \(Y\) be whether someone carries an umbrella. The
+            joint distribution describes weather and umbrella-carrying together. The marginal
+            distribution describes weather alone. The conditional distribution asks: if we know it is
+            raining, how likely is the umbrella?
+          </p>
+          <p>
+            The product rule rebuilds a joint distribution from a conditional distribution and a
+            marginal distribution:
+          </p>
+          <p>
+            \[
+              p(x,y)=p(y\mid x)p(x)=p(x\mid y)p(y).
+            \]
+          </p>
+          <p>
+            Applying the product rule repeatedly gives the chain rule. For three variables,
+            \(p(x,y,z)=p(z\mid x,y)p(y\mid x)p(x)\). Autoregressive models use this same identity to
+            turn one high-dimensional distribution into a sequence of conditional predictions.
+          </p>
 
-        <h2>4. Expectations Are Long-Run Averages</h2>
-        <p>
-          Expectation is the average value under a distribution:
-        </p>
-        <p class="math-block">
-          \[
-            \begin{aligned}
-              \mathbb{E}[X] &amp;= \sum_x x\,p(x) &amp;&amp; \text{(discrete)}, \\
-              \mathbb{E}[X] &amp;= \int x f(x)\,dx &amp;&amp; \text{(continuous)}
-            \end{aligned}
-          \]
-        </p>
-        <p>
-          More generally, we care about the expectation of a function:
-        </p>
-        <p class="math-block">
-          \[
-            \begin{aligned}
-              \mathbb{E}[g(X)] &amp;= \sum_x g(x)p(x) &amp;&amp; \text{(discrete)}, \\
-              \mathbb{E}[g(X)] &amp;= \int g(x)f(x)\,dx &amp;&amp; \text{(continuous)}
-            \end{aligned}
-          \]
-        </p>
-        <p>
-          For a fair die, the expected roll is the long-run average you would get after many rolls.
-          It does not mean you will ever roll \(3.5\). It means the average of many rolls settles near
-          \(3.5\).
-        </p>
-        <p>
-          Expectation is linear even when variables are dependent:
-          \(\mathbb{E}[aX+bY]=a\mathbb{E}[X]+b\mathbb{E}[Y]\). This simple fact is behind minibatch
-          averages, empirical risk, and Monte Carlo estimators.
-        </p>
-        <p>
-          Nonlinear transformations require more care. In general,
-          \(g(\mathbb{E}[X])\neq\mathbb{E}[g(X)]\). For convex \(g\), Jensen's inequality states
-          \(g(\mathbb{E}[X])\leq\mathbb{E}[g(X)]\). This is why "apply a nonlinear function, then
-          average" is not interchangeable with "average, then apply the function."
-        </p>
-        <h3>Spread and Co-Movement</h3>
-        <p class="math-block">
-          \[
-            \mathrm{Var}(X) = \mathbb{E}[X^2] - \mathbb{E}[X]^2
-          \]
-        </p>
-        <p class="math-block">
-          \[
-            \mathrm{Cov}(X,Y) = \mathbb{E}[(X-\mathbb{E}[X])(Y-\mathbb{E}[Y])]
-          \]
-        </p>
-        <h3>Variance Behavior</h3>
-        <p>
-          Variance is about distance from the mean. When most values stay close to the mean, variance
-          is small. When values spread far away, variance grows. Because the deviations are squared,
-          far-away points matter much more than nearby points.
-        </p>
-        <figure class="fullwidth">
-          <img src="diagrams/variance-behavior.png" alt="Two bell curves with the same mean: one narrow low-variance curve and one wider high-variance curve" />
-          <figcaption>
-            Both distributions have the same mean. The narrow curve has low variance because values
-            concentrate near the mean. The wide curve has high variance because probability mass
-            spreads farther into the tails.
-          </figcaption>
-        </figure>
-        <h3>Covariance Behavior</h3>
-        <p>
-          Covariance is about how two variables move relative to their own means. If \(X\) is above
-          its mean when \(Y\) is also above its mean, their product of deviations is positive. If one
-          is above its mean while the other is below, the product is negative. If there is no stable
-          linear movement, the positive and negative products mostly cancel.
-        </p>
-        <figure class="fullwidth">
-          <img src="diagrams/covariance-behavior.png" alt="Three scatter plots showing positive covariance, near-zero covariance, and negative covariance" />
-          <figcaption>
-            Positive covariance means the variables tend to move together. Negative covariance means
-            they tend to move in opposite directions. Near-zero covariance means there is no clear
-            linear co-movement, though nonlinear relationships may still exist.
-          </figcaption>
-        </figure>
-        <p>
-          The sign of covariance is easy to interpret; the magnitude is harder because it depends on
-          the units of \(X\) and \(Y\). Correlation fixes that by normalizing covariance into a
-          unitless value between \(-1\) and \(1\).
-        </p>
-        <div class="takeaway">
+          <h2>4. Expectations Are Long-Run Averages</h2>
+          <p>
+            Expectation is the average value under a distribution:
+          </p>
+          <p>
+            \[
+              \begin{aligned}
+                \mathbb{E}[X] &amp;= \sum_x x\,p(x) &amp;&amp; \text{(discrete)}, \\
+                \mathbb{E}[X] &amp;= \int x f(x)\,dx &amp;&amp; \text{(continuous)}
+              \end{aligned}
+            \]
+          </p>
+          <p>
+            More generally, we care about the expectation of a function:
+          </p>
+          <p>
+            \[
+              \begin{aligned}
+                \mathbb{E}[g(X)] &amp;= \sum_x g(x)p(x) &amp;&amp; \text{(discrete)}, \\
+                \mathbb{E}[g(X)] &amp;= \int g(x)f(x)\,dx &amp;&amp; \text{(continuous)}
+              \end{aligned}
+            \]
+          </p>
+          <p>
+            For a fair die, the expected roll is the long-run average you would get after many rolls.
+            It does not mean you will ever roll \(3.5\). It means the average of many rolls settles near
+            \(3.5\).
+          </p>
+          <p>
+            Expectation is linear even when variables are dependent:
+            \(\mathbb{E}[aX+bY]=a\mathbb{E}[X]+b\mathbb{E}[Y]\). This simple fact is behind minibatch
+            averages, empirical risk, and Monte Carlo estimators.
+          </p>
+          <p>
+            Nonlinear transformations require more care. In general,
+            \(g(\mathbb{E}[X])\neq\mathbb{E}[g(X)]\). For convex \(g\), Jensen's inequality states
+            \(g(\mathbb{E}[X])\leq\mathbb{E}[g(X)]\). This is why "apply a nonlinear function, then
+            average" is not interchangeable with "average, then apply the function."
+          </p>
+          <h3>Spread and Co-Movement</h3>
+          <p>
+            \[
+              \mathrm{Var}(X) = \mathbb{E}[X^2] - \mathbb{E}[X]^2
+            \]
+          </p>
+          <p>
+            \[
+              \mathrm{Cov}(X,Y) = \mathbb{E}[(X-\mathbb{E}[X])(Y-\mathbb{E}[Y])]
+            \]
+          </p>
+          <h3>Variance Behavior</h3>
+          <p>
+            Variance is about distance from the mean. When most values stay close to the mean, variance
+            is small. When values spread far away, variance grows. Because the deviations are squared,
+            far-away points matter much more than nearby points.
+          </p>
+          <figure>
+            <img src="diagrams/variance-behavior.png" alt="Two bell curves with the same mean: one narrow low-variance curve and one wider high-variance curve" />
+            <figcaption>
+              Both distributions have the same mean. The narrow curve has low variance because values
+              concentrate near the mean. The wide curve has high variance because probability mass
+              spreads farther into the tails.
+            </figcaption>
+          </figure>
+          <h3>Covariance Behavior</h3>
+          <p>
+            Covariance is about how two variables move relative to their own means. If \(X\) is above
+            its mean when \(Y\) is also above its mean, their product of deviations is positive. If one
+            is above its mean while the other is below, the product is negative. If there is no stable
+            linear movement, the positive and negative products mostly cancel.
+          </p>
+          <figure>
+            <img src="diagrams/covariance-behavior.png" alt="Three scatter plots showing positive covariance, near-zero covariance, and negative covariance" />
+            <figcaption>
+              Positive covariance means the variables tend to move together. Negative covariance means
+              they tend to move in opposite directions. Near-zero covariance means there is no clear
+              linear co-movement, though nonlinear relationships may still exist.
+            </figcaption>
+          </figure>
+          <p>
+            The sign of covariance is easy to interpret; the magnitude is harder because it depends on
+            the units of \(X\) and \(Y\). Correlation fixes that by normalizing covariance into a
+            unitless value between \(-1\) and \(1\).
+          </p>
           <p>
             <strong>Plain read:</strong> a small sample can give a noisy average. A larger sample
             usually gives a more stable average. Variance tells you how much noise to expect.
           </p>
-        </div>
 
-        <h2>5. Independence Is an Assumption, Not a Decoration</h2>
-        <p>
-          Independence means that information about one variable does not change what we believe
-          about another. If \(X\) and \(Y\) are independent, then seeing \(X=x\) gives no useful
-          information about \(Y\). The conditional distribution stays the same:
-        </p>
-        <p class="math-block">
-          \[
-            p(y \mid x)=p(y)
-          \]
-        </p>
-        <p>
-          The same idea can be written through the joint distribution:
-        </p>
-        <p class="math-block">
-          \[
-            p(x,y)=p(x)p(y)
-          \]
-        </p>
-        <p>
-          Dependence is the opposite: knowing one variable changes what we believe about the other.
-          If you know it is raining, the chance that a person is carrying an umbrella goes up. So
-          weather and umbrella-carrying are dependent. If you flip a fair coin and roll a fair die,
-          seeing heads tells you nothing about whether the die landed on six. Those two outcomes are
-          independent.
-        </p>
-        <p>
-          A useful test is: after I learn \(X\), would I update my belief about \(Y\)? If yes, the
-          variables are dependent. If no, they are independent.
-        </p>
-        <table class="formula-table">
-          <thead>
-            <tr>
-              <th>Relationship</th>
-              <th>Meaning</th>
-              <th>Formula</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Independent</td>
-              <td>Knowing \(X\) does not change beliefs about \(Y\).</td>
-              <td>\(p(y \mid x)=p(y)\)</td>
-            </tr>
-            <tr>
-              <td>Dependent</td>
-              <td>Knowing \(X\) changes beliefs about \(Y\).</td>
-              <td>\(p(y \mid x)\neq p(y)\)</td>
-            </tr>
-            <tr>
-              <td>Conditionally independent</td>
-              <td>The dependence disappears after knowing \(Z\).</td>
-              <td>\(p(x,y \mid z)=p(x \mid z)p(y \mid z)\)</td>
-            </tr>
-          </tbody>
-        </table>
-        <h3>Independence Is Stronger Than Zero Correlation</h3>
-        <p>
-          Correlation and covariance only describe linear co-movement. Independence says there is no
-          relationship at all: no linear pattern, no curved pattern, no threshold pattern, no useful
-          information. So independent variables have zero covariance, but zero covariance does not
-          always imply independence.
-        </p>
-        <p>
-          For example, if \(X\) is symmetric around zero and \(Y=X^2\), then \(X\) and \(Y\) are
-          clearly dependent: knowing that \(|X|\) is large tells us \(Y\) is large. But the linear
-          covariance can be zero because positive and negative values of \(X\) cancel out.
-        </p>
-        <h3>Conditional Independence</h3>
-        <p>
-          Conditional independence is often more useful than plain independence. It means two
-          variables may look related overall, but once we know a third variable, the relationship is
-          explained away.
-        </p>
-        <p>
-          A simple example is two thermometers in the same room. Let \(Z\) be the true room
-          temperature, \(X\) be the first thermometer reading, and \(Y\) be the second thermometer
-          reading. The two readings are dependent overall because both are driven by the same room
-          temperature. But if we already know the true temperature \(Z\), then the remaining small
-          errors of the two thermometers can be treated as independent:
-        </p>
-        <p class="math-block">
-          \[
-            p(x,y \mid z)=p(x \mid z)p(y \mid z)
-          \]
-        </p>
-        <p>
-          This kind of assumption lets us simplify a problem. Once we know the room temperature, we
-          no longer need to explain one thermometer reading by looking at the other; both are just
-          noisy readings of the same underlying value.
-        </p>
-        <h3>The i.i.d. Assumption</h3>
-        <p>
-          You will often see the phrase i.i.d.: independent and identically distributed. Independent
-          means one observation does not affect the next. Identically distributed means every
-          observation comes from the same rule.
-        </p>
-        <p>
-          Repeated flips of the same fair coin are a good simple example. One flip does not control
-          the next, and each flip has the same chance of heads. The assumption breaks if the coin is
-          changed halfway through, or if the outcome of one trial changes how the next trial is done.
-        </p>
-        <div class="takeaway">
+          <h2>5. Independence Is an Assumption, Not a Decoration</h2>
+          <p>
+            Independence means that information about one variable does not change what we believe
+            about another. If \(X\) and \(Y\) are independent, then seeing \(X=x\) gives no useful
+            information about \(Y\). The conditional distribution stays the same:
+          </p>
+          <p>
+            \[
+              p(y \mid x)=p(y)
+            \]
+          </p>
+          <p>
+            The same idea can be written through the joint distribution:
+          </p>
+          <p>
+            \[
+              p(x,y)=p(x)p(y)
+            \]
+          </p>
+          <p>
+            Dependence is the opposite: knowing one variable changes what we believe about the other.
+            If you know it is raining, the chance that a person is carrying an umbrella goes up. So
+            weather and umbrella-carrying are dependent. If you flip a fair coin and roll a fair die,
+            seeing heads tells you nothing about whether the die landed on six. Those two outcomes are
+            independent.
+          </p>
+          <p>
+            A useful test is: after I learn \(X\), would I update my belief about \(Y\)? If yes, the
+            variables are dependent. If no, they are independent.
+          </p>
+          <div class="table-wrap" role="region" aria-label="Summary of dependence concepts" tabindex="0">
+            <table>
+              <thead>
+                <tr>
+                  <th>Relationship</th>
+                  <th>Meaning</th>
+                  <th>Formula</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Independent</td>
+                  <td>Knowing \(X\) does not change beliefs about \(Y\).</td>
+                  <td>\(p(y \mid x)=p(y)\)</td>
+                </tr>
+                <tr>
+                  <td>Dependent</td>
+                  <td>Knowing \(X\) changes beliefs about \(Y\).</td>
+                  <td>\(p(y \mid x)\neq p(y)\)</td>
+                </tr>
+                <tr>
+                  <td>Conditionally independent</td>
+                  <td>The dependence disappears after knowing \(Z\).</td>
+                  <td>\(p(x,y \mid z)=p(x \mid z)p(y \mid z)\)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <h3>Independence Is Stronger Than Zero Correlation</h3>
+          <p>
+            Correlation and covariance only describe linear co-movement. Independence says there is no
+            relationship at all: no linear pattern, no curved pattern, no threshold pattern, no useful
+            information. So independent variables have zero covariance, but zero covariance does not
+            always imply independence.
+          </p>
+          <p>
+            For example, if \(X\) is symmetric around zero and \(Y=X^2\), then \(X\) and \(Y\) are
+            clearly dependent: knowing that \(|X|\) is large tells us \(Y\) is large. But the linear
+            covariance can be zero because positive and negative values of \(X\) cancel out.
+          </p>
+          <h3>Conditional Independence</h3>
+          <p>
+            Conditional independence is often more useful than plain independence. It means two
+            variables may look related overall, but once we know a third variable, the relationship is
+            explained away.
+          </p>
+          <p>
+            A simple example is two thermometers in the same room. Let \(Z\) be the true room
+            temperature, \(X\) be the first thermometer reading, and \(Y\) be the second thermometer
+            reading. The two readings are dependent overall because both are driven by the same room
+            temperature. But if we already know the true temperature \(Z\), then the remaining small
+            errors of the two thermometers can be treated as independent:
+          </p>
+          <p>
+            \[
+              p(x,y \mid z)=p(x \mid z)p(y \mid z)
+            \]
+          </p>
+          <p>
+            This kind of assumption lets us simplify a problem. Once we know the room temperature, we
+            no longer need to explain one thermometer reading by looking at the other; both are just
+            noisy readings of the same underlying value.
+          </p>
+          <h3>The i.i.d. Assumption</h3>
+          <p>
+            You will often see the phrase i.i.d.: independent and identically distributed. Independent
+            means one observation does not affect the next. Identically distributed means every
+            observation comes from the same rule.
+          </p>
+          <p>
+            Repeated flips of the same fair coin are a good simple example. One flip does not control
+            the next, and each flip has the same chance of heads. The assumption breaks if the coin is
+            changed halfway through, or if the outcome of one trial changes how the next trial is done.
+          </p>
           <p>
             <strong>Plain read:</strong> independence is not automatic. Ask whether one observation
             can influence another, and ask whether all observations are really coming from the same
             situation.
           </p>
-        </div>
 
-        <h2>6. Bayes' Rule: Updating Belief With Evidence</h2>
-        <p>
-          Bayes' rule is the cleanest expression of how prior belief and new evidence combine. Imagine
-          a bag that contains mostly red balls or mostly blue balls. Before drawing, you have a prior
-          belief about which bag you have. After drawing a few red balls, you update that belief:
-        </p>
-        <p class="math-block">
-          \[
-            p(\theta \mid D) = \frac{p(D \mid \theta)p(\theta)}{p(D)}
-          \]
-        </p>
-        <table class="formula-table">
-          <thead>
-            <tr>
-              <th>Term</th>
-              <th>Name</th>
-              <th>Meaning</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>\(p(\theta)\)</td>
-              <td>Prior</td>
-              <td>What we believe before seeing the data</td>
-            </tr>
-            <tr>
-              <td>\(p(D \mid \theta)\)</td>
-              <td>Likelihood</td>
-              <td>How well \(\theta\) explains the observed data</td>
-            </tr>
-            <tr>
-              <td>\(p(D)\)</td>
-              <td>Evidence</td>
-              <td>The normalizer that makes probabilities sum to one</td>
-            </tr>
-            <tr>
-              <td>\(p(\theta \mid D)\)</td>
-              <td>Posterior</td>
-              <td>What we believe after seeing the data</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>
-          Maximum likelihood chooses the explanation that makes the observations most plausible. If a
-          coin lands heads 80 times out of 100, maximum likelihood prefers a coin whose chance of
-          heads is near \(0.8\):
-        </p>
-        <p class="math-block">
-          \[
-            \hat{\theta}_{\mathrm{MLE}}=\arg\max_\theta p(D \mid \theta)
-          \]
-        </p>
-        <p>
-          Maximum a posteriori estimation also includes what we believed before seeing the data. If
-          we strongly believed the coin was close to fair before seeing only a small number of flips,
-          the prior pulls the estimate back toward \(0.5\):
-        </p>
-        <p class="math-block">
-          \[
-            \hat{\theta}_{\mathrm{MAP}}=\arg\max_\theta p(D \mid \theta)p(\theta)
-          \]
-        </p>
-        <p>
-          The point is simple: likelihood listens to the observations; the prior expresses what we
-          believed before the observations; the posterior combines both.
-        </p>
-        <p>
-          A Bayesian analysis becomes predictive by averaging future outcomes over the posterior:
-        </p>
-        <p class="math-block">
-          \[
-            p(y_{\mathrm{new}}\mid x_{\mathrm{new}},D)
-            =
-            \mathbb{E}_{\theta\mid D}
-            \left[p(y_{\mathrm{new}}\mid x_{\mathrm{new}},\theta)\right].
-          \]
-        </p>
-        <p>
-          A point estimate uses one parameter value. A posterior predictive distribution averages
-          across plausible parameter values, so parameter uncertainty remains visible in the final
-          prediction.
-        </p>
+          <h2>6. Bayes' Rule: Updating Belief With Evidence</h2>
+          <p>
+            Bayes' rule is the cleanest expression of how prior belief and new evidence combine. Imagine
+            a bag that contains mostly red balls or mostly blue balls. Before drawing, you have a prior
+            belief about which bag you have. After drawing a few red balls, you update that belief:
+          </p>
+          <p>
+            \[
+              p(\theta \mid D) = \frac{p(D \mid \theta)p(\theta)}{p(D)}
+            \]
+          </p>
+          <div class="table-wrap" role="region" aria-label="Likelihood, priors, and posteriors" tabindex="0">
+            <table>
+              <thead>
+                <tr>
+                  <th>Term</th>
+                  <th>Name</th>
+                  <th>Meaning</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>\(p(\theta)\)</td>
+                  <td>Prior</td>
+                  <td>What we believe before seeing the data</td>
+                </tr>
+                <tr>
+                  <td>\(p(D \mid \theta)\)</td>
+                  <td>Likelihood</td>
+                  <td>How well \(\theta\) explains the observed data</td>
+                </tr>
+                <tr>
+                  <td>\(p(D)\)</td>
+                  <td>Evidence</td>
+                  <td>The normalizer that makes probabilities sum to one</td>
+                </tr>
+                <tr>
+                  <td>\(p(\theta \mid D)\)</td>
+                  <td>Posterior</td>
+                  <td>What we believe after seeing the data</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            Maximum likelihood chooses the explanation that makes the observations most plausible. If a
+            coin lands heads 80 times out of 100, maximum likelihood prefers a coin whose chance of
+            heads is near \(0.8\):
+          </p>
+          <p>
+            \[
+              \hat{\theta}_{\mathrm{MLE}}=\arg\max_\theta p(D \mid \theta)
+            \]
+          </p>
+          <p>
+            Maximum a posteriori estimation also includes what we believed before seeing the data. If
+            we strongly believed the coin was close to fair before seeing only a small number of flips,
+            the prior pulls the estimate back toward \(0.5\):
+          </p>
+          <p>
+            \[
+              \hat{\theta}_{\mathrm{MAP}}=\arg\max_\theta p(D \mid \theta)p(\theta)
+            \]
+          </p>
+          <p>
+            The point is simple: likelihood listens to the observations; the prior expresses what we
+            believed before the observations; the posterior combines both.
+          </p>
+          <p>
+            A Bayesian analysis becomes predictive by averaging future outcomes over the posterior:
+          </p>
+          <p>
+            \[
+              p(y_{\mathrm{new}}\mid x_{\mathrm{new}},D)
+              =
+              \mathbb{E}_{\theta\mid D}
+              \left[p(y_{\mathrm{new}}\mid x_{\mathrm{new}},\theta)\right].
+            \]
+          </p>
+          <p>
+            A point estimate uses one parameter value. A posterior predictive distribution averages
+            across plausible parameter values, so parameter uncertainty remains visible in the final
+            prediction.
+          </p>
 
-        <h2>7. Likelihood and Cross-Entropy</h2>
-        <p>
-          If observations are independent given \(\theta\), the likelihood factors into a product.
-          For coin flips, this means the probability of the whole sequence is the product of the
-          probability of each flip:
-        </p>
-        <p class="math-block">
-          \[
-            p(D \mid \theta)=\prod_{i=1}^n p(x_i \mid \theta)
-          \]
-        </p>
-        <p>
-          Products of many probabilities become tiny, so we often use log-likelihood instead. The log
-          turns products into sums, which are easier to work with:
-        </p>
-        <p class="math-block">
-          \[
-            \log p(D \mid \theta)=\sum_{i=1}^n \log p(x_i \mid \theta)
-          \]
-        </p>
-        <p>
-          Cross-entropy compares a true distribution \(p\) with an estimated distribution \(q\). A
-          simple way to think about it is weather forecasting: if rain happens often but your forecast
-          keeps assigning it tiny probability, cross-entropy becomes large:
-        </p>
-        <p class="math-block">
-          \[
-            H(p,q)=-\mathbb{E}_{x\sim p}[\log q(x)]
-          \]
-        </p>
-        <p>
-          In supervised learning we do not know the full data-generating distribution \(p\), so we
-          minimize an empirical average of negative log-probabilities:
-        </p>
-        <p class="math-block">
-          \[
-            \mathrm{NLL}(\theta)
-            =
-            -\frac{1}{n}\sum_{i=1}^{n}\log p_\theta(y_i\mid x_i).
-          \]
-        </p>
-        <p>
-          Negative log-likelihood is not merely a convenient loss. It rewards a model for assigning
-          probability to what actually happens and strongly penalizes confident predictions that are
-          wrong.
-        </p>
-        <div class="takeaway">
+          <h2>7. Likelihood and Cross-Entropy</h2>
+          <p>
+            If observations are independent given \(\theta\), the likelihood factors into a product.
+            For coin flips, this means the probability of the whole sequence is the product of the
+            probability of each flip:
+          </p>
+          <p>
+            \[
+              p(D \mid \theta)=\prod_{i=1}^n p(x_i \mid \theta)
+            \]
+          </p>
+          <p>
+            Products of many probabilities become tiny, so we often use log-likelihood instead. The log
+            turns products into sums, which are easier to work with:
+          </p>
+          <p>
+            \[
+              \log p(D \mid \theta)=\sum_{i=1}^n \log p(x_i \mid \theta)
+            \]
+          </p>
+          <p>
+            Cross-entropy compares a true distribution \(p\) with an estimated distribution \(q\). A
+            simple way to think about it is weather forecasting: if rain happens often but your forecast
+            keeps assigning it tiny probability, cross-entropy becomes large:
+          </p>
+          <p>
+            \[
+              H(p,q)=-\mathbb{E}_{x\sim p}[\log q(x)]
+            \]
+          </p>
+          <p>
+            In supervised learning we do not know the full data-generating distribution \(p\), so we
+            minimize an empirical average of negative log-probabilities:
+          </p>
+          <p>
+            \[
+              \mathrm{NLL}(\theta)
+              =
+              -\frac{1}{n}\sum_{i=1}^{n}\log p_\theta(y_i\mid x_i).
+            \]
+          </p>
+          <p>
+            Negative log-likelihood is not merely a convenient loss. It rewards a model for assigning
+            probability to what actually happens and strongly penalizes confident predictions that are
+            wrong.
+          </p>
           <p>
             <strong>Plain read:</strong> cross-entropy does not just ask whether you guessed the
             right outcome. It also asks whether your confidence matched reality.
           </p>
-        </div>
 
-        <h2>8. Common Distributions Worth Recognizing</h2>
-        <table class="distribution-table">
-          <thead>
-            <tr>
-              <th>Distribution</th>
-              <th>Use it when</th>
-              <th>Simple example</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Bernoulli</td>
-              <td>There is one binary outcome.</td>
-              <td>A coin flip: heads or tails.</td>
-            </tr>
-            <tr>
-              <td>Categorical</td>
-              <td>There is one label among \(K\) choices.</td>
-              <td>A die roll: one of six faces.</td>
-            </tr>
-            <tr>
-              <td>Binomial</td>
-              <td>You count successes across fixed trials.</td>
-              <td>Number of heads in 20 coin flips.</td>
-            </tr>
-            <tr>
-              <td>Poisson</td>
-              <td>You count events over time or space.</td>
-              <td>Number of calls received in one hour.</td>
-            </tr>
-            <tr>
-              <td>Gaussian</td>
-              <td>Values vary continuously around a center.</td>
-              <td>Small measurement errors around a true length.</td>
-            </tr>
-            <tr>
-              <td>Uniform</td>
-              <td>Every value in a bounded interval is equally plausible.</td>
-              <td>A random position chosen along a one-meter line.</td>
-            </tr>
-            <tr>
-              <td>Exponential</td>
-              <td>You model waiting time until the next event.</td>
-              <td>Time until the next phone call arrives.</td>
-            </tr>
-            <tr>
-              <td>Gamma</td>
-              <td>You model a positive quantity or waiting time for several events.</td>
-              <td>Time until the fifth phone call arrives.</td>
-            </tr>
-            <tr>
-              <td>Beta</td>
-              <td>You need uncertainty over one probability.</td>
-              <td>Uncertainty about how biased a coin is.</td>
-            </tr>
-            <tr>
-              <td>Dirichlet</td>
-              <td>You need uncertainty over class probabilities.</td>
-              <td>Uncertainty over the mix of red, blue, and green balls in a bag.</td>
-            </tr>
-          </tbody>
-        </table>
+          <h2>8. Common Distributions Worth Recognizing</h2>
+          <div class="table-wrap" role="region" aria-label="Common probability distributions" tabindex="0">
+            <table>
+              <thead>
+                <tr>
+                  <th>Distribution</th>
+                  <th>Use it when</th>
+                  <th>Simple example</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Bernoulli</td>
+                  <td>There is one binary outcome.</td>
+                  <td>A coin flip: heads or tails.</td>
+                </tr>
+                <tr>
+                  <td>Categorical</td>
+                  <td>There is one label among \(K\) choices.</td>
+                  <td>A die roll: one of six faces.</td>
+                </tr>
+                <tr>
+                  <td>Binomial</td>
+                  <td>You count successes across fixed trials.</td>
+                  <td>Number of heads in 20 coin flips.</td>
+                </tr>
+                <tr>
+                  <td>Poisson</td>
+                  <td>You count events over time or space.</td>
+                  <td>Number of calls received in one hour.</td>
+                </tr>
+                <tr>
+                  <td>Gaussian</td>
+                  <td>Values vary continuously around a center.</td>
+                  <td>Small measurement errors around a true length.</td>
+                </tr>
+                <tr>
+                  <td>Uniform</td>
+                  <td>Every value in a bounded interval is equally plausible.</td>
+                  <td>A random position chosen along a one-meter line.</td>
+                </tr>
+                <tr>
+                  <td>Exponential</td>
+                  <td>You model waiting time until the next event.</td>
+                  <td>Time until the next phone call arrives.</td>
+                </tr>
+                <tr>
+                  <td>Gamma</td>
+                  <td>You model a positive quantity or waiting time for several events.</td>
+                  <td>Time until the fifth phone call arrives.</td>
+                </tr>
+                <tr>
+                  <td>Beta</td>
+                  <td>You need uncertainty over one probability.</td>
+                  <td>Uncertainty about how biased a coin is.</td>
+                </tr>
+                <tr>
+                  <td>Dirichlet</td>
+                  <td>You need uncertainty over class probabilities.</td>
+                  <td>Uncertainty over the mix of red, blue, and green balls in a bag.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-        <h2>9. Sampling: Estimating What We Cannot Compute</h2>
-        <p>
-          Many expectations are too hard to calculate exactly. Monte Carlo methods estimate them with
-          samples:
-        </p>
-        <p class="math-block">
-          \[
-            \mathbb{E}[g(X)] \approx \frac{1}{m}\sum_{j=1}^m g(x^{(j)}),
-            \qquad x^{(j)}\sim p(x)
-          \]
-        </p>
-        <p>
-          Suppose you want to know the average height in a city. Measuring everyone is too expensive,
-          so you measure a sample and average those measurements. The estimate is not exact, but it
-          often gets better as the sample becomes larger and more representative.
-        </p>
-        <p>
-          The bootstrap estimates sampling uncertainty by repeatedly resampling the observed dataset
-          with replacement. Importance sampling handles a different problem: samples come from an
-          easier distribution \(q\), then receive weights \(p(x)/q(x)\) so they estimate expectations
-          under the target distribution \(p\).
-        </p>
-        <p class="math-block">
-          \[
-            \mathbb{E}_{p}[g(X)]
-            =
-            \mathbb{E}_{q}\!\left[g(X)\frac{p(X)}{q(X)}\right].
-          \]
-        </p>
-        <div class="takeaway">
+          <h2>9. Sampling: Estimating What We Cannot Compute</h2>
+          <p>
+            Many expectations are too hard to calculate exactly. Monte Carlo methods estimate them with
+            samples:
+          </p>
+          <p>
+            \[
+              \mathbb{E}[g(X)] \approx \frac{1}{m}\sum_{j=1}^m g(x^{(j)}),
+              \qquad x^{(j)}\sim p(x)
+            \]
+          </p>
+          <p>
+            Suppose you want to know the average height in a city. Measuring everyone is too expensive,
+            so you measure a sample and average those measurements. The estimate is not exact, but it
+            often gets better as the sample becomes larger and more representative.
+          </p>
+          <p>
+            The bootstrap estimates sampling uncertainty by repeatedly resampling the observed dataset
+            with replacement. Importance sampling handles a different problem: samples come from an
+            easier distribution \(q\), then receive weights \(p(x)/q(x)\) so they estimate expectations
+            under the target distribution \(p\).
+          </p>
+          <p>
+            \[
+              \mathbb{E}_{p}[g(X)]
+              =
+              \mathbb{E}_{q}\!\left[g(X)\frac{p(X)}{q(X)}\right].
+            \]
+          </p>
           <p>
             <strong>Tradeoff:</strong> more samples usually reduce variance, but they take more time
             and effort. A small but well-chosen sample can be better than a large biased one.
           </p>
-        </div>
 
-        <h2>10. Why Averages Work Until They Do Not</h2>
-        <p>
-          The law of large numbers says sample averages converge toward expectations:
-        </p>
-        <p class="math-block">
-          \[
-            \frac{1}{n}\sum_{i=1}^n X_i \to \mathbb{E}[X]
-          \]
-        </p>
-        <p>
-          The central limit theorem says normalized sums often look Gaussian:
-        </p>
-        <p class="math-block">
-          \[
-            \frac{\sum_{i=1}^n X_i-n\mu}{\sigma\sqrt{n}}
-            \Rightarrow \mathcal{N}(0,1)
-          \]
-        </p>
-        <p>
-          These ideas justify confidence intervals and error bars. The catch is that they work best
-          when samples are reasonably independent and come from the same situation. If you only ask
-          very tall people about average height, the average will still be biased no matter how many
-          people you ask.
-        </p>
-        <p>
-          For an independent sample with standard deviation \(\sigma\), the standard error of the
-          mean scales as \(\sigma/\sqrt{n}\). Reducing random error by half therefore requires roughly
-          four times as many observations. More data helps with variance; it does not repair a biased
-          sampling process.
-        </p>
+          <h2>10. Why Averages Work Until They Do Not</h2>
+          <p>
+            The law of large numbers says sample averages converge toward expectations:
+          </p>
+          <p>
+            \[
+              \frac{1}{n}\sum_{i=1}^n X_i \to \mathbb{E}[X]
+            \]
+          </p>
+          <p>
+            The central limit theorem says normalized sums often look Gaussian:
+          </p>
+          <p>
+            \[
+              \frac{\sum_{i=1}^n X_i-n\mu}{\sigma\sqrt{n}}
+              \Rightarrow \mathcal{N}(0,1)
+            \]
+          </p>
+          <p>
+            These ideas justify confidence intervals and error bars. The catch is that they work best
+            when samples are reasonably independent and come from the same situation. If you only ask
+            very tall people about average height, the average will still be biased no matter how many
+            people you ask.
+          </p>
+          <p>
+            For an independent sample with standard deviation \(\sigma\), the standard error of the
+            mean scales as \(\sigma/\sqrt{n}\). Reducing random error by half therefore requires roughly
+            four times as many observations. More data helps with variance; it does not repair a biased
+            sampling process.
+          </p>
 
-        <h2>11. Bias, Variance, and Irreducible Noise</h2>
-        <p>
-          Bias is systematic error. Variance is sensitivity to the sample. Irreducible noise is the
-          part of the outcome that cannot be known from the information available.
-        </p>
-        <p class="math-block">
-          \[
-            \mathbb{E}[(Y-\hat{f}(x))^2]
-            =
-            \mathrm{Bias}[\hat{f}(x)]^2
-            +
-            \mathrm{Var}[\hat{f}(x)]
-            +
-            \sigma^2
-          \]
-        </p>
-        <p>
-          Think about estimating a person's weight using only their height. A simple rule may be
-          biased because it misses many important factors. A rule built from a small sample may have
-          high variance because it changes a lot depending on which people were measured. Even with a
-          good rule, some uncertainty remains because height alone does not determine weight.
-        </p>
+          <h2>11. Bias, Variance, and Irreducible Noise</h2>
+          <p>
+            Bias is systematic error. Variance is sensitivity to the sample. Irreducible noise is the
+            part of the outcome that cannot be known from the information available.
+          </p>
+          <p>
+            \[
+              \mathbb{E}[(Y-\hat{f}(x))^2]
+              =
+              \mathrm{Bias}[\hat{f}(x)]^2
+              +
+              \mathrm{Var}[\hat{f}(x)]
+              +
+              \sigma^2
+            \]
+          </p>
+          <p>
+            Think about estimating a person's weight using only their height. A simple rule may be
+            biased because it misses many important factors. A rule built from a small sample may have
+            high variance because it changes a lot depending on which people were measured. Even with a
+            good rule, some uncertainty remains because height alone does not determine weight.
+          </p>
 
-        <h2>12. Predictive Uncertainty Has Two Sources</h2>
-        <p>
-          Aleatoric uncertainty is variation in the outcome that remains even if the model and its
-          parameters were known exactly. A fair coin stays random no matter how many times we inspect
-          it. In regression, measurement noise and unobserved causes often appear as aleatoric
-          uncertainty.
-        </p>
-        <p>
-          Epistemic uncertainty comes from limited knowledge. If we have seen only five coin flips,
-          we are uncertain about the coin's heads probability. More informative data can reduce this
-          uncertainty, while aleatoric variation may remain.
-        </p>
-        <table class="formula-table">
-          <thead>
-            <tr>
-              <th>Source</th>
-              <th>Meaning</th>
-              <th>Typical response</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Aleatoric</td>
-              <td>The outcome varies even when the process is known.</td>
-              <td>Model the full predictive distribution or observation noise.</td>
-            </tr>
-            <tr>
-              <td>Epistemic</td>
-              <td>Several models or parameter values remain plausible.</td>
-              <td>Collect informative data, average models, or report uncertainty.</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>
-          The law of total variance shows how these pieces combine. If \(\Theta\) represents uncertain
-          model parameters, then
-        </p>
-        <p class="math-block">
-          \[
-            \mathrm{Var}(Y\mid x,D)
-            =
-            \mathbb{E}_{\Theta\mid D}[\mathrm{Var}(Y\mid x,\Theta)]
-            +
-            \mathrm{Var}_{\Theta\mid D}(\mathbb{E}[Y\mid x,\Theta]).
-          \]
-        </p>
-        <div class="takeaway">
+          <h2>12. Predictive Uncertainty Has Two Sources</h2>
+          <p>
+            Aleatoric uncertainty is variation in the outcome that remains even if the model and its
+            parameters were known exactly. A fair coin stays random no matter how many times we inspect
+            it. In regression, measurement noise and unobserved causes often appear as aleatoric
+            uncertainty.
+          </p>
+          <p>
+            Epistemic uncertainty comes from limited knowledge. If we have seen only five coin flips,
+            we are uncertain about the coin's heads probability. More informative data can reduce this
+            uncertainty, while aleatoric variation may remain.
+          </p>
+          <div class="table-wrap" role="region" aria-label="Sources of uncertainty" tabindex="0">
+            <table>
+              <thead>
+                <tr>
+                  <th>Source</th>
+                  <th>Meaning</th>
+                  <th>Typical response</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Aleatoric</td>
+                  <td>The outcome varies even when the process is known.</td>
+                  <td>Model the full predictive distribution or observation noise.</td>
+                </tr>
+                <tr>
+                  <td>Epistemic</td>
+                  <td>Several models or parameter values remain plausible.</td>
+                  <td>Collect informative data, average models, or report uncertainty.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            The law of total variance shows how these pieces combine. If \(\Theta\) represents uncertain
+            model parameters, then
+          </p>
+          <p>
+            \[
+              \mathrm{Var}(Y\mid x,D)
+              =
+              \mathbb{E}_{\Theta\mid D}[\mathrm{Var}(Y\mid x,\Theta)]
+              +
+              \mathrm{Var}_{\Theta\mid D}(\mathbb{E}[Y\mid x,\Theta]).
+            \]
+          </p>
           <p>
             <strong>Research habit:</strong> do not report "uncertainty" as one undifferentiated
             number. State what is random, what is unknown, and which part more data could reduce.
           </p>
-        </div>
 
-        <h2>13. Entropy, KL, and Mutual Information</h2>
-        <p>
-          Entropy measures uncertainty:
-        </p>
-        <p class="math-block">
-          \[
-            H(p)=-\sum_x p(x)\log p(x)
-          \]
-        </p>
-        <p>
-          KL divergence measures how much extra cost we pay when we use \(q\) while the true
-          distribution is \(p\):
-        </p>
-        <p class="math-block">
-          \[
-            D_{\mathrm{KL}}(p\Vert q)=\sum_x p(x)\log\frac{p(x)}{q(x)}
-          \]
-        </p>
-        <p>
-          KL divergence is asymmetric and is not a distance metric. It asks how costly it is to use
-          \(q\) when expectations are taken under \(p\). Reversing the arguments asks a different
-          question and usually gives a different value.
-        </p>
-        <p>
-          Mutual information measures how much learning one variable reduces uncertainty about
-          another:
-        </p>
-        <p class="math-block">
-          \[
-            I(X;Y)
-            =
-            D_{\mathrm{KL}}(p(x,y)\Vert p(x)p(y))
-            =
-            H(X)-H(X\mid Y).
-          \]
-        </p>
-        <p>
-          A fair coin flip and a separate die roll have zero mutual information. A number and its
-          square share information even when their linear correlation can be zero. Mutual information
-          therefore detects dependence more generally than covariance.
-        </p>
+          <h2>13. Entropy, KL, and Mutual Information</h2>
+          <p>
+            Entropy measures uncertainty:
+          </p>
+          <p>
+            \[
+              H(p)=-\sum_x p(x)\log p(x)
+            \]
+          </p>
+          <p>
+            KL divergence measures how much extra cost we pay when we use \(q\) while the true
+            distribution is \(p\):
+          </p>
+          <p>
+            \[
+              D_{\mathrm{KL}}(p\Vert q)=\sum_x p(x)\log\frac{p(x)}{q(x)}
+            \]
+          </p>
+          <p>
+            KL divergence is asymmetric and is not a distance metric. It asks how costly it is to use
+            \(q\) when expectations are taken under \(p\). Reversing the arguments asks a different
+            question and usually gives a different value.
+          </p>
+          <p>
+            Mutual information measures how much learning one variable reduces uncertainty about
+            another:
+          </p>
+          <p>
+            \[
+              I(X;Y)
+              =
+              D_{\mathrm{KL}}(p(x,y)\Vert p(x)p(y))
+              =
+              H(X)-H(X\mid Y).
+            \]
+          </p>
+          <p>
+            A fair coin flip and a separate die roll have zero mutual information. A number and its
+            square share information even when their linear correlation can be zero. Mutual information
+            therefore detects dependence more generally than covariance.
+          </p>
 
-        <h2>14. Calibration and Scoring Rules Evaluate Different Qualities</h2>
-        <p>
-          Accuracy asks how often the selected label is correct. Calibration asks whether stated
-          probabilities match observed frequencies. A model may be accurate but overconfident, or
-          calibrated but too uninformative to be useful.
-        </p>
-        <p>
-          If a forecaster assigns \(80\%\) probability to rain on many comparable days, rain should
-          occur on about \(80\%\) of those days. If it occurs only half the time, the forecasts are
-          overconfident.
-        </p>
-        <p>
-          Proper scoring rules evaluate the whole predictive distribution. For a binary event with
-          outcome \(y\in\{0,1\}\) and predicted probability \(q\), the Brier score is
-        </p>
-        <p class="math-block">
-          \[
-            \mathrm{Brier}(q,y)=(q-y)^2.
-          \]
-        </p>
-        <p>
-          Log loss is more severe when a model assigns nearly zero probability to an event that
-          occurs. Reliability diagrams and expected calibration error summarize calibration by bins,
-          but their result depends on the binning scheme. Report the diagram or binning details, not
-          only one scalar.
-        </p>
-        <div class="takeaway">
+          <h2>14. Calibration and Scoring Rules Evaluate Different Qualities</h2>
+          <p>
+            Accuracy asks how often the selected label is correct. Calibration asks whether stated
+            probabilities match observed frequencies. A model may be accurate but overconfident, or
+            calibrated but too uninformative to be useful.
+          </p>
+          <p>
+            If a forecaster assigns \(80\%\) probability to rain on many comparable days, rain should
+            occur on about \(80\%\) of those days. If it occurs only half the time, the forecasts are
+            overconfident.
+          </p>
+          <p>
+            Proper scoring rules evaluate the whole predictive distribution. For a binary event with
+            outcome \(y\in\{0,1\}\) and predicted probability \(q\), the Brier score is
+          </p>
+          <p>
+            \[
+              \mathrm{Brier}(q,y)=(q-y)^2.
+            \]
+          </p>
+          <p>
+            Log loss is more severe when a model assigns nearly zero probability to an event that
+            occurs. Reliability diagrams and expected calibration error summarize calibration by bins,
+            but their result depends on the binning scheme. Report the diagram or binning details, not
+            only one scalar.
+          </p>
           <p>
             <strong>Research habit:</strong> evaluate discrimination, calibration, and sharpness
             separately. One metric rarely describes all three.
           </p>
-        </div>
 
-        <h2>15. Decisions, Thresholds, and Shift</h2>
-        <p>
-          Probabilities become useful when they are connected to actions. Decision theory says choose
-          the action with the lowest expected loss:
-        </p>
-        <p class="math-block">
-          \[
-            a^\star=\arg\min_a \mathbb{E}[L(a,Y)\mid x]
-          \]
-        </p>
-        <p>
-          Suppose the weather forecast says there is a \(40\%\) chance of rain. Should you carry an
-          umbrella? If carrying it is easy and getting wet is annoying, \(40\%\) may be enough. If the
-          umbrella is heavy and rain would not bother you much, maybe it is not. The same probability
-          can lead to different actions because the costs are different.
-        </p>
-        <p>
-          Finally, remember that the situation you learned from may not match the situation you face
-          later:
-        </p>
-        <p class="math-block">
-          \[
-            p_{\mathrm{past}}(x,y)\neq p_{\mathrm{future}}(x,y)
-          \]
-        </p>
-        <p>
-          If you estimate average commute time during summer, that estimate may not work during the
-          first week of school. If you study umbrella use in a dry month, it may not describe a rainy
-          month. This is distribution shift: the old pattern and the new pattern are not the same.
-        </p>
-        <table class="formula-table">
-          <thead>
-            <tr>
-              <th>Shift</th>
-              <th>What changes</th>
-              <th>Simple reading</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Covariate shift</td>
-              <td>\(p(x)\)</td>
-              <td>The situations encountered become different.</td>
-            </tr>
-            <tr>
-              <td>Label shift</td>
-              <td>\(p(y)\)</td>
-              <td>The frequency of outcomes changes.</td>
-            </tr>
-            <tr>
-              <td>Concept shift</td>
-              <td>\(p(y\mid x)\)</td>
-              <td>The relationship between evidence and outcome changes.</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>
-          When uncertainty is too high, abstaining can be a valid action. Selective prediction asks a
-          model to answer only on cases where its expected benefit exceeds the cost of a mistake or a
-          referral. The threshold belongs to the decision problem, not to probability theory alone.
-        </p>
+          <h2>15. Decisions, Thresholds, and Shift</h2>
+          <p>
+            Probabilities become useful when they are connected to actions. Decision theory says choose
+            the action with the lowest expected loss:
+          </p>
+          <p>
+            \[
+              a^\star=\arg\min_a \mathbb{E}[L(a,Y)\mid x]
+            \]
+          </p>
+          <p>
+            Suppose the weather forecast says there is a \(40\%\) chance of rain. Should you carry an
+            umbrella? If carrying it is easy and getting wet is annoying, \(40\%\) may be enough. If the
+            umbrella is heavy and rain would not bother you much, maybe it is not. The same probability
+            can lead to different actions because the costs are different.
+          </p>
+          <p>
+            Finally, remember that the situation you learned from may not match the situation you face
+            later:
+          </p>
+          <p>
+            \[
+              p_{\mathrm{past}}(x,y)\neq p_{\mathrm{future}}(x,y)
+            \]
+          </p>
+          <p>
+            If you estimate average commute time during summer, that estimate may not work during the
+            first week of school. If you study umbrella use in a dry month, it may not describe a rainy
+            month. This is distribution shift: the old pattern and the new pattern are not the same.
+          </p>
+          <div class="table-wrap" role="region" aria-label="Types of distribution shift" tabindex="0">
+            <table>
+              <thead>
+                <tr>
+                  <th>Shift</th>
+                  <th>What changes</th>
+                  <th>Simple reading</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Covariate shift</td>
+                  <td>\(p(x)\)</td>
+                  <td>The situations encountered become different.</td>
+                </tr>
+                <tr>
+                  <td>Label shift</td>
+                  <td>\(p(y)\)</td>
+                  <td>The frequency of outcomes changes.</td>
+                </tr>
+                <tr>
+                  <td>Concept shift</td>
+                  <td>\(p(y\mid x)\)</td>
+                  <td>The relationship between evidence and outcome changes.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            When uncertainty is too high, abstaining can be a valid action. Selective prediction asks a
+            model to answer only on cases where its expected benefit exceeds the cost of a mistake or a
+            referral. The threshold belongs to the decision problem, not to probability theory alone.
+          </p>
 
-        <h2>A Research Workflow for Probabilistic Claims</h2>
-        <ol>
-          <li>Name the random variables, their support, and what is observed versus unknown.</li>
-          <li>State the target distribution or expectation before choosing an estimator.</li>
-          <li>Write the factorization and identify every independence or i.i.d. assumption.</li>
-          <li>Separate likelihood, prior information, and the quantity ultimately used for prediction.</li>
-          <li>Report sampling uncertainty, sensitivity to data, and any unmodeled sources of noise.</li>
-          <li>Evaluate the full distribution with proper scores and inspect calibration separately.</li>
-          <li>Test whether the deployment distribution differs from the data used for estimation.</li>
-          <li>Connect probability estimates to an explicit loss, utility, threshold, or abstention rule.</li>
-        </ol>
+          <h2>A Research Workflow for Probabilistic Claims</h2>
+          <ol>
+            <li>Name the random variables, their support, and what is observed versus unknown.</li>
+            <li>State the target distribution or expectation before choosing an estimator.</li>
+            <li>Write the factorization and identify every independence or i.i.d. assumption.</li>
+            <li>Separate likelihood, prior information, and the quantity ultimately used for prediction.</li>
+            <li>Report sampling uncertainty, sensitivity to data, and any unmodeled sources of noise.</li>
+            <li>Evaluate the full distribution with proper scores and inspect calibration separately.</li>
+            <li>Test whether the deployment distribution differs from the data used for estimation.</li>
+            <li>Connect probability estimates to an explicit loss, utility, threshold, or abstention rule.</li>
+          </ol>
 
-        <h2>Formula Sheet</h2>
-        <table class="formula-table">
-          <thead>
-            <tr>
-              <th>Concept</th>
-              <th>Formula</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Conditional probability</td>
-              <td>\(p(a\mid b)=p(a,b)/p(b)\)</td>
-            </tr>
-            <tr>
-              <td>Total probability</td>
-              <td>\(p(a)=\sum_b p(a\mid b)p(b)\)</td>
-            </tr>
-            <tr>
-              <td>Product rule</td>
-              <td>\(p(a,b)=p(a\mid b)p(b)=p(b\mid a)p(a)\)</td>
-            </tr>
-            <tr>
-              <td>Chain rule</td>
-              <td>\(p(x_{1:n})=\prod_{i=1}^n p(x_i\mid x_{1:i-1})\)</td>
-            </tr>
-            <tr>
-              <td>Marginalization</td>
-              <td>\(p(a)=\sum_b p(a,b)\) or \(p(a)=\int p(a,b)\,db\)</td>
-            </tr>
-            <tr>
-              <td>Bayes' rule</td>
-              <td>\(p(a\mid b)=p(b\mid a)p(a)/p(b)\)</td>
-            </tr>
-            <tr>
-              <td>Expectation</td>
-              <td>\(\mathbb{E}[X]=\sum_x xp(x)\) or \(\int xf(x)\,dx\)</td>
-            </tr>
-            <tr>
-              <td>Variance</td>
-              <td>\(\mathrm{Var}(X)=\mathbb{E}[X^2]-\mathbb{E}[X]^2\)</td>
-            </tr>
-            <tr>
-              <td>Covariance</td>
-              <td>\(\mathrm{Cov}(X,Y)=\mathbb{E}[(X-\mathbb{E}X)(Y-\mathbb{E}Y)]\)</td>
-            </tr>
-            <tr>
-              <td>Correlation</td>
-              <td>\(\rho_{X,Y}=\mathrm{Cov}(X,Y)/(\sigma_X\sigma_Y)\)</td>
-            </tr>
-            <tr>
-              <td>Monte Carlo</td>
-              <td>\(\mathbb{E}[g(X)]\approx m^{-1}\sum_{j=1}^m g(x^{(j)})\)</td>
-            </tr>
-            <tr>
-              <td>Standard error of a mean</td>
-              <td>\(\mathrm{SE}(\bar X)=\sigma/\sqrt{n}\)</td>
-            </tr>
-            <tr>
-              <td>Entropy</td>
-              <td>\(H(p)=-\sum_x p(x)\log p(x)\)</td>
-            </tr>
-            <tr>
-              <td>Cross-entropy</td>
-              <td>\(H(p,q)=-\mathbb{E}_{p}[\log q(X)]\)</td>
-            </tr>
-            <tr>
-              <td>KL divergence</td>
-              <td>\(D_{\mathrm{KL}}(p\Vert q)=\mathbb{E}_p[\log p(X)-\log q(X)]\)</td>
-            </tr>
-            <tr>
-              <td>Mutual information</td>
-              <td>\(I(X;Y)=D_{\mathrm{KL}}(p(x,y)\Vert p(x)p(y))\)</td>
-            </tr>
-            <tr>
-              <td>Posterior predictive</td>
-              <td>\(p(y_\star\mid x_\star,D)=\int p(y_\star\mid x_\star,\theta)p(\theta\mid D)\,d\theta\)</td>
-            </tr>
-            <tr>
-              <td>Bayes decision rule</td>
-              <td>\(a^\star=\arg\min_a\mathbb{E}[L(a,Y)\mid x]\)</td>
-            </tr>
-          </tbody>
-        </table>
+          <h2>Formula Sheet</h2>
+          <div class="table-wrap" role="region" aria-label="Formula sheet" tabindex="0">
+            <table>
+              <thead>
+                <tr>
+                  <th>Concept</th>
+                  <th>Formula</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Conditional probability</td>
+                  <td>\(p(a\mid b)=p(a,b)/p(b)\)</td>
+                </tr>
+                <tr>
+                  <td>Total probability</td>
+                  <td>\(p(a)=\sum_b p(a\mid b)p(b)\)</td>
+                </tr>
+                <tr>
+                  <td>Product rule</td>
+                  <td>\(p(a,b)=p(a\mid b)p(b)=p(b\mid a)p(a)\)</td>
+                </tr>
+                <tr>
+                  <td>Chain rule</td>
+                  <td>\(p(x_{1:n})=\prod_{i=1}^n p(x_i\mid x_{1:i-1})\)</td>
+                </tr>
+                <tr>
+                  <td>Marginalization</td>
+                  <td>\(p(a)=\sum_b p(a,b)\) or \(p(a)=\int p(a,b)\,db\)</td>
+                </tr>
+                <tr>
+                  <td>Bayes' rule</td>
+                  <td>\(p(a\mid b)=p(b\mid a)p(a)/p(b)\)</td>
+                </tr>
+                <tr>
+                  <td>Expectation</td>
+                  <td>\(\mathbb{E}[X]=\sum_x xp(x)\) or \(\int xf(x)\,dx\)</td>
+                </tr>
+                <tr>
+                  <td>Variance</td>
+                  <td>\(\mathrm{Var}(X)=\mathbb{E}[X^2]-\mathbb{E}[X]^2\)</td>
+                </tr>
+                <tr>
+                  <td>Covariance</td>
+                  <td>\(\mathrm{Cov}(X,Y)=\mathbb{E}[(X-\mathbb{E}X)(Y-\mathbb{E}Y)]\)</td>
+                </tr>
+                <tr>
+                  <td>Correlation</td>
+                  <td>\(\rho_{X,Y}=\mathrm{Cov}(X,Y)/(\sigma_X\sigma_Y)\)</td>
+                </tr>
+                <tr>
+                  <td>Monte Carlo</td>
+                  <td>\(\mathbb{E}[g(X)]\approx m^{-1}\sum_{j=1}^m g(x^{(j)})\)</td>
+                </tr>
+                <tr>
+                  <td>Standard error of a mean</td>
+                  <td>\(\mathrm{SE}(\bar X)=\sigma/\sqrt{n}\)</td>
+                </tr>
+                <tr>
+                  <td>Entropy</td>
+                  <td>\(H(p)=-\sum_x p(x)\log p(x)\)</td>
+                </tr>
+                <tr>
+                  <td>Cross-entropy</td>
+                  <td>\(H(p,q)=-\mathbb{E}_{p}[\log q(X)]\)</td>
+                </tr>
+                <tr>
+                  <td>KL divergence</td>
+                  <td>\(D_{\mathrm{KL}}(p\Vert q)=\mathbb{E}_p[\log p(X)-\log q(X)]\)</td>
+                </tr>
+                <tr>
+                  <td>Mutual information</td>
+                  <td>\(I(X;Y)=D_{\mathrm{KL}}(p(x,y)\Vert p(x)p(y))\)</td>
+                </tr>
+                <tr>
+                  <td>Posterior predictive</td>
+                  <td>\(p(y_\star\mid x_\star,D)=\int p(y_\star\mid x_\star,\theta)p(\theta\mid D)\,d\theta\)</td>
+                </tr>
+                <tr>
+                  <td>Bayes decision rule</td>
+                  <td>\(a^\star=\arg\min_a\mathbb{E}[L(a,Y)\mid x]\)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-        <h2>Closing Perspective</h2>
-        <p>
-          Probability is not only a set of formulas. It is a discipline for keeping claims honest
-          when information is incomplete.
-        </p>
-        <p>
-          A strong probabilistic argument makes four things visible: what can vary, what was assumed,
-          what the data changed, and how uncertainty affects the final decision. When those pieces are
-          explicit, other researchers can test the argument instead of merely trusting its output.
-        </p>
-      </section>
-    </article>
-
-    <footer>
-      <hr class="slender" />
-      <div class="credits">
-        <a href="/blog.html">All research notes</a>
-        <a href="https://github.com/Moe-Zbeeb">GitHub</a>
-        <a href="https://www.linkedin.com/in/mohamad-zbib-16b604265/">LinkedIn</a>
-        <a href="https://scholar.google.com/citations?user=JJg7iTMAAAAJ&amp;hl=en">Scholar</a>
-        <a href="mailto:mohamadzbib@csail.mit.edu">Email</a>
-      </div>
-    </footer>
+          <h2>Closing Perspective</h2>
+          <p>
+            Probability is not only a set of formulas. It is a discipline for keeping claims honest
+            when information is incomplete.
+          </p>
+          <p>
+            A strong probabilistic argument makes four things visible: what can vary, what was assumed,
+            what the data changed, and how uncertainty affects the final decision. When those pieces are
+            explicit, other researchers can test the argument instead of merely trusting its output.
+          </p>
+        </section>
+      </article>
+    </main>
   </body>
 </html>

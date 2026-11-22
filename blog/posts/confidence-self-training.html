@@ -1,96 +1,84 @@
 <!DOCTYPE html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Confidence is not all you need | Mohammad Zbeeb</title>
-<meta name="description" content="A critique of self-confidence as a learning signal: what equal-weight controls, numerical audits, and useful exploration reveal." />
-<meta name="author" content="Mohammad Zbeeb" />
-<meta property="og:title" content="Confidence is not all you need" />
-<meta property="og:description" content="A critique of self-confidence as a learning signal: what equal-weight controls, numerical audits, and useful exploration reveal." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://moe-zbeeb.github.io/blog/posts/confidence-self-training.html" />
-<meta name="twitter:card" content="summary" />
-<link rel="canonical" href="https://moe-zbeeb.github.io/blog/posts/confidence-self-training.html" />
-<link rel="stylesheet" href="/css/tufte.css?v=20261006-white" />
-<link rel="stylesheet" href="/css/site.css?v=20261006-white" />
-<link rel="stylesheet" href="confidence-self-training/post.css?v=3" />
-<link rel="stylesheet" href="/css/notes.css?v=20261007-notes" />
-    <link rel="stylesheet" href="/css/navigation.css?v=20261007-notes" />
-    <script src="/js/navigation.js?v=20261007-notes" defer></script>
-</head>
-<body class="research-page note-page">
-    <a class="note-skip-link" href="#note-content">Skip to content</a>
-<header class="site-header">
-      <nav class="main-nav page-width" aria-label="Main navigation">
-        <a class="site-name" href="/">Mohammad Zbeeb</a>
-        <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-controls="nav-main" aria-expanded="false"><span class="menu-icon" aria-hidden="true"></span></button>
-        <div class="nav-links" id="nav-main">
-          <a href="/">Home</a>
-          <a href="/blog/#research">Publications</a>
-          <a href="/blog.html" aria-current="page">Research Notes</a>
-        </div>
-      </nav>
-    </header>
-<main><article class="group research-post" id="note-content">
-<p class="note-eyebrow">Research Notes · Self-training · Experimental notes</p>
-<h1>Confidence is not all you need</h1>
-<p class="subtitle">A critique of self-confidence as a learning signal.</p>
-<p class="opening">The promise of <a href="https://arxiv.org/html/2506.06395v3">Confidence Is All You Need</a> is appealing: let a model generate answers, reward the ones it considers likely, and improve reasoning without labels or an external judge.</p>
-<p>I wanted that idea to work. My first encouraging result seemed to support it. Then I added controls, repeated the experiment, and inspected the actual learning signal.</p>
-<p>My objection is simple: <strong>a better checkpoint does not establish that confidence caused the improvement.</strong> The paper reports gains, but I do not think it adequately separates that claim from the much stronger claim that self-confidence is a reliable learning signal.</p>
-<p>I tested the published idea in an independent implementation using Qwen models. These are my results, not an audit of the authors' training runs or an exact replication of their entire evaluation setup.</p>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Confidence is not all you need | Mohammad Zbeeb</title>
+    <meta name="description" content="A critique of self-confidence as a learning signal: what equal-weight controls, numerical audits, and useful exploration reveal." />
+    <meta name="author" content="Mohammad Zbeeb" />
+    <meta property="og:title" content="Confidence is not all you need" />
+    <meta property="og:description" content="A critique of self-confidence as a learning signal: what equal-weight controls, numerical audits, and useful exploration reveal." />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://moe-zbeeb.github.io/blog/posts/confidence-self-training.html" />
+    <meta name="twitter:card" content="summary" />
+    <link rel="canonical" href="https://moe-zbeeb.github.io/blog/posts/confidence-self-training.html" />
+    <link rel="stylesheet" href="/css/cv.css?v=20261114" />
+    <link rel="stylesheet" href="/css/notes.css?v=20261122" />
+  </head>
 
-<section id="confidence">
-<h2>Being predictable is not the same as being right</h2>
-<p>The paper's <a href="https://arxiv.org/html/2506.06395v3#S2.SS1">objective rewards concentration</a>: the model puts more probability on responses it already favors. That objective has no direct way to distinguish a correct answer from a confidently repeated mistake.</p>
-<p>Imagine a model that usually gives the wrong answer but occasionally finds the right one. Reinforcing its preferred response can make it more consistent while making the correct answer harder to discover. Whether confidence helps therefore depends on which responses the model already prefers.</p>
-<p>There is also a length problem. Whole-response probability multiplies the probabilities of every token. A long correct solution can receive less weight than a short incorrect one. Calling that number “confidence” does not turn it into a probability of correctness.</p>
-<p>This does not make confidence useless. It makes the missing question more important: <strong>when does rewarding likelihood actually improve correctness?</strong></p>
-</section>
+  <body>
+    <a class="skip-link" href="#note-content">Skip to content</a>
+    <main class="cv-page notes-page">
+      <p class="notes-back"><a href="/blog.html"><span aria-hidden="true">← </span>Research Notes</a></p>
+      <article class="note-article" id="note-content" tabindex="-1">
+        <h1>Confidence is not all you need</h1>
+        <p>A critique of self-confidence as a learning signal.</p>
+        <p>The promise of <a href="https://arxiv.org/html/2506.06395v3">Confidence Is All You Need</a> is appealing: let a model generate answers, reward the ones it considers likely, and improve reasoning without labels or an external judge.</p>
+        <p>I wanted that idea to work. My first encouraging result seemed to support it. Then I added controls, repeated the experiment, and inspected the actual learning signal.</p>
+        <p>My objection is simple: <strong>a better checkpoint does not establish that confidence caused the improvement.</strong> The paper reports gains, but I do not think it adequately separates that claim from the much stronger claim that self-confidence is a reliable learning signal.</p>
+        <p>I tested the published idea in an independent implementation using Qwen models. These are my results, not an audit of the authors' training runs or an exact replication of their entire evaluation setup.</p>
 
-<section id="controls">
-<h2>The control changes the story</h2>
-<p>I compared the original model with two trained copies: one configured to use confidence weighting, and one giving every sampled response the same weight. I call the first arm <em>nominal RLSC</em>, because the configured confidence term did not always affect the applied weights.</p>
-<p>Both trained copies learned from their own generated answers. The equal-weight control tests whether adding confidence provides anything beyond that shared procedure.</p>
-<div class="table-wrap" role="region" aria-label="Math-model accuracy on MATH-500" tabindex="0"><table id="math-results"><caption>Math-model accuracy on MATH-500 (%)</caption><thead><tr><th scope="col">Experiment</th><th scope="col">Original</th><th scope="col">Nominal RLSC</th><th scope="col">Equal weights</th></tr></thead><tbody><tr><th scope="row">1.5B · 10 updates</th><td>52.60</td><td>46.20</td><td class="best"><strong>54.80</strong></td></tr><tr><th scope="row">1.5B · 20 updates</th><td>51.80</td><td>43.80</td><td class="best"><strong>53.40</strong></td></tr><tr><th scope="row">7B · 10 updates, run A</th><td>58.60</td><td class="best"><strong>69.80</strong></td><td>62.40</td></tr><tr><th scope="row">7B · 20 updates</th><td>58.00</td><td>66.60</td><td class="best"><strong>75.00</strong></td></tr><tr><th scope="row">7B · 10 updates, run B</th><td>58.20</td><td>60.80</td><td class="best"><strong>69.60</strong></td></tr></tbody></table></div><p class="table-note">Green and bold mark the highest score in each row. Each run starts from the original model; run A and run B use different random seeds. Original scores are the recorded baselines for each setting.</p>
-<p>The confidence-configured arm wins one of these five comparisons. Equal weighting wins the other four. The initial 7B improvement looked exciting, but its relative advantage did not survive a longer run or another seed. An audit also found constant applied weights in that early positive run.</p>
-<p>General Qwen models were less reassuring: nominal RLSC finished below the original model in all six ten-update settings I tested. A lower learning rate rescued some performance, but still did not produce a consistent confidence advantage.</p>
-<p>These results do not erase the paper's reported gains. They challenge the explanation. Its <a href="https://arxiv.org/html/2506.06395v3#S3.SS3">full smoothing ablation is deferred</a>, and the reported benchmark comparison does not establish a benefit over equal-weight self-training. That control is central to the claim.</p>
-</section>
+        <section id="confidence">
+        <h2>Being predictable is not the same as being right</h2>
+        <p>The paper's <a href="https://arxiv.org/html/2506.06395v3#S2.SS1">objective rewards concentration</a>: the model puts more probability on responses it already favors. That objective has no direct way to distinguish a correct answer from a confidently repeated mistake.</p>
+        <p>Imagine a model that usually gives the wrong answer but occasionally finds the right one. Reinforcing its preferred response can make it more consistent while making the correct answer harder to discover. Whether confidence helps therefore depends on which responses the model already prefers.</p>
+        <p>There is also a length problem. Whole-response probability multiplies the probabilities of every token. A long correct solution can receive less weight than a short incorrect one. Calling that number “confidence” does not turn it into a probability of correctness.</p>
+        <p>This does not make confidence useless. It makes the missing question more important: <strong>when does rewarding likelihood actually improve correctness?</strong></p>
+        </section>
 
-<section id="numerics">
-<h2>Sometimes confidence is not even in the update</h2>
-<p>The published recipe adds a constant to whole-response probability. I tested its suggested value, giving a weight of <code>p(response) + 0.1</code>.</p>
-<p>Whole-response probabilities get tiny. Even an answer with 200 tokens, each assigned probability 0.9, has a sequence probability of about 0.0000000007. In the arithmetic used for my training weights, adding that to 0.1 changes nothing.</p>
-<p>In one closely audited 14B training pair, <strong>all 320 nominal confidence weights were identical to the equal-weight control.</strong> Most probabilities became zero during exponentiation; the rest were too small to change the weight after adding 0.1.</p>
-<p>That is a concrete failure mode of my implementation of the published rule. It is not evidence that the authors' actual runs had the same numerical behavior. But it shows why a confidence-based method needs to report the weights that actually reach training.</p>
-<p>The two models can still end up different because they sampled different answers. Their different scores cannot demonstrate a confidence effect when confidence never changed their weights.</p>
-</section>
+        <section id="controls">
+        <h2>The control changes the story</h2>
+        <p>I compared the original model with two trained copies: one configured to use confidence weighting, and one giving every sampled response the same weight. I call the first arm <em>nominal RLSC</em>, because the configured confidence term did not always affect the applied weights.</p>
+        <p>Both trained copies learned from their own generated answers. The equal-weight control tests whether adding confidence provides anything beyond that shared procedure.</p>
+        <div class="table-wrap" role="region" aria-label="Math-model accuracy on MATH-500" tabindex="0"><table id="math-results"><caption>Math-model accuracy on MATH-500 (%)</caption><thead><tr><th scope="col">Experiment</th><th scope="col">Original</th><th scope="col">Nominal RLSC</th><th scope="col">Equal weights</th></tr></thead><tbody><tr><th scope="row">1.5B · 10 updates</th><td>52.60</td><td>46.20</td><td class="best"><strong>54.80</strong></td></tr><tr><th scope="row">1.5B · 20 updates</th><td>51.80</td><td>43.80</td><td class="best"><strong>53.40</strong></td></tr><tr><th scope="row">7B · 10 updates, run A</th><td>58.60</td><td class="best"><strong>69.80</strong></td><td>62.40</td></tr><tr><th scope="row">7B · 20 updates</th><td>58.00</td><td>66.60</td><td class="best"><strong>75.00</strong></td></tr><tr><th scope="row">7B · 10 updates, run B</th><td>58.20</td><td>60.80</td><td class="best"><strong>69.60</strong></td></tr></tbody></table></div><p class="table-note">Green and bold mark the highest score in each row. Each run starts from the original model; run A and run B use different random seeds. Original scores are the recorded baselines for each setting.</p>
+        <p>The confidence-configured arm wins one of these five comparisons. Equal weighting wins the other four. The initial 7B improvement looked exciting, but its relative advantage did not survive a longer run or another seed. An audit also found constant applied weights in that early positive run.</p>
+        <p>General Qwen models were less reassuring: nominal RLSC finished below the original model in all six ten-update settings I tested. A lower learning rate rescued some performance, but still did not produce a consistent confidence advantage.</p>
+        <p>These results do not erase the paper's reported gains. They challenge the explanation. Its <a href="https://arxiv.org/html/2506.06395v3#S3.SS3">full smoothing ablation is deferred</a>, and the reported benchmark comparison does not establish a benefit over equal-weight self-training. That control is central to the claim.</p>
+        </section>
 
-<section id="exploration">
-<h2>What happens to the answers the model rarely finds?</h2>
-<p>A model becoming more certain would not, by itself, convince me it had improved. I also want to know whether it can still find correct answers through sampling.</p>
-<p>I checked this on 64 held-out questions across a 14B training pair. Pass@1 estimates the chance that one sampled answer is correct. Pass@16 asks whether sixteen attempts contain at least one correct answer.</p>
-<p>The original model solved 90.6% of these questions within sixteen attempts. After training, that coverage fell to 43.8% for nominal RLSC and 79.7% for the equal-weight control. Single-sample accuracy also fell in both arms.</p>
-<p>On eleven questions where correct answers were initially rare, fresh sampling recovered nine with the original model, five with the control, and none with nominal RLSC.</p>
-<p>This was the pair with identical applied weights, so I cannot blame that difference on active confidence weighting. Many responses also ran out of tokens before finishing. The finding is narrower: useful answer coverage deteriorated under this setup. It does not prove the model permanently lost those reasoning paths.</p>
-<p>Still, this is exactly the kind of test a mode-sharpening method needs. A headline accuracy gain cannot tell the whole story about useful exploration.</p>
-</section>
+        <section id="numerics">
+        <h2>Sometimes confidence is not even in the update</h2>
+        <p>The published recipe adds a constant to whole-response probability. I tested its suggested value, giving a weight of <code>p(response) + 0.1</code>.</p>
+        <p>Whole-response probabilities get tiny. Even an answer with 200 tokens, each assigned probability 0.9, has a sequence probability of about 0.0000000007. In the arithmetic used for my training weights, adding that to 0.1 changes nothing.</p>
+        <p>In one closely audited 14B training pair, <strong>all 320 nominal confidence weights were identical to the equal-weight control.</strong> Most probabilities became zero during exponentiation; the rest were too small to change the weight after adding 0.1.</p>
+        <p>That is a concrete failure mode of my implementation of the published rule. It is not evidence that the authors' actual runs had the same numerical behavior. But it shows why a confidence-based method needs to report the weights that actually reach training.</p>
+        <p>The two models can still end up different because they sampled different answers. Their different scores cannot demonstrate a confidence effect when confidence never changed their weights.</p>
+        </section>
 
-<section id="verdict">
-<h2>What would convince me?</h2>
-<p>Confidence helped rank existing answers in my tests. That is a useful result. Choosing among answers already generated, however, is a different claim from using confidence to improve the model that generates them.</p>
-<p>For the training claim, I would want three things:</p>
-<ul>
-<li>Evidence that confidence meaningfully changes the applied weights.</li>
-<li>A repeatable advantage over both the original model and equal-weight self-training.</li>
-<li>Checks that correct answers remain recoverable through sampling, with response length and unfinished answers accounted for.</li>
-</ul>
-<p>My experiments do not show that every confidence-based method must fail. They show why the title asks me to accept too much. Confidence can be informative, numerically irrelevant, or reinforce an existing mistake. A convincing method has to establish which one is happening.</p>
-<p><strong>I came looking for self-improvement. I found that the first thing to verify is whether the supposed learning signal is doing anything at all.</strong></p>
-<p class="table-note">The <a href="confidence-self-training/results.json">supporting results and protocol</a> contain the full comparisons. Scores here use my evaluation setup; they are not presented as direct numerical reproductions of the paper's reported scores.</p>
-</section>
-</article></main>
-<footer><hr class="slender" /><div class="credits"><a href="/blog.html">All posts</a><a href="https://github.com/Moe-Zbeeb">GitHub</a><a href="https://scholar.google.com/citations?user=JJg7iTMAAAAJ&amp;hl=en">Scholar</a></div></footer>
-</body></html>
+        <section id="exploration">
+        <h2>What happens to the answers the model rarely finds?</h2>
+        <p>A model becoming more certain would not, by itself, convince me it had improved. I also want to know whether it can still find correct answers through sampling.</p>
+        <p>I checked this on 64 held-out questions across a 14B training pair. Pass@1 estimates the chance that one sampled answer is correct. Pass@16 asks whether sixteen attempts contain at least one correct answer.</p>
+        <p>The original model solved 90.6% of these questions within sixteen attempts. After training, that coverage fell to 43.8% for nominal RLSC and 79.7% for the equal-weight control. Single-sample accuracy also fell in both arms.</p>
+        <p>On eleven questions where correct answers were initially rare, fresh sampling recovered nine with the original model, five with the control, and none with nominal RLSC.</p>
+        <p>This was the pair with identical applied weights, so I cannot blame that difference on active confidence weighting. Many responses also ran out of tokens before finishing. The finding is narrower: useful answer coverage deteriorated under this setup. It does not prove the model permanently lost those reasoning paths.</p>
+        <p>Still, this is exactly the kind of test a mode-sharpening method needs. A headline accuracy gain cannot tell the whole story about useful exploration.</p>
+        </section>
+
+        <section id="verdict">
+        <h2>What would convince me?</h2>
+        <p>Confidence helped rank existing answers in my tests. That is a useful result. Choosing among answers already generated, however, is a different claim from using confidence to improve the model that generates them.</p>
+        <p>For the training claim, I would want three things:</p>
+        <ul>
+        <li>Evidence that confidence meaningfully changes the applied weights.</li>
+        <li>A repeatable advantage over both the original model and equal-weight self-training.</li>
+        <li>Checks that correct answers remain recoverable through sampling, with response length and unfinished answers accounted for.</li>
+        </ul>
+        <p>My experiments do not show that every confidence-based method must fail. They show why the title asks me to accept too much. Confidence can be informative, numerically irrelevant, or reinforce an existing mistake. A convincing method has to establish which one is happening.</p>
+        <p><strong>I came looking for self-improvement. I found that the first thing to verify is whether the supposed learning signal is doing anything at all.</strong></p>
+        <p class="table-note">The <a href="confidence-self-training/results.json">supporting results and protocol</a> contain the full comparisons. Scores here use my evaluation setup; they are not presented as direct numerical reproductions of the paper's reported scores.</p>
+        </section>
+      </article>
+    </main>
+  </body>
+</html>

@@ -1,336 +1,125 @@
-@import url("/css/notes-fonts.css");
-
-html {
-  font-size: 16px;
-  scroll-padding-top: 64px;
+.notes-page {
+  padding: 20px;
 }
 
-body.note-page {
-  width: 100%;
-  max-width: none;
+.notes-back {
+  margin-bottom: 24px;
+}
+
+.notes-page h1 {
+  text-align: left;
+}
+
+.notes-list {
   margin: 0;
-  padding: 40px 0 0;
-  background: #fff;
-  color: #252525;
-  font-family: "Linux Libertine", Georgia, serif;
-  font-size: 18px;
-}
-
-.note-page > main {
-  width: 100%;
-  max-width: none;
-  margin: 0;
-}
-
-.note-page article.group {
-  width: calc(100% - 48px);
-  max-width: 740px;
-  margin: 0 auto;
-  padding: 60px 0 36px;
-}
-
-.note-page article > .note-eyebrow {
-  margin: 0 0 18px;
-  color: #555;
-  font-family: "Linux Biolinum", "Helvetica Neue", sans-serif;
-  font-size: 12px;
-  line-height: 1.6;
-  letter-spacing: 0.06em;
-  text-align: left;
-  text-transform: uppercase;
-}
-
-.note-page article > h1 {
-  max-width: none;
-  margin: 0 0 18px;
-  color: #333;
-  font-size: 38px;
-  font-family: "Linux Biolinum", "Helvetica Neue", sans-serif;
-  font-weight: 400;
-  line-height: 1.16;
-  letter-spacing: 0;
-  text-align: left;
-  text-wrap: balance;
-}
-
-.note-page article > .subtitle {
-  max-width: 58ch;
-  margin: 0 0 24px;
-  color: #667085;
-  font-size: 21px;
-  font-style: italic;
-  line-height: 1.6;
-  text-align: left;
-  text-wrap: balance;
-}
-
-.note-page article > .post-meta {
-  margin: 0 0 28px;
-  color: #667085;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 12px;
-  font-style: normal;
-  text-align: left;
-}
-
-.note-page article p,
-.note-page article li {
-  font-size: 18px;
-  line-height: 1.62;
-  text-align: left;
-}
-
-.note-page article p {
-  margin: 0 0 10px;
-}
-
-.note-page article ol,
-.note-page article ul {
-  margin: 0 0 24px;
-  padding-left: 24px;
-}
-
-.note-page article h2 {
-  max-width: none;
-  margin: 30px 0 12px;
-  color: #333;
-  font-family: "Linux Biolinum", "Helvetica Neue", sans-serif;
-  font-size: 23px;
-  font-weight: 700;
-  line-height: 1.3;
-  text-wrap: balance;
-}
-
-.note-page article h3 {
-  max-width: none;
-  margin: 32px 0 16px;
-  color: #333;
-  font-family: "Linux Biolinum", "Helvetica Neue", sans-serif;
-  font-size: 20px;
-  font-weight: 700;
-  font-style: normal;
-  line-height: 1.4;
-}
-
-.note-page article p a {
-  color: #0088cc;
-  background: none;
-  text-shadow: none;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-.note-page article .lead-card,
-.note-page article .takeaway {
-  max-width: none;
-  padding: 22px 26px;
-  margin: 28px 0;
-  border-radius: 0 8px 8px 0;
-}
-
-.note-page article .lead-card p,
-.note-page article .takeaway p {
-  margin: 0;
-  font-size: 17px;
-  line-height: 1.62;
-}
-
-.note-page article .lead-card p + p {
-  margin-top: 14px;
-}
-
-.note-page article .article-map {
-  max-width: none;
-  padding: 24px 0;
-  margin: 32px 0;
-}
-
-.note-page article .article-map h2 {
-  margin: 0 0 14px;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.note-page article .article-map li {
-  margin-bottom: 8px;
-  font-size: 16px;
-  line-height: 1.6;
-}
-
-.note-page article figure.fullwidth {
-  width: 100%;
-  max-width: 100%;
-  margin: 32px 0;
-}
-
-.note-page article figure.fullwidth figcaption {
-  max-width: 100%;
-  color: #667085;
-  font-size: 13px;
-  line-height: 1.6;
-}
-
-.note-page article table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.note-page article th,
-.note-page article td {
-  font-size: 15px;
-  line-height: 1.6;
-}
-
-.note-page article .table-note {
-  color: #667085;
-  font-size: 13px;
-  line-height: 1.6;
-}
-
-.note-page .note-grid {
-  width: 100%;
-  max-width: 100%;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 20px;
-  margin: 32px 0;
-}
-
-.note-page .note-card {
-  display: flex;
-  flex-direction: column;
-  padding: 24px;
-  border-color: #e5eaf0;
-  border-radius: 8px;
-}
-
-.note-page .note-card h2 {
-  margin: 0 0 16px;
-  font-size: 23px;
-}
-
-.note-page .note-card p {
-  margin-bottom: 16px;
-  font-size: 16px;
-  line-height: 1.6;
-}
-
-.note-page .note-card .post-meta {
-  color: #667085;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 12px;
-}
-
-.note-page .note-card .note-actions {
-  margin: auto 0 0;
-}
-
-.note-page .note-actions a {
-  padding: 8px 14px;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 13px;
-}
-
-body.note-page > footer {
-  width: calc(100% - 48px);
-  max-width: 740px;
-  margin: 0 auto;
   padding: 0;
+  list-style: none;
+  line-height: 1.5;
 }
 
-.note-page > footer hr.slender {
-  margin: 16px 0 24px;
+.notes-list li {
+  display: grid;
+  grid-template-columns: 10ch minmax(0, 1fr);
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 8px;
 }
 
-.note-page > footer .credits {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 16px 24px;
-  padding: 0 0 36px;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 12px;
+.notes-list time {
+  color: #595959;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.note-article {
+  font-size: 16px;
   line-height: 1.6;
+  overflow-wrap: anywhere;
 }
 
-.note-page > footer .credits a {
-  margin: 0;
+.note-article h2 {
+  margin: 28px 0 10px;
 }
 
-.note-page a:focus-visible {
-  outline: 2px solid #0088cc;
+.note-article h3 {
+  margin: 20px 0 8px;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.note-article p a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.note-article ul,
+.note-article ol {
+  padding-inline-start: 24px;
+}
+
+.note-article .post-meta,
+.note-article .table-note,
+.note-article figcaption {
+  color: #595959;
+  font-size: 14px;
+}
+
+.note-article figure {
+  margin: 24px 0;
+}
+
+.note-article figure img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.note-article figcaption {
+  margin-top: 8px;
+}
+
+.table-wrap,
+.note-article mjx-container[display="true"] {
+  overflow-x: auto;
+}
+
+.table-wrap {
+  margin: 16px 0;
+}
+
+.table-wrap:focus-visible {
+  outline: 2px solid var(--link-color);
   outline-offset: 4px;
 }
 
-@media (max-width: 600px) {
-  html {
-    scroll-padding-top: 106px;
-  }
-
-  body.note-page {
-    padding-top: 82px;
-  }
-
-  .note-page article.group {
-    padding-top: 40px;
-  }
-
-  .note-page article > .subtitle {
-    font-size: 18px;
-  }
-
-  .note-page article p,
-  .note-page article li {
-    font-size: 17px;
-    line-height: 1.75;
-  }
-
-  .note-page article h2 {
-    margin-top: 36px;
-    font-size: 26px;
-  }
-
-  .note-page article .lead-card,
-  .note-page article .takeaway {
-    padding: 18px;
-  }
-
-  .note-page article table {
-    display: block;
-    overflow-x: auto;
-  }
-
-  .note-page article th,
-  .note-page article td {
-    font-size: 13px;
-  }
-
-  .note-page .note-grid {
-    grid-template-columns: 1fr;
-  }
+.note-article table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
 }
 
-.note-skip-link {
-  position: fixed;
-  top: -80px;
-  left: 20px;
-  z-index: 20;
-  padding: 10px 16px;
-  color: #0088cc;
-  background: #fff;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+.note-article caption {
+  margin-bottom: 8px;
+  font-weight: 600;
+  text-align: left;
 }
 
-.note-skip-link:focus {
-  top: 8px;
+.note-article th,
+.note-article td {
+  padding: 6px 8px;
+  border-bottom: 1px solid #ddd;
+  vertical-align: top;
+  text-align: left;
+  overflow-wrap: normal;
 }
 
-@media (max-width: 600px) {
-@media (max-width: 360px) {
-@media (max-width: 767px) {
-  .note-page article > h1 {
-    font-size: 32px;
+.note-article .best {
+  background: #e2f0d9;
+}
+
+@media (max-width: 560px) {
+  .notes-page {
+    padding: 16px;
   }
 }
